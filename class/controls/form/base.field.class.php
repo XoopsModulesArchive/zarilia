@@ -1,0 +1,20 @@
+<?php
+
+// Loading base class
+require_once ZAR_ROOT_PATH.'/class/controls/base/control.class.php';
+
+class ZariliaControl_FormField 
+	extends ZariliaControl {
+	
+	var $name, $value, $title;
+
+	function ZariliaControl_FormField($name, $value='', $title='', $truename=null) {
+		$this->name = $name;
+		$this->value = $value;
+		$this->title = $title;
+		$this->ZariliaControl('FormField',$truename);
+	}
+
+}
+
+?>
