@@ -221,8 +221,7 @@ class ZariliaControl {
      * @param string $function function name (must be registered first)
      * @return string
      */
-    function GetRJS( $function )
-    {
+    function GetRJS( $function ) {
         if ( !isset( $this->_functions[$function] ) ) return null;
         $name = $this->_params['id'];
         $type = $this->_type;
@@ -231,6 +230,20 @@ class ZariliaControl {
         foreach ( $this->_functions[$function] as $value )
         $temp .= ',' . $this->_params['id'] . "_" . $value;
         return $temp . ');';
+    }
+
+    /**
+     * Gets real javascript function call (only first part)
+     *
+     * @param string $function function name (must be registered first)
+     * @return string
+     */
+    function GetRJSfp( $function ) {
+        $name = $this->_params['id'];
+        $type = $this->_type;
+        $needfkl = $this->_needfkl;
+		$function = $this->_prefix . '_' . $this->_type . '_' .$function;
+        return "xajax_ZariliaControlHandler('$name','$type','$function',$needfkl";
     }
 
     /**

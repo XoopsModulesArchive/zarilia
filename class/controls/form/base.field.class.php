@@ -8,6 +8,8 @@ class ZariliaControl_FormField
 	
 	var $name, $value, $title;
 
+	var $beforeSubmit = '';
+
 	function ZariliaControl_FormField($name, $value='', $title='', $truename=null) {
 		$this->name = $name;
 		$this->value = $value;

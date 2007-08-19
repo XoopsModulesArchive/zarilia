@@ -21,7 +21,8 @@ class ZariliaSettings
 		if (($i = strpos($data = parent::read($module), "\n"))!==false) {
 			$this->_settings[$module] = unserialize(trim(substr($data,$i)));
 		}
-		var_dump($this->_settings[$module][$category][$setting]);
+
+//		var_dump($this->_settings[$module][$category]);
 		if (!isset($this->_settings[$module][$category][$setting])) $this->write($module, $category, $this->_settings, $default);
 		return $this->_settings[$module][$category][$setting];
 	}
@@ -40,8 +41,12 @@ class ZariliaSettings
 		parent::write($module, serialize($this->_settings[$module]));
 	}
 
-	function remove($module, $category, $setting) {
-		unset($this->_settings[$module][$category][$setting]);
+	function remove($module, $category, $setting=null) {
+		if ($setting!==null) {
+			unset($this->_settings[$module][$category][$setting]);
+		} else {
+			unset($this->_settings[$module][$category]);
+		}
 		parent::write($module, serialize($this->_settings[$module]));
 	}
 
