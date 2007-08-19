@@ -271,6 +271,7 @@ define( '_MD_AM_EVENTSSYSTEMDISABLED', '(disabled)' );
 define( '_MD_AM_EVENTSSYSTEMINTERNAL', 'Internal' );
 define( '_MD_AM_EVENTSSYSTEMAT', 'At (only Windows 2000 or newer)' );
 define( '_MD_AM_EVENTSSYSTEMCRONTAB', 'CronTab (only *nix)' );
+define( '_MD_AM_EVENTSENABLE', 'Enabled?');
 define( '_MD_AM_EVENTSSYSTEM_DESC', 'Select used events system for performing tasks.' );
 define( "_MD_AM_EVENTSINTERVAL", "Specify interval for checking for new events" );
 define( "_MD_AM_EVENTSINTERVAL_DESC", "Specify interval for automatically checking for events. This value doesn't matters if you are specified '"._MD_AM_EVENTSSYSTEMDISABLED."' or '"._MD_AM_EVENTSSYSTEMINTERNAL."' events system." );

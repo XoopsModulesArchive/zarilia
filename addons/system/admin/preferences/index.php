@@ -22,6 +22,9 @@ include_once ZAR_ROOT_PATH . '/class/class.menubar.php';
 include_once ZAR_ROOT_PATH . "/addons/system/blocks/system_blocks.php";
 include_once ZAR_ROOT_PATH . "/addons/system/language/" . $zariliaConfig['language'] . "/blocks.php";
 
+if (!isset($op)) $op = zarilia_cleanRequestVars( $_REQUEST, 'op', 'default', XOBJ_DTYPE_TXTBOX );
+if (!isset($fct)) $fct = zarilia_cleanRequestVars( $_GET, 'fct', 'cpanel', XOBJ_DTYPE_TXTBOX );
+
 $confcat_id = zarilia_cleanRequestVars( $_REQUEST, 'confcat_id', 1 );
 $conf_sectid = zarilia_cleanRequestVars( $_REQUEST, 'conf_sectid', 1 );
 switch ( strtolower( $op ) ) {
@@ -95,6 +98,7 @@ switch ( strtolower( $op ) ) {
 		require_once ZAR_CONTROLS_PATH.'/form/control.class.php';
 		$form = new ZariliaControl_Form('./addons/system/admin/preferences/index.php');
 		foreach ( $configs as $config ) {
+			$form->addField('hidden', 'conf_ids[]', $config->getVar( 'conf_id' ));
 			switch ($formtype = $config->getVar( 'conf_formtype' )) {
 				case 'textbox':
 					$form->addField('text',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
@@ -181,9 +185,13 @@ switch ( strtolower( $op ) ) {
 		            }
 				break;
 				default:
+					echo $formtype.' ';
 				break;
 			}
 		}
+		$form->addField('hidden', 'op', 'save');
+		$form->addField('hidden', 'confcat_id', $confcat_id);
+		$form->addField('hidden', 'fct', $fct);
 		echo $form->render();
 		var_dump(abs(microtime() - $time));
 		break;	
@@ -233,11 +241,15 @@ switch ( strtolower( $op ) ) {
         $tplfile_handler = &zarilia_gethandler( 'tplfile' );
         $image_handler = &zarilia_gethandler( 'imagesetimg' );
         $addonperm_handler = &zarilia_gethandler( 'groupperm' );
+        $config_handler = &zarilia_gethandler( 'config' );
 
         if ( $count > 0 ) {
             for ( $i = 0; $i < $count; $i++ ) {
                 $config = &$config_handler->getConfig( $_REQUEST['conf_ids'][$i] );
-                $new_value = &$_REQUEST[$config->getVar( 'conf_name' )];
+                $new_value = $_REQUEST[$_REQUEST['conf_ids'][$i]];
+				var_dump(floatval($_REQUEST['conf_ids'][$i]));
+//				var_dump($config->getVar( 'conf_name' ));
+					//Y-m-d H:i:s
                 if ( is_array( $new_value ) || $new_value != $config->getVar( 'conf_value' ) ) {
                     // if language has been changed
                     if ( !$lang_updated && $config->getVar( 'conf_catid' ) == ZAR_CONF && $config->getVar( 'conf_name' ) == 'language' ) {
@@ -300,7 +312,10 @@ switch ( strtolower( $op ) ) {
                         $startmod_updated = true;
                     }
                     $config->setConfValueForInput( $new_value );
-                    $config_handler->insertConfig( $config );
+//					var_dump($new_value);
+//					var_dump($_REQUEST);
+					die();
+//                    $config_handler->insertConfig( $config );
                 }
                 unset( $new_value );
             }
@@ -309,7 +324,8 @@ switch ( strtolower( $op ) ) {
             setcookie( $session_name, session_id(), time() + ( 60 * intval( $session_expire ) ), '/', '', 0 );
         }
         $redirect = ( isset( $redirect ) && $redirect != '' ) ? $redirect : "index.php";
-        redirect_header( $redirect, 2, _DBUPDATED );
+		return $objResponse->alert(_DBUPDATED);
+//        redirect_header( $redirect, 2, _DBUPDATED );
         break;
 
     case 'config':

@@ -166,7 +166,7 @@ class ZariliaEventsHandler extends ZariliaPersistableObjectHandler {
      * Executes events
      */
     function doEvents() {
-        $events = $this->getEvents();
+        if (!($events = $this->getEvents())) return;
         foreach ( $events as $event ) {
             $event->doEvent();
             if ( $event->getVar( 'RepeatNum' ) < 0 ) {

@@ -1032,13 +1032,16 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
      * @return
      */
     function insert( &$obj, $checkObject = true, $andclause = null ) {
+		global $zariliaConfig;
         if ( $checkObject == true ) {
             if ( !is_object( $obj ) || !is_a( $obj, $this->obj_class ) ) {
+				require_once ZAR_ROOT_PATH . '/language/' . $zariliaConfig['language'] . '/error.php';
                 $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, sprintf( _ER_PAGE_NOT_OBJECT, $this->obj_class ), __FILE__, __LINE__ );
                 return false;
             }
 
             if ( !$obj->isDirty() ) {
+				require_once ZAR_ROOT_PATH . '/language/' . $zariliaConfig['language'] . '/error.php';
                 $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _ER_PAGE_NOT_DIRTY, __FILE__, __LINE__);
                 return false;
             }

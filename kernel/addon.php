@@ -374,6 +374,7 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
      * @return bool
      */
     function insert( &$addon ) {
+		global $zariliaDB;
         if ( strtolower( get_class( $addon ) ) != 'zariliaaddon' ) {
             return false;
         }
@@ -387,7 +388,7 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
             ${$k} = $v;
         }
         if ( is_null( $this->db ) ) {
-            $this->db = &ZariliaDatabaseFactory::getDatabaseConnection();
+            $this->db = &$zariliaDB;
         }
         if ( $addon->isNew() ) {
             // $mid = $this -> db -> genId( 'addons_mid_seq' );
@@ -490,10 +491,16 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
             $limit = $criteria->getLimit();
             $start = $criteria->getStart();
         }
-        $result = $this->db->SelectLimit( $sql, $limit, $start );
-        if ( !$result ) {
+
+		if ($limit < 1) {
+		    $result = $this->db->Execute( $sql );
+		} else {
+	        $result = $this->db->SelectLimit( $sql, $limit, $start );
+		}
+        if ( $result===false ) {
             return $ret;
-        } while ( $myrow = $result->FetchRow() ) {
+        } 
+		while ( $myrow = $result->FetchRow() ) {
             $addon = new ZariliaAddon();
             $addon->assignVars( $myrow );
             if ( !$id_as_key ) {
