@@ -89,11 +89,13 @@ switch ( strtolower( $op ) ) {
         $criteria->setSort( 'conf_order' );
         $configs = &$config_handler->getConfigs( $criteria );
 
+		$ctype = '';
+
 		zarilia_cp_header();
 		require_once ZAR_CONTROLS_PATH.'/form/control.class.php';
-		$form = new ZariliaControl_Form();
+		$form = new ZariliaControl_Form('./addons/system/admin/preferences/index.php');
 		foreach ( $configs as $config ) {
-			switch ($config->getVar( 'conf_formtype' )) {
+			switch ($formtype = $config->getVar( 'conf_formtype' )) {
 				case 'textbox':
 					$form->addField('text',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;
@@ -106,7 +108,8 @@ switch ( strtolower( $op ) ) {
 				case 'yesno':
 				case 'textarea':
 				case 'text':
-					$form->addField($config->getVar( 'conf_formtype' ),$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
+				case 'multitext':
+					$form->addField($formtype,$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;				
 				case 'site_cache';
 					$data = array( '0' => _NOCACHE, '30' => sprintf( _SECONDS, 30 ), '60' => _MINUTE, '300' => sprintf( _MINUTES, 5 ), '1800' => sprintf( _MINUTES, 30 ), '3600' => _HOUR, '18000' => sprintf( _HOURS, 5 ), '86400' => _DAY, '259200' => sprintf( _DAYS, 3 ), '604800' => _WEEK );
@@ -118,8 +121,8 @@ switch ( strtolower( $op ) ) {
 		            asort( $tplsetlist );
 					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $tplsetlist);
 			    break;
-				case 'theme':
 		        case 'theme_multi':
+				case 'theme':
 		            $handle = opendir( ZAR_THEME_PATH . '/' );
 				    $dirlist = array();
 		            while ( false !== ( $file = readdir( $handle ) ) ) {
@@ -129,7 +132,7 @@ switch ( strtolower( $op ) ) {
 				    }
 		            closedir( $handle );
 				    if ( !empty( $dirlist ) ) asort( $dirlist );
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist);
+					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist, $formtype=='theme_multi' );
 //		            $form->addElement( new ZariliaFormHidden( '_old_theme', $value ) );
 			    break;
 				case 'select':
@@ -144,7 +147,7 @@ switch ( strtolower( $op ) ) {
 	//		        } else {
 	//					$_array = $zariliaConfig['user_select'];
 	//		        } 
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $_array);
+					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $_array, $formtype=='editor_multi');
 				break;
 				case 'group_multi':
 					$member_handler = &zarilia_gethandler( 'member' );
@@ -159,28 +162,25 @@ switch ( strtolower( $op ) ) {
 //			        } else {
 //						$data = $member_handler->getGroupList();
 //			        }
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data);
+					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data, true);
 				break;
 				case 'addon_cache':
+
+					$pbox = &$form->addField('propertiesbox',$config->getVar( 'conf_id' ),constant( $config->getVar( 'conf_title' ) ));
+
 				    $addons = &$addon_handler->getObjects( new Criteria( 'hasmain', 1 ), true );
-		            $currrent_val = $value;
+		            $currrent_val = @$value;
 				    $cache_options = array( '0' => _NOCACHE, '30' => sprintf( _SECONDS, 30 ), '60' => _MINUTE, '300' => sprintf( _MINUTES, 5 ), '1800' => sprintf( _MINUTES, 30 ), '3600' => _HOUR, '18000' => sprintf( _HOURS, 5 ), '86400' => _DAY, '259200' => sprintf( _DAYS, 3 ), '604800' => _WEEK );
 		            if ( count( $addons ) > 0 ) {
-				        $ele = new ZariliaFormElementTray( $title, '<br /> ' );
 						foreach ( array_keys( $addons ) as $mid ) {
 		                    $c_val = isset( $currrent_val[$mid] ) ? intval( $currrent_val[$mid] ) : null;
-				            $selform = new ZariliaFormSelect( $addons[$mid]->getVar( 'name' ) . ": ", $name . "[$mid]", $c_val );
-						    $selform->addOptionArray( $cache_options );
-		                    $ele->addElement( $selform );
-		                    unset( $selform );
+							$pbox->addField('listfromarray', $mid, $c_val, $addons[$mid]->getVar( 'name' ), $cache_options);
 		                }
 				    } else {
-						$ele = new ZariliaFormLabel( $title, _MD_AM_NOADDON );
+						$pbox->addField('label', _MD_AM_NOADDON);
 		            }
-				    $ele->setMultiChange();
 				break;
 				default:
-					var_dump($config->getVar( 'conf_formtype' ));
 				break;
 			}
 		}
