@@ -8,9 +8,9 @@ define( '_ER_PAGE_REASON', '<strong>Reason: </strong>' );
 define( '_ER_PAGE_FILE', '<strong>File: </strong>' );
 define( '_ER_PAGE_LINE', '<strong>Line: </strong>' );
 
-#define( '_ER_PAGE_NOT_OBJECT', '%s: Is not an Object' );
-#define( '_ER_PAGE_NOT_DIRTY', 'Object Is Not Dirty' );
-#define( '_ER_PAGE_NOT_CLEAN', 'Object Is Not Clean' );
+define( '_ER_PAGE_NOT_OBJECT', '%s: Is not an Object' );
+define( '_ER_PAGE_NOT_DIRTY', 'Object Is Not Dirty' );
+define( '_ER_PAGE_NOT_CLEAN', 'Object Is Not Clean' );
 #define( '_ER_PAGE_DEFAULT_TITLE', 'System Error' );
 
 define( '_ER_PAGE_9999', '<strong>Error %s:</strong> Unknown Condition [\'%s\']:');
