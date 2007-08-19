@@ -38,11 +38,10 @@ function ZariliaControl_Form_Handler($name, $actionurl) {
 	}
 	if ($error) return $objResponse;
 	unset($error, $i, $count, $file, $type, $name, $value);
-	$url = parse_url($_SERVER["HTTP_REFERER"]);
+	$_REQUEST = &$_POST;
+/*	$url = parse_url($_SERVER["HTTP_REFERER"]);
 	parse_str($url['query'], $_GET);
-	unset($url);
-	if (isset($_GET['op'])) $op = zarilia_cleanRequestVars( $_GET, 'op', 'default', XOBJ_DTYPE_TXTBOX );
-	if (isset($_GET['fct'])) $fct = zarilia_cleanRequestVars( $_GET, 'fct', 'cpanel', XOBJ_DTYPE_TXTBOX );
+	unset($url);*/
 
 	require ZAR_ROOT_PATH.$actionurl;
 //	$objResponse->alert(var_export($_GET,true));

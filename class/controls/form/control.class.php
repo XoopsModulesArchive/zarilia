@@ -26,6 +26,7 @@ class ZariliaControl_Form
 	extends ZariliaControl {
 
 	var $_fields = array();
+	var $_fieldsCount = 0;
 	var $method = 'post';
 	var $actionfile;
 
@@ -90,35 +91,41 @@ class ZariliaControl_Form
 		$class = 'ZariliaControl_FormField_'.ucfirst($type);
 		switch (func_num_args()) {
 			case 2:
-				return $this->_fields[] = new $class($name);
+				$this->_fields[$this->_fieldsCount] = new $class($name);
 			break;
 			case 3:
-				return $this->_fields[] = new $class($name, $value);
+				$this->_fields[$this->_fieldsCount] = new $class($name, $value);
 			break;
 			case 5:
 				$param = func_get_arg(4);
-				return $this->_fields[] = new $class($name, $value, $title, $param);
+				$this->_fields[$this->_fieldsCount] = new $class($name, $value, $title, $param);
 			break;
 			case 6:
 				$param = func_get_arg(4);
 				$param2 = func_get_arg(5);
-				return $this->_fields[] = new $class($name, $value, $title, $param, $param2);
+				$this->_fields[$this->_fieldsCount] = new $class($name, $value, $title, $param, $param2);
 			break;
 			default:
-				return $this->_fields[] = new $class($name, $value, $title);
+				$this->_fields[$this->_fieldsCount] = new $class($name, $value, $title);
 			break;
 		}
+		return $this->_fields[$this->_fieldsCount++];
 	}
 
 	function render() {
 		$count = count($this->_fields);
 		$table_data = '';
+		$table_data2 = '';
 		$beforeSubmit = '';
 		$code2 = array();
 		$code3 = array();
 		for($i=0;$i<$count;$i++) {
 			$beforeSubmit .= $this->_fields[$i]->beforeSubmit."\r\n";
-			$table_data .= '<tr><td valign="top">'.$this->_fields[$i]->title.'</td><td>'.$this->_fields[$i]->render().'</td><td id="'.$this->_fields[$i]->getName().'_id_err"></td></tr>';
+			if ($this->_fields[$i]->title !== null) {
+				$table_data .= '<tr><td valign="top">'.$this->_fields[$i]->title.'</td><td>'.$this->_fields[$i]->render().'</td><td id="'.$this->_fields[$i]->getName().'_id_err"></td></tr>';
+			} else {
+				$table_data2 .= $this->_fields[$i]->render();
+			}
 			$code2[] = '\''.$this->_fields[$i]->getName().'\'';
 			$code3[] = '\''.$this->_fields[$i]->name.'\'';
 			$code4[] = '\''.substr(get_class($this->_fields[$i]),25).'\'';
@@ -152,7 +159,7 @@ class ZariliaControl_Form
 		$data .= '<table border="0"><tbody>'.$table_data;
 		$data .= '</tbody><tfooter>';
 		$data .= '<tr><td></td><td><input type="submit"></td></tr>';
-		$data .= '</tfooter></table>';
+		$data .= '</tfooter></table>'.$table_data2;
 		$this->_value = $data;
 		return parent::render();
 	}
