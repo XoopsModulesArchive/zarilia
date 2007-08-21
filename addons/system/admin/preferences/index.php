@@ -22,6 +22,8 @@ include_once ZAR_ROOT_PATH . '/class/class.menubar.php';
 include_once ZAR_ROOT_PATH . "/addons/system/blocks/system_blocks.php";
 include_once ZAR_ROOT_PATH . "/addons/system/language/" . $zariliaConfig['language'] . "/blocks.php";
 
+
+
 if (!isset($op)) $op = zarilia_cleanRequestVars( $_REQUEST, 'op', 'default', XOBJ_DTYPE_TXTBOX );
 if (!isset($fct)) $fct = zarilia_cleanRequestVars( $_GET, 'fct', 'cpanel', XOBJ_DTYPE_TXTBOX );
 
@@ -125,6 +127,18 @@ switch ( strtolower( $op ) ) {
 		            asort( $tplsetlist );
 					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $tplsetlist);
 			    break;
+				case 'language':
+		            $handle = opendir( ZAR_ROOT_PATH . '/language/' );
+				    $dirlist = array();
+		            while ( false !== ( $file = readdir( $handle ) ) ) {
+				        if ( is_dir( ZAR_ROOT_PATH . '/language/' . $file ) && !preg_match( "/^[.]{1,2}$/", $file ) && strtolower( $file ) != 'cvs' ) {
+						    $dirlist[$file] = $file;
+		                }
+				    }
+		            closedir( $handle );
+				    if ( !empty( $dirlist ) ) asort( $dirlist );
+					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist );
+				break;
 		        case 'theme_multi':
 				case 'theme':
 		            $handle = opendir( ZAR_THEME_PATH . '/' );
@@ -140,7 +154,7 @@ switch ( strtolower( $op ) ) {
 //		            $form->addElement( new ZariliaFormHidden( '_old_theme', $value ) );
 			    break;
 				case 'select':
-					$form->addField('listfromtdb',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
+					$form->addField('listfromtdb',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), 'system', $config->getVar( 'conf_source' ));
 				break;
 				case 'editor_multi':
 				case 'editor':
@@ -247,7 +261,7 @@ switch ( strtolower( $op ) ) {
             for ( $i = 0; $i < $count; $i++ ) {
                 $config = &$config_handler->getConfig( $_REQUEST['conf_ids'][$i] );
                 $new_value = $_REQUEST[$_REQUEST['conf_ids'][$i]];
-				var_dump(floatval($_REQUEST['conf_ids'][$i]));
+				var_dump($_REQUEST);
 //				var_dump($config->getVar( 'conf_name' ));
 					//Y-m-d H:i:s
                 if ( is_array( $new_value ) || $new_value != $config->getVar( 'conf_value' ) ) {

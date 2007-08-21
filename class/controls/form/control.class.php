@@ -46,6 +46,7 @@ class ZariliaControl_Form
 						 }
 						 function zcFormField_getElementByIdNameTag(id, tag, name) {
 							var xobj = document.getElementById(id);
+							if (!xobj) {return alert(id);}
 							var xobjs = xobj.getElementsByTagName(tag);
 							for(o=0;o<xobjs.length;o++) {
 							   if (xobjs[o].name == name) {
@@ -144,9 +145,9 @@ class ZariliaControl_Form
 					 code += ", \'0:" + fieldt[i] + "\'";
 					 code += ", \'0:" + fieldi[i] + "\'";
 					 xobj = zcFormField_getElementByIdNameTag(fieldi[i], "input", fields[i]);
-					 if (!xobj) {
-						xobj = zcFormField_getElementByIdNameTag(fieldi[i], "textarea", fields[i]);
-					 }
+					 if (!xobj) xobj = zcFormField_getElementByIdNameTag(fieldi[i], "textarea", fields[i]);
+					 if (!xobj) xobj = zcFormField_getElementByIdNameTag(fieldi[i], "select", fields[i]);
+//					 if (!xobj) alert(fieldi[i] + " " + fields[i]);
 					 code += ", \'0:" + xobj.value + "\'";
 				  }
 		';
