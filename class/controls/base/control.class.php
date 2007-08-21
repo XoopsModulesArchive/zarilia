@@ -227,8 +227,13 @@ class ZariliaControl {
         $type = $this->_type;
         $needfkl = $this->_needfkl;
         $temp = "xajax_ZariliaControlHandler('$name','$type','$function',$needfkl";
-        foreach ( $this->_functions[$function] as $value )
-        $temp .= ',' . $this->_params['id'] . "_" . $value;
+        foreach ( $this->_functions[$function] as $value ) {
+			if (strstr($value,'(')) {
+				$temp .= ',' . $value;
+			} else {
+				$temp .= ',' . $this->_params['id'] . "_" . $value;
+			}
+		}
         return $temp . ');';
     }
 

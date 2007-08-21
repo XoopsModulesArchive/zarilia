@@ -56,6 +56,10 @@ function ZariliaControlHandler( $name, $type, $function )
             $temp .= ", $value";
             continue;
         }
+		if ( is_array($value)) {
+			$temp .= ",".var_export($value, true);
+			continue;
+		}
         $type = @substr( $value, 0, 1 );
         $value = @substr( $value, 2 );
         if ( $type == 0 ) {
@@ -65,6 +69,7 @@ function ZariliaControlHandler( $name, $type, $function )
         }
     }
     $temp .= ");";
+//	echo $temp;
     eval( $temp );
     return $objResponse;
 }

@@ -12,7 +12,7 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
-function ZariliaControl_Form_Handler($name, $actionurl) {
+function ZariliaControl_Form_Handler($name, $actionfile, $_POST, $ids, $cls) {
 	global $_POST, $zariliaUser, $zariliaAddon, $zariliaConfig, $_GET;
 	$objResponse = new xajaxResponse();
 	$count = func_num_args();
