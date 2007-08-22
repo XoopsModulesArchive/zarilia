@@ -38,12 +38,37 @@ class ZariliaControl_Form
 		global $zariliaOption;
 		$this->ZariliaControl('Form',$name,'',true);
 		$this->function = $this->GenerateFunctionName();
-		$this->RegisterFunction($this->function, array('actionfile', 'xajax.getFormValues(document.getElementById("'.$this->getName().'_form"))','ids','cls') );
+		$this->RegisterFunction($this->function, array('actionfile', 'fa.get()') );
 		$this->actionfile = $actionfile;
 		if (!isset($zariliaOption['zcFormField_Error'])) {
 			$zariliaOption['zcFormField_Error'] = true;
 			$this->addJS('function zcFormField_Error(id, error) {
 							document.getElementById(id + "_id_err").innerHTML = error;
+						 }
+						 function zcFormField_fieldsArray() {
+							 var items = new Array();
+							 this.items = items;
+							 var add = function add(id, name, className, value) {
+								items[items.length] = [id, name, className, value];
+							 }		
+							 this.add = add;
+							 var get = function get() {
+								 return items;
+							 }
+							 this.get = get;
+							 var add2 = function add2(data) {
+								 for(var i=0;i<data.length;i++) {
+									add(data[i][0],data[i][1],data[i][2],zcFormField_getInputFieldValueByIdName(data[i][0],data[i][1]));
+								 }
+							 }
+							 this.add2 = add2;
+						 }
+						 function zcFormField_getInputFieldValueByIdName(id, name) {
+							 var xobj = zcFormField_getElementByIdNameTag(id, "input", name);
+							 if (!xobj) xobj = zcFormField_getElementByIdNameTag(id, "textarea", name);
+							 if (!xobj) xobj = zcFormField_getElementByIdNameTag(id, "select", name);
+							 if (!xobj) alert(id + " " + name);
+							 return xobj.value;
 						 }
 						 function zcFormField_getElementByIdNameTag(id, tag, name) {
 							var xobj = document.getElementById(id);
@@ -128,17 +153,17 @@ class ZariliaControl_Form
 			} else {
 				$table_data2 .= $this->_fields[$i]->render();
 			}
-			$code2[] = $this->_fields[$i]->getName();
-			$code3[] = $this->_fields[$i]->name;
-			$code4[] = substr(get_class($this->_fields[$i]),25);
+			$code2[] = '[\''.$this->_fields[$i]->getName().'\',\''.$this->_fields[$i]->name.'\',\''.substr(get_class($this->_fields[$i]),25).'\']';
 		}
-		$this->setVar('ids', $code2);
-		$this->setVar('cls', $code4);
 		$this->setVar('actionfile', $this->actionfile);
 		$code = 'function ZariliaControl_Form_'.$this->getName().'_Submit(form){';
-		$code .= $beforeSubmit;
-//		$code .= 'zcForm_SubmitEffect("'.$this->getName().'");'
+		$code .= trim($beforeSubmit);
+		$code .= 'var fa = new zcFormField_fieldsArray();
+				  var ar = ['.implode(',',$code2).'];
+				  zcForm_SubmitEffect("'.$this->getName().'");
+				  fa.add2(ar);';	
 		$code .= $this->GetRJS($this->function);
+		$code .= '}';
 //		$code .= 'var code = "'.$this->GetRJS($this->function).'";';
 //		$code .= ' var fieldi = new Array('.implode(',',$code2).'); ';
 //		$code .= ' var fields = new Array('.implode(',',$code3).'); ';
@@ -159,7 +184,7 @@ class ZariliaControl_Form
 //		$code .= 'code += ");";';
 //		$code .= 'alert(code);';
 //		$code .= 'eval(code);';
-		$code .= '}';
+//		$code .= '}';
 		$this->addJS($code);
 		$data  = '<form action="" name="'.$this->getName().'_form" id="'.$this->getName().'_form" onsubmit="ZariliaControl_Form_'.$this->getName().'_Submit(this); return false;">';
 		$data .= '<table border="0"><tbody>'.$table_data;

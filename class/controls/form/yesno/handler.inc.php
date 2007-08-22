@@ -12,7 +12,8 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
-function ZariliaControl_FormField_Yesno_Validator($name, $value, &$objResponse) {
+function ZariliaControl_FormField_Yesno_Validator($name, &$value, &$objResponse) {
+	$value = intval($value);
 	if (($value!=1)&&($value!=0)) {
 		$objResponse->call('zcFormField_Error', $name, 'Bad data (trying to hack?)');
 		return false;

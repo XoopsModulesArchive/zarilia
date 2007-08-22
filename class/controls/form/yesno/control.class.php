@@ -13,9 +13,9 @@ class ZariliaControl_FormField_Yesno
 	}
 
 	function render() {
-		$this->_value  = '<a href="javascript:;" tabindex="0" onclick="this.innerHTML=(document.getElementById(\''.$this->getName().'\').value=(this.innerHTML==\'Yes\')?0:1)?\'Yes\':\'No\'; this.focus();">';
+		$this->_value  = '<a href="javascript:;" tabindex="0" onclick="this.innerHTML=(document.getElementById(\''.$this->getName().'_field\').value=(this.innerHTML==\'Yes\')?0:1)?\'Yes\':\'No\'; this.focus();">';
 		$this->_value .= ($this->value)?'Yes':'No';			
-		$this->_value .= '</a><input type="hidden" name="'.$this->name.'" value="'.$this->value.'" />';
+		$this->_value .= '</a><input type="hidden" name="'.$this->name.'" id="'.$this->getName().'_field" value="'.$this->value.'" />';
 		return parent::render();
 	}
 
