@@ -103,29 +103,29 @@ switch ( strtolower( $op ) ) {
 			$form->addField('hidden', 'conf_ids[]', $config->getVar( 'conf_id' ));
 			switch ($formtype = $config->getVar( 'conf_formtype' )) {
 				case 'textbox':
-					$form->addField('text',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
+					$form->addField('text',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;
 				case 'startpage':
 					$criteria = new CriteriaCompo( new Criteria( 'hasmain', 1 ) );
 		            $criteria->add( new Criteria( 'isactive', 1 ) );
 				    $addonslist = &$addon_handler->getList( $criteria, true );					
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $addonslist);
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $addonslist);
 				break;
 				case 'yesno':
 				case 'textarea':
 				case 'text':
 				case 'multitext':
-					$form->addField($formtype,$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
+					$form->addField($formtype,$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;				
 				case 'site_cache';
 					$data = array( '0' => _NOCACHE, '30' => sprintf( _SECONDS, 30 ), '60' => _MINUTE, '300' => sprintf( _MINUTES, 5 ), '1800' => sprintf( _MINUTES, 30 ), '3600' => _HOUR, '18000' => sprintf( _HOURS, 5 ), '86400' => _DAY, '259200' => sprintf( _DAYS, 3 ), '604800' => _WEEK );
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data);
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data);
 				break;
 		        case 'tplset':
 		            $tplset_handler = &zarilia_gethandler( 'tplset' );
 		            $tplsetlist = &$tplset_handler->getList();
 		            asort( $tplsetlist );
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $tplsetlist);
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $tplsetlist);
 			    break;
 				case 'language':
 		            $handle = opendir( ZAR_ROOT_PATH . '/language/' );
@@ -137,7 +137,7 @@ switch ( strtolower( $op ) ) {
 				    }
 		            closedir( $handle );
 				    if ( !empty( $dirlist ) ) asort( $dirlist );
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist );
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist );
 				break;
 		        case 'theme_multi':
 				case 'theme':
@@ -150,7 +150,7 @@ switch ( strtolower( $op ) ) {
 				    }
 		            closedir( $handle );
 				    if ( !empty( $dirlist ) ) asort( $dirlist );
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist, $formtype=='theme_multi' );
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist, $formtype=='theme_multi' );
 //		            $form->addElement( new ZariliaFormHidden( '_old_theme', $value ) );
 			    break;
 				case 'select':
@@ -165,7 +165,7 @@ switch ( strtolower( $op ) ) {
 	//		        } else {
 	//					$_array = $zariliaConfig['user_select'];
 	//		        } 
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $_array, $formtype=='editor_multi');
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $_array, $formtype=='editor_multi');
 				break;
 				case 'group_multi':
 					$member_handler = &zarilia_gethandler( 'member' );
@@ -180,11 +180,11 @@ switch ( strtolower( $op ) ) {
 //			        } else {
 //						$data = $member_handler->getGroupList();
 //			        }
-					$form->addField('listfromarray',$config->getVar( 'conf_id' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data, true);
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $data, true);
 				break;
 				case 'addon_cache':
 
-					$pbox = &$form->addField('propertiesbox',$config->getVar( 'conf_id' ),constant( $config->getVar( 'conf_title' ) ));
+					$pbox = &$form->addField('propertiesbox',$config->getVar( 'conf_name' ),constant( $config->getVar( 'conf_title' ) ));
 
 				    $addons = &$addon_handler->getObjects( new Criteria( 'hasmain', 1 ), true );
 		            $currrent_val = @$value;
@@ -199,7 +199,7 @@ switch ( strtolower( $op ) ) {
 		            }
 				break;
 				default:
-					echo $formtype.' ';
+					echo $formtype.'] ';
 				break;
 			}
 		}
@@ -260,8 +260,8 @@ switch ( strtolower( $op ) ) {
         if ( $count > 0 ) {
             for ( $i = 0; $i < $count; $i++ ) {
                 $config = &$config_handler->getConfig( $_REQUEST['conf_ids'][$i] );
-                $new_value = $_REQUEST[$_REQUEST['conf_ids'][$i]];
-				var_dump($_REQUEST);
+                $new_value = $_REQUEST[$config->getVar( 'conf_name' )];
+//				var_dump($_REQUEST);
 //				var_dump($config->getVar( 'conf_name' ));
 					//Y-m-d H:i:s
                 if ( is_array( $new_value ) || $new_value != $config->getVar( 'conf_value' ) ) {
@@ -328,8 +328,8 @@ switch ( strtolower( $op ) ) {
                     $config->setConfValueForInput( $new_value );
 //					var_dump($new_value);
 //					var_dump($_REQUEST);
-					die();
-//                    $config_handler->insertConfig( $config );
+//					die();
+                    $config_handler->insertConfig( $config );
                 }
                 unset( $new_value );
             }
