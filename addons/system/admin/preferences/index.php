@@ -198,6 +198,11 @@ switch ( strtolower( $op ) ) {
 						$pbox->addField('label', _MD_AM_NOADDON);
 		            }
 				break;
+		        case 'zariliatextarea':
+		        case 'textarea':
+		        case 'htmltextarea':
+					$form->addField('editor',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
+				break;
 				default:
 					echo $formtype.'] ';
 				break;
