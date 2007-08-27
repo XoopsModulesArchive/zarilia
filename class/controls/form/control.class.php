@@ -68,7 +68,25 @@ class ZariliaControl_Form
 							 if (!xobj) xobj = zcFormField_getElementByIdNameTag(id, "textarea", name);
 							 if (!xobj) xobj = zcFormField_getElementByIdNameTag(id, "select", name);
 							 if (!xobj) alert(id + " " + name);
-							 return xobj.value;
+							 if ((!xobj.length) || (xobj.options)) {
+								 if (xobj.type) {
+									 if (xobj.type == "checkbox") {
+										if (!xobj.checked) return null;
+									 }
+								 }
+								 return xobj.value;
+							 } else {
+								 var rez = new Array();
+								 for(o=0;o<xobj.length;o++) {
+									 if (xobj[o].type) {
+										 if (xobj[o].type == "checkbox") {
+											if (!xobj[o].checked) continue;
+										 }
+									 }
+									 rez[rez.length] = xobj[o].value;
+								 }
+								 return rez;
+							 }
 						 }
 						 function zcFormField_getElementByIdNameTag(id, tag, name) {
 							var xobj = document.getElementById(id);
@@ -79,6 +97,14 @@ class ZariliaControl_Form
 		 						   return xobjs[o];
 							   }
 							}
+							var rez = new Array();
+							name = name + "[]";
+							for(o=0;o<xobjs.length;o++) {
+							   if (xobjs[o].name == name) {
+		 						   rez[rez.length] = xobjs[o];
+							   }
+							}
+							if (rez.length>0) return rez;
 							return null;
 						 }
 						 function zcForm_SubmitEffect(id) {
@@ -153,7 +179,8 @@ class ZariliaControl_Form
 			} else {
 				$table_data2 .= $this->_fields[$i]->render();
 			}
-			$code2[] = '[\''.$this->_fields[$i]->getName().'\',\''.$this->_fields[$i]->name.'\',\''.substr(get_class($this->_fields[$i]),25).'\']';
+			foreach ($this->_fields[$i]->getFieldData() as $that) $code2[] = '[\''.implode('\',\'',$that).'\']';
+//			$code2[] = '[\''.$this->_fields[$i]->getName().'\',\''.$this->_fields[$i]->name.'\',\''.substr(get_class($this->_fields[$i]),25).'\']';
 		}
 		$this->setVar('actionfile', $this->actionfile);
 		$code = 'function ZariliaControl_Form_'.$this->getName().'_Submit(form){';

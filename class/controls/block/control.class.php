@@ -13,7 +13,7 @@
 // -------------------------------------------------------------------------//
 
 // Loading base class
-require_once ZAR_ROOT_PATH.'/class/ajax/control.class.php';
+require_once ZAR_ROOT_PATH.'/class/controls/base/control.class.php';
 
 /**
  * DHTML/Ajax Text Clock
@@ -27,24 +27,18 @@ class ZariliaControl_Block
 	 /**
 	 * Constructor
 	 */
-	function ZariliaControl_Block($content='', $function=null, $name = null) {
+	function ZariliaControl_Block($content='', $useComet = false, $name = null) {
 		global $zariliaOption;
-		$this->ZariliaControl('Block',$name, $content);
-		if(!$this->isSysFlag('ajax_blocks_started')) {
+		if ($name !== null) $name = 'block_'.$name;
+		$this->ZariliaControl('Block',$name, $content, true);
+		if (!$this->isSysFlag('ajax_blocks_started')) {
+			$function = $this->GenerateFunctionName('Update');
+			$this->RegisterFunction($function);
+			$this->AddTimer($function, 1000);
 			$_SESSION['blocks'] = array();
 			$this->setSysFlag('ajax_blocks_started');
 		}
-		if($function){
-			$_SESSION['blocks'][$this->getName()] = array($function, array());
-			$this->RegisterFunction($function = $this->GenerateFunctionName());
-			$this->AddTimer($function,5000);
-		}
 	}
-
-	function bind($table, $id) {
-		$_SESSION['blocks'][$this->getName()][0][$table] = $id;
-	}
-
 
 }
 ?>

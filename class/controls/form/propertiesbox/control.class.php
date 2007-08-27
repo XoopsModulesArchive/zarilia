@@ -50,6 +50,14 @@ class ZariliaControl_FormField_Propertiesbox
 		return parent::render();
 	}
 
+	function &getFieldData() {
+		$data = array();
+		foreach ($this->items as $item) {
+			$data[] = array($item->getName(), $item->name, substr(get_class($item),25));
+		}
+		return $data;
+	}
+
 }
 
 ?>

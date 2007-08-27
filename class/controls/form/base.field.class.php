@@ -17,6 +17,11 @@ class ZariliaControl_FormField
 		$this->ZariliaControl('FormField',$truename);
 	}
 
+	function &getFieldData() {
+		$data = array(array($this->getName(), $this->name, substr(get_class($this),25)));
+		return $data;
+	}
+
 }
 
 ?>

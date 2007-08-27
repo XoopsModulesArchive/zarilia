@@ -14,15 +14,11 @@ class ZariliaControl_FormField_Listfromarray
 		$this->multi = $multi;
 	}
 
-	function to7bit($text,$from_enc='auto') {
-		$text = html_entity_decode(mb_convert_encoding($text,'HTML-ENTITIES',$from_enc));
-	    return $text;
-	}  
-
 	function render() {
 		if ($this->multi) {
+			require_once ZAR_ROOT_PATH.'/class/multilanguage/charsetconvert.class.php';
 			$this->_value = '';
-			$this->value = $this->to7bit($this->value);
+			$this->value = charsetConvert::to7bit($this->value);
 			$this->value = unserialize($this->value);
 			if (!is_array($this->value)) $this->value = array();
 			foreach ($this->array as $id => $title) {

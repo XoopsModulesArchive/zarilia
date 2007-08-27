@@ -7,18 +7,17 @@ class ZariliaControl_FormField_Listfromdb
 	extends ZariliaControl_FormField {
 	
 	var $name, $value, $title, $criteria;
-	var $idname, $namename;
+	var $multiselect = false;
+	var $query = '';
 
-	function ZariliaControl_FormField_Listfromdb($name, $value='', $title='', &$criteria=null, $idname = 'id', $namename = 'name') {
+	function ZariliaControl_FormField_Listfromdb($name, $value='', $title='', $query = '') {
 		$this->ZariliaControl_FormField($name, $value, $title);
-		$this->criteria = $criteria;
-		$this->idname = $idname;
-		$this->namename = $namename;
+		$this->query = $query;
 	}
 
 	function render() {
 		global $zariliaDB;
-		$sql = 'SELECT * FROM 
+		$sql = 'SELECT * FROM '.
 		$this->_value = '<select name="'.$this->name.'">';
 		$this->_value = '<input type="text" name="'.$this->name.'" value="'.$this->value.'" />';
 		return parent::render();

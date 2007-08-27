@@ -22,6 +22,7 @@ if ( !defined( 'ZAR_ROOT_PATH' ) ) {
 }
 if ( !isset( $zariliaAjax ) ) {
     //require_once dirname( realpath( __FILE__ ) ) . '\xajax\xajax.inc.php';
+	if (!defined('ZAR_FRAMEWORK_PATH')) require_once ZAR_ROOT_PATH.'/include/defines.php';
     require_once ZAR_FRAMEWORK_PATH . '/xajax/xajax_core/xajax.inc.php';
     $zariliaAjax = new xajax();
 //    $zariliaAjax->errorHandlerOff();

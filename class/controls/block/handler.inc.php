@@ -12,9 +12,14 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
-function ZariliaControl_TextClock_Handler($name) {
+function ZariliaControl_Block_Update() {
 	$objResponse = new xajaxResponse();
-	$objResponse->assign($name, "innerHTML", date("r", time()));
+	if (!isset($_SESSION['blocks'])) return $objResponse;
+	foreach ($_SESSION['blocks'] as $name => $content) {
+		$objResponse->assign('block_'.$name, "innerHTML", $content);
+		unset($_SESSION['blocks'][$name]);
+		return $objResponse;
+	}
     return $objResponse;
 }
 

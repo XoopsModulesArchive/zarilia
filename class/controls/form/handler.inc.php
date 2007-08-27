@@ -19,6 +19,7 @@ function ZariliaControl_Form_Handler($name, $actionfile, $info) {
 	$count = count($info);
 	$error = false;
 	$_POST = array();
+//	echo nl2br(var_export($info, true));
 	for($i=0;$i<$count;$i++) {
 		if (file_exists($file = ZAR_CONTROLS_PATH.'/form/'.$info[$i][2].'/handler.inc.php')) {
 			require_once $file;
@@ -31,12 +32,13 @@ function ZariliaControl_Form_Handler($name, $actionfile, $info) {
 		} else {
 			$name = '$_POST[\''.$info[$i][1].'\']';
 		}
-		eval("$name = \$info[$i][3];");
+//		echo "$name = isset(\$info[$i][3])?;<br />";
+		eval("$name = isset(\$info[$i][3])?\$info[$i][3]:null;");
 //		$_POST[$info[$i][1]] = $info[$i][3];
 	}
 	if ($error) return $objResponse;
 	$_REQUEST = &$_POST;
-	require ZAR_ROOT_PATH.$actionfile;
+	 require ZAR_ROOT_PATH.$actionfile;
 //	var_dump($_POST);
 //	die();
 /*	
