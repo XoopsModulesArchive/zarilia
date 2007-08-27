@@ -97,11 +97,25 @@ switch ( strtolower( $op ) ) {
 		$ctype = '';
 
 		zarilia_cp_header();
+
 		require_once ZAR_CONTROLS_PATH.'/form/control.class.php';
 		$form = new ZariliaControl_Form('./addons/system/admin/preferences/index.php');
 		foreach ( $configs as $config ) {
 			$form->addField('hidden', 'conf_ids[]', $config->getVar( 'conf_id' ));
 			switch ($formtype = $config->getVar( 'conf_formtype' )) {
+				case 'user':
+			        $member_handler = &zarilia_gethandler( 'member' );
+/*			        if ( $include_anon ) {
+						global $zariliaConfig;
+			            $this->addOption( 0, $zariliaConfig['anonymous'] );
+			        } */
+				   // if ( $groupid == null ) {
+			            $users = $member_handler->getUserList();
+			       // } else {
+					//	$users = $member_handler->getUsersByGroups( $groupid );
+					//} 
+					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $users);
+				break;
 				case 'textbox':
 					$form->addField('text',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;
@@ -114,6 +128,7 @@ switch ( strtolower( $op ) ) {
 				case 'yesno':
 				case 'textarea':
 				case 'text':
+				case 'password':
 				case 'multitext':
 					$form->addField($formtype,$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ));
 				break;				
@@ -131,7 +146,7 @@ switch ( strtolower( $op ) ) {
 		            $handle = opendir( ZAR_ROOT_PATH . '/language/' );
 				    $dirlist = array();
 		            while ( false !== ( $file = readdir( $handle ) ) ) {
-				        if ( is_dir( ZAR_ROOT_PATH . '/language/' . $file ) && !preg_match( "/^[.]{1,2}$/", $file ) && strtolower( $file ) != 'cvs' ) {
+				        if ( is_dir( ZAR_ROOT_PATH . '/language/' . $file ) &&  ($file{0} !== '.') ) {
 						    $dirlist[$file] = $file;
 		                }
 				    }
@@ -144,7 +159,7 @@ switch ( strtolower( $op ) ) {
 		            $handle = opendir( ZAR_THEME_PATH . '/' );
 				    $dirlist = array();
 		            while ( false !== ( $file = readdir( $handle ) ) ) {
-				        if ( is_dir( ZAR_THEME_PATH . '/' . $file ) && !preg_match( "/^[.]{1,2}$/", $file ) && strtolower( $file ) != 'cvs' ) {
+				        if ( is_dir( ZAR_THEME_PATH . '/' . $file ) && ($file{0} !== '.') ) {
 						    $dirlist[$file] = $file;
 		                }
 				    }
@@ -153,8 +168,9 @@ switch ( strtolower( $op ) ) {
 					$form->addField('listfromarray',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), $dirlist, $formtype=='theme_multi' );
 //		            $form->addElement( new ZariliaFormHidden( '_old_theme', $value ) );
 			    break;
+				case 'select_multi':					
 				case 'select':
-					$form->addField('listfromtdb',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), 'system', $config->getVar( 'conf_source' ));
+					$form->addField('listfromtdb',$config->getVar( 'conf_name' ), $config->getVar( 'conf_value' ),constant( $config->getVar( 'conf_title' ) ), 'system', $config->getVar( 'conf_source' ), $formtype=='select_multi');
 				break;
 				case 'editor_multi':
 				case 'editor':
@@ -187,11 +203,14 @@ switch ( strtolower( $op ) ) {
 					$pbox = &$form->addField('propertiesbox',$config->getVar( 'conf_name' ),constant( $config->getVar( 'conf_title' ) ));
 
 				    $addons = &$addon_handler->getObjects( new Criteria( 'hasmain', 1 ), true );
-		            $currrent_val = @$value;
+					require_once ZAR_ROOT_PATH.'/class/multilanguage/charsetconvert.class.php';
+		            $currrent_val = unserialize(charsetConvert::to7bit($config->getVar( 'conf_value' )));
+//					echo $config->getVar( 'conf_value' );
 				    $cache_options = array( '0' => _NOCACHE, '30' => sprintf( _SECONDS, 30 ), '60' => _MINUTE, '300' => sprintf( _MINUTES, 5 ), '1800' => sprintf( _MINUTES, 30 ), '3600' => _HOUR, '18000' => sprintf( _HOURS, 5 ), '86400' => _DAY, '259200' => sprintf( _DAYS, 3 ), '604800' => _WEEK );
 		            if ( count( $addons ) > 0 ) {
 						foreach ( array_keys( $addons ) as $mid ) {
 		                    $c_val = isset( $currrent_val[$mid] ) ? intval( $currrent_val[$mid] ) : null;
+							//echo $currrent_val[$mid].'s';
 							$pbox->addField('listfromarray', $mid, $c_val, $addons[$mid]->getVar( 'name' ), $cache_options);
 		                }
 				    } else {
@@ -261,6 +280,7 @@ switch ( strtolower( $op ) ) {
         $image_handler = &zarilia_gethandler( 'imagesetimg' );
         $addonperm_handler = &zarilia_gethandler( 'groupperm' );
         $config_handler = &zarilia_gethandler( 'config' );
+		$addon_handler =  &zarilia_gethandler( 'addon' );
 
         if ( $count > 0 ) {
             for ( $i = 0; $i < $count; $i++ ) {
@@ -331,6 +351,7 @@ switch ( strtolower( $op ) ) {
                         $startmod_updated = true;
                     }
                     $config->setConfValueForInput( $new_value );
+//					echo "<br>".$config->getVar( 'conf_name' );
 //					var_dump($new_value);
 //					var_dump($_REQUEST);
 //					die();
@@ -343,7 +364,10 @@ switch ( strtolower( $op ) ) {
             setcookie( $session_name, session_id(), time() + ( 60 * intval( $session_expire ) ), '/', '', 0 );
         }
         $redirect = ( isset( $redirect ) && $redirect != '' ) ? $redirect : "index.php";
-		return $objResponse->alert(_DBUPDATED);
+		require_once ZAR_CONTROLS_PATH.'/block/blockdata.class.php';
+		$bdata = new ZariliaControl_BlockData('stats');
+		return $bdata->message(_DBUPDATED);
+//		return $objResponse->alert(_DBUPDATED);
 //        redirect_header( $redirect, 2, _DBUPDATED );
         break;
 

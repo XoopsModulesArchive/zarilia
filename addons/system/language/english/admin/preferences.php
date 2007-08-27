@@ -324,4 +324,7 @@ define( "_MD_AM_DEFAULTHEIGHT", "Default editor height:" );
 define( "_MD_AM_DEFAULTHEIGHTDSC", "" );
 
 
+define( "_MD_AM_ALLOWPM" , "Allow PM?");
+define( "_MD_AM_MESSAGE_GROUP" , "Message group");
+
 ?>
