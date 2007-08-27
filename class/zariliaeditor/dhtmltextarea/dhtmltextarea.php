@@ -32,7 +32,7 @@ class FormDhtmlTextArea extends ZariliaFormDhtmlTextArea {
             $this->$key = $val;
         } 
 
-        $this->ZariliaFormDhtmlTextArea( "", $name, empty( $value )?"":$value, empty( $rows )?5:$rows, empty( $cols )?50:$cols, empty( $hiddentext )?"zariliaHiddenText":$hiddentext );
+        $this->ZariliaFormDhtmlTextArea( "", $this->name, empty( $this->value )?"":$this->value, empty( $this->rows )?5:$this->rows, empty( $this->cols )?50:$this->cols, empty( $this->hiddentext )?"zariliaHiddenText":$this->hiddentext );
     } 
 
     function setConfig( $configs ) {

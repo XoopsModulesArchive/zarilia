@@ -34,9 +34,10 @@ class FormTextArea extends ZariliaFormTextArea {
             }
         }
         $value = isset( $this->value ) ? $this->value : "";
+        $name = isset( $this->name ) ? $this->name : "";
         $rows = isset( $this->rows ) ? $this->rows : 15;
         $cols = isset( $this->cols ) ? $this->cols : 75;
-        $this->ZariliaFormTextArea( "", $this->name, $value, $rows, $cols );
+        $this->ZariliaFormTextArea( "", $name, $value, $rows, $cols );
     }
 
     function setConfig( $configs )
