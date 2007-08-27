@@ -70,9 +70,9 @@
           </tr>
         </table>
 <{/foreach}></div>
-      <script type="text/javascript">cpDoShow();</script> </td>
+    <script type="text/javascript">cpDoShow();</script> </td>
     <td id='sidebarright' onClick="cpShowHide('sidepanel');cpIMGOpenClose('limage','sidepanel','<{$zarilia_theme_url}>/images/admin/arrow-left.gif','<{$zarilia_theme_url}>/images/admin/arrow-right.gif');"><img style="padding-left: 2px; padding-right: 1px" id="limage" src="<{$zarilia_theme_url}>/images/admin/arrow-right.gif" alt="" title=""/></td>
-    <td id='content' width='100%'> <br />
+    <td id='content' width='100%'><br /><{control name="block" 3="stats"}>
 <{$zarilia_contents}><br /> </td>
   </tr>
 </table>
