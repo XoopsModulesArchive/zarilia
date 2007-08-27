@@ -201,6 +201,30 @@ return array (
       'x-mac-korean' => 'Korean (Mac)',
       'x-mac-turkish' => 'Turkish (Mac)',
     ),
+    'comments.display' => 
+    array (
+      1 => 'Flat',
+      2 => 'Threaded',
+      3 => 'Compact',
+    ),
+	'gzip_compression_level' => array (
+		'Turn Off', 'Level 1', 'Level 2', 'Level 3', 'Level 4',
+		'Level 5', 'Level 6', 'Level 7', 'Level 8', 'Level 9'
+	),
+	'debug_mode' => array (
+"E_ERROR"=>"Error",
+"E_PARSE"=>"Parsing Error",
+"E_NOTICE"=>"Notice",
+"E_CORE_ERROR"=>"Core Error",
+"E_CORE_WARNING"=>"Core Warning",
+"E_COMPILE_ERROR"=>"Compile Error",
+"E_COMPILE_WARNING"=>"Compile Warning",
+"E_USER_ERROR"=>"User Error",
+"E_USER_WARNING"=>"User Warning",
+"E_USER_NOTICE"=>"User Notice",
+"E_STRICT"=>"Runtime Notice",
+"E_ALL"=>"Default (All Errors)",
+	),
     'timezone' => 
     array (
       -12 => '_TZ_GMTM12',
