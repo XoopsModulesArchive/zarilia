@@ -468,7 +468,9 @@ class ZariliaObject {
                             continue;
                         }
                         $ts = &MyTextSanitizer::getInstance();
-                        $cleanv = ( !$v['not_gpc'] ) ? stripslashes( $ts->censorString( $cleanv ) ) : $ts->censorString( $cleanv );
+//						var_dump($cleanv);
+//						die();
+						$cleanv = ( !$v['not_gpc'] ) ? stripslashes( $ts->censorString( $cleanv ) ) : $ts->censorString( $cleanv );
                         break;
 
                     case XOBJ_DTYPE_SOURCE:
