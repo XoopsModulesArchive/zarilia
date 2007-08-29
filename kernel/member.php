@@ -285,7 +285,7 @@ class ZariliaMemberHandler {
         }
         if ( !$result = $zariliaDB->SelectLimit( $sql, $limit, $start ) ) {
             return $ret;
-        } while ( $myrow = $zariliaDB->fetchArray( $result ) ) {
+        } while ( $myrow = $result->fetchRow( $result ) ) {
             $user = &$this->getUser( $myrow['uid'] );
             if ( is_object( $user ) ) {
                 $ret[] = &$user;
@@ -316,7 +316,7 @@ class ZariliaMemberHandler {
             $sql .= ' ' . $AND . ' u.uname LIKE ' . $list_letters;
         }
         $result = $zariliaDB->Execute( $sql );
-        $count = $zariliaDB->getRowsNum( $result );
+        $count = $result->RecordCount();
         return $count;
     }
 

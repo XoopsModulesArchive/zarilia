@@ -212,7 +212,7 @@ class ZariliaAddon extends ZariliaObject {
             return $ret;
         }
 //		var_dump($groupperm_handler->checkRight( $right, $this->getVar( 'mid' ), $groups ));
-		die('ooo');
+//		die('ooo');
         return $groupperm_handler->checkRight( $right, $this->getVar( 'mid' ), $groups );
     }
 

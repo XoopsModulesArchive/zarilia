@@ -37,7 +37,7 @@ class ZariliaCallback extends ZariliaObjectHandler {
     function setCallback()
     {
         $this->_callback = func_get_arg( 0 );
-        $this->_id = zarilia_cleanRequestVars( $_REQUEST, $this->_callback->keyName, 0 );
+        $this->_id = zarilia_cleanRequestVars( $_REQUEST, @$this->_callback->keyName, 0 );
     }
 
     function setmenu()

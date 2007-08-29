@@ -195,6 +195,12 @@ class ZariliaUser extends ZariliaObject {
         return true;
     }
 
+   function getTimeStamp( $time = null, $var = 'user_regdate' )
+    {
+        $time = $this->getVar( $var );
+        return ( strlen( strval( $time ) ) == 10 ) ? formatTimestamp( $time ) : 'Empty';
+    }
+
     /**
      * is the user activated?
      *

@@ -1,5 +1,5 @@
 <?php
-$form = new ZariliaThemeForm( _AM_FINDUS, 'user_findform', $addonversion['adminpath'] );
+$form = new ZariliaThemeForm( _AM_FINDUS, 'user_findform', @$addonversion['adminpath'] );
 $uname_text = new ZariliaFormText( '', 'user_uname', 30, 60 );
 $uname_match = new ZariliaFormSelectMatchOption( '', 'user_uname_match' );
 $uname_tray = new ZariliaFormElementTray( _AM_UNAME, '&nbsp;' );
