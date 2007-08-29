@@ -19,7 +19,7 @@ require_once "admin_menu.php";
 
 $_handler = &zarilia_gethandler( 'age' );
 $do_callback = &ZariliaCallback::getSingleton();
-$do_callback->setCallback( $_callback );
+$do_callback->setCallback( @$_callback );
 switch ( $op ) {
     case 'maintenace':
     case 'help':
@@ -103,7 +103,7 @@ switch ( $op ) {
         }
         $tlist->render();
         zarilia_cp_legend( $button );
-        zarilia_pagnav( $_age_obj['count'], $nav['limit'], $nav['start'], 'start', 1, $addonversion['adminpath'] . '&amp;op=' . $op );
+        zarilia_pagnav( @$_age_obj['count'], $nav['limit'], $nav['start'], 'start', 1, $addonversion['adminpath'] . '&amp;op=' . $op );
         break;
     /**
      */

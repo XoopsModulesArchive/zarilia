@@ -440,7 +440,7 @@ switch ( strtolower( $op ) ) {
         zarilia_cp_header();
         $menu_handler->render( 1 );
 
-        require_once ZAR_ROOT_PATH . '/class/ajax/statictabs.php';
+        require_once ZAR_CONTROLS_PATH . '/statictabs/control.class.php';
         $st = new ZariliaControl_StaticTabs(
             array( _AM_USER_SEARCHDEFAULT => '
 				<div class="outer" style="width: 90%; padding: 3px;">

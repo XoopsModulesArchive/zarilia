@@ -11,11 +11,12 @@
 // URL: http:www.zarilia.com 												//
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
+$zariliaOption['isAdmin'] = true;
 include "../../mainfile.php";
-if ( !function_exists( 'zarilia_cleanRequestVars' ) ) {
+/*if ( !function_exists( 'zarilia_cleanRequestVars' ) ) {
     header( 'location: ../../install' );
     die();
-}
+}*/
 $_lang = ( !empty( $zariliaConfig['language'] ) ) ? $zariliaConfig['language'] : 'english';
 
 require_once ZAR_ROOT_PATH . "/include/cp_functions.php";
@@ -83,12 +84,12 @@ if ( isset( $fct ) && $fct != '' ) {
 * If on error
 */
 if ( $GLOBALS['zariliaLogger']->getSysErrorCount() ) {
-    cp_showErrors( 'Warning: System Error', $heading = '', $description = '', $image = '', $errno = '', $errstr = '' );
-    // zarilia_cp_header();
-    // zarilia_admin_menu( '', "Warning: System Error", $op );
-    // $GLOBALS['zariliaLogger']->sysRender();
-    // zarilia_cp_footer();
-    // exit();
+//    cp_showErrors( 'Warning: System Error', $heading = '', $description = '', $image = '', $errno = '', $errstr = '' );
+     zarilia_cp_header();
+     zarilia_admin_menu( '', "Warning: System Error", $op );
+     $GLOBALS['zariliaLogger']->sysRender();
+     zarilia_cp_footer();
+     exit();
 }
 
 ?>
