@@ -15,21 +15,32 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 {
     define( "ZAR_MAINFILE_INCLUDED", 1 );
 
-    include_once 'siteinfo.php';
+	require_once 'class/cache/settings.class.php';
+	$zariliaSettings = &ZariliaSettings::getInstance();
+	$cpConfig = &$zariliaSettings->readAll('site.global');
+	if (isset($cpConfig['sites'][$_SERVER['HTTP_HOST']])) {
+		$zariliaOption['currentsite'] = $cpConfig['sites'][$_SERVER['HTTP_HOST']]['info'];
+	} else {
+		$zariliaOption['currentsite'] = 'default';
+	}
+	$zariliaOption['localconfig'] = 'siteinfo.'.$zariliaOption['currentsite'].'.en';
+	$zariliaOption['globalconfig'] = 'site.global.php';
+
+/*    include_once 'siteinfo.php';
     if ( !isset( $cpConfig['root_path'] ) && !defined( 'ZAR_INSTALL' ) )
     {
         header( 'location: ./install' );
-    }
+    }*/
 
-    $zariliaOption['currentsite'] = isset( $cpConfig['sites'][$_SERVER["HTTP_HOST"]] ) ? $_SERVER["HTTP_HOST"]: 'default://';
+//    $zariliaOption['currentsite'] = isset( $cpConfig['sites'][$_SERVER["HTTP_HOST"]] ) ? $_SERVER["HTTP_HOST"]: 'default://';
     // ZARILIA Physical Path
     // Physical path to your main ZARILIA directory WITHOUT trailing slash
     // Example: define('ZAR_ROOT_PATH', '/path/to/zarilia/directory');
-    define( 'ZAR_ROOT_PATH', @$cpConfig['root_path'] );
+    define( 'ZAR_ROOT_PATH', $cpConfig['path']['root'] );
     // ZARILIA Virtual Path (URL)
     // Virtual path to your main ZARILIA directory WITHOUT trailing slash
     // Example: define('ZAR_URL', 'http://url_to_zarilia_directory');
-    define( 'ZAR_URL', @$cpConfig['sites'][$zariliaOption['currentsite']]['url'] );
+    define( 'ZAR_URL', $zariliaSettings->read( $zariliaOption['localconfig'], 'config', 'url') );
 
     foreach ( array( 'GLOBALS', '_SESSION', 'HTTP_SESSION_VARS', '_GET', 'HTTP_GET_VARS', '_POST', 'HTTP_POST_VARS', '_COOKIE', 'HTTP_COOKIE_VARS', '_REQUEST', '_SERVER', 'HTTP_SERVER_VARS', '_ENV', 'HTTP_ENV_VARS', '_FILES', 'HTTP_POST_FILES', 'zariliaDB', 'zariliaUser', 'zariliaUserId', 'zariliaUserGroups', 'zariliaUserIsAdmin', 'zariliaConfig', 'zariliaOption', 'zariliaAddon', 'zariliaAddonConfig' ) as $bad_global )
     {
@@ -40,7 +51,7 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
         }
     }
 
-    define( 'ZAR_CHECK_PATH', @$cpConfig['check_path'] );
+    define( 'ZAR_CHECK_PATH', @$cpConfig['path']['check'] );
     // Protect against external scripts execution if safe mode is not enabled
     if ( ZAR_CHECK_PATH && !@ini_get( 'safe_mode' ) )
     {
@@ -67,29 +78,30 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
             exit( "Zarilia path check: Script is not inside ZAR_ROOT_PATH and cannot run." );
         }
     }
+
     // Database
     // Choose the database to be used
-    define( 'ZAR_DB_TYPE', @$cpConfig['db']['type'] );
+    define( 'ZAR_DB_TYPE', $cpConfig['db']['type'] );
     // Table Prefix
     // This prefix will be added to all new tables created to avoid name conflict in the database. If you are unsure, just use the default 'zarilia'.
-    define( 'ZAR_DB_PREFIX', @$cpConfig['db']['prefix'] );
+    define( 'ZAR_DB_PREFIX', $cpConfig['db']['prefix'] );
     // Database Hostname
     // Hostname of the database server. If you are unsure, 'localhost' works in most cases.
-    define( 'ZAR_DB_HOST', @$cpConfig['db']['host'] );
+    define( 'ZAR_DB_HOST', $cpConfig['db']['host'] );
     // Database Username
     // Your database user account on the host
-    define( 'ZAR_DB_USER', @$cpConfig['db']['user'] );
+    define( 'ZAR_DB_USER', $cpConfig['db']['user'] );
     // Database Password
     // Password for your database user account
-    define( 'ZAR_DB_PASS', @$cpConfig['db']['pass'] );
+    define( 'ZAR_DB_PASS', $cpConfig['db']['pass'] );
     // Database Name
     // The name of database on the host. The installer will attempt to create the database if not exist
-    define( 'ZAR_DB_NAME', @$cpConfig['db']['name'] );
+    define( 'ZAR_DB_NAME', $cpConfig['db']['name'] );
     // Use persistent connection? (Yes=1 No=0)
     // Default is 'Yes'. Choose 'Yes' if you are unsure.
-    define( 'ZAR_DB_PCONNECT', @$cpConfig['db']['pconnect'] );
+    define( 'ZAR_DB_PCONNECT', $cpConfig['db']['pconnect'] );
 
-    foreach ( @$cpConfig['groups'] as $groupID => $groupName )
+    foreach ( $cpConfig['groups'] as $groupID => $groupName )
     {
         define( "ZAR_GROUP_$groupName", $groupID );
     }
