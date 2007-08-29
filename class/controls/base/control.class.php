@@ -59,8 +59,8 @@ class ZariliaControl {
             }
             require_once ZAR_FRAMEWORK_PATH . '/xajax/xajax_core/xajax.inc.php';
             $zariliaAjax = new xajax( ZAR_CONTROLS_URL . '/base/control.func.php' );
-            $zariliaAjax->setFlag('debug',false);
-			$zariliaAjax->setFlag('statusMessages', false);
+            $zariliaAjax->setFlag('debug',isset($_REQUEST['debug']));
+			$zariliaAjax->setFlag('statusMessages', isset($_REQUEST['debug']));
 			$zariliaAjax->setFlag('decodeUTF8Input', true);
 //            $zariliaAjax->errorHandlerOff();
             $zariliaAjax->registerFunction( 'ZariliaControlHandler' );

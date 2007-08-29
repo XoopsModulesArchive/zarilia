@@ -13,7 +13,7 @@
 // -------------------------------------------------------------------------//
 
 // Loading base class
-require_once ZAR_ROOT_PATH.'/class/ajax/control.class.php';
+require_once ZAR_CONTROLS_PATH.'/base/control.class.php';
 include_once ZAR_ROOT_PATH . '/class/class.menubar.php';
 
 /**

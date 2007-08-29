@@ -122,7 +122,7 @@ class MultiLanguageEditor {
             }
             $tmp1 .= "};\n";
             $tmp1 .= "   currentid = $id;\n</script>";
-            $zariliaTpl->headerAdd( $tmp1 );
+            $zariliaTpl->addScript( $tmp1 );
             $zariliaOption['multilanguage_data'] = 1;
             unset( $b );
             unset( $lngs );

@@ -156,7 +156,7 @@ class ZariliaThemeForm extends ZariliaForm {
         } else {
             $zariliaOption['multilanguage_forms_count']++;
         }
-        $validation = $this->renderValidationJS( false );
+        $validation = $this->renderValidationJS( !false );
         $zariliaTpl->addScript( $validation, false );
         $forms = array( 'default' );
         if ( $this->_multilanguage ) {

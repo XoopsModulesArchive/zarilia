@@ -21,8 +21,22 @@ class ZariliaCache {
 	}
 
 	function ZariliaCache($type) {
-		$this->path = ZAR_ROOT_PATH.'/data/'.$type.'/';
-		$this->lprefix = ZAR_ROOT_PATH.'/data/locks/'.$type.'_';
+		if (defined('ZAR_ROOT_PATH')) {
+			$this->path = ZAR_ROOT_PATH.'/data/'.$type.'/';
+			$this->lprefix = ZAR_ROOT_PATH.'/data/locks/'.$type.'_';		
+		} else {
+			global $zariliaOption;
+			if (@$zariliaOption['isAdmin']) {
+				$this->path = '../../data/'.$type.'/';
+				$this->lprefix = '../../data/locks/'.$type.'_';
+			} elseif (@$zariliaOption['isAjax']) {
+				$this->path = '../../../data/'.$type.'/';
+				$this->lprefix = '../../../data/locks/'.$type.'_';
+			} else {
+				$this->path = './data/'.$type.'/';
+				$this->lprefix = './data/locks/'.$type.'_';
+			}
+		}
 	}
 
 	function read($id) {

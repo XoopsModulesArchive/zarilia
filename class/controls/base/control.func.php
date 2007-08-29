@@ -17,6 +17,7 @@ if ( !defined( 'ZAR_ROOT_PATH' ) ) {
     if ( is_string( $_POST["xajaxargs"][3] ) ) {
         $_POST["xajaxargs"][3] = ( strtolower( $_POST["xajaxargs"][3] ) == 'false' )?false:true;
     }
+	$zariliaOption['isAjax'] = true; 
     if ( !$_POST["xajaxargs"][3] ) $zariliaOption['nocommon'] = true;
     include_once '../../../mainfile.php';
 }

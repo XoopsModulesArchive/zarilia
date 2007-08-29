@@ -1,6 +1,10 @@
 <?php
 
-require_once ZAR_ROOT_PATH.'/class/cache/cache.class.php';
+if (defined('ZAR_ROOT_PATH')) { 
+	require_once ZAR_ROOT_PATH.'/class/cache/cache.class.php';
+} else {
+	require_once 'cache.class.php';
+}
 
 class ZariliaSettings
 	extends ZariliaCache {
@@ -13,6 +17,15 @@ class ZariliaSettings
 
 	function ZariliaSettings() {
 		$this->ZariliaCache('settings');
+	}
+
+	function existsModule($module) {
+		return file_exists($this->path.$module.'.php');
+	}
+
+	function existsCategory($module, $category) {
+		if (!isset($this->_settings[$module])) $this->readAll($module);
+		return isset($this->_settings[$module][$category]);
 	}
 
 	function read($module, $category, $setting, $default=null) {
