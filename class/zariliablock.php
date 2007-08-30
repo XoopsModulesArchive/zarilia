@@ -322,7 +322,7 @@ class ZariliaBlock extends ZariliaObject {
 
         $result = $db->Execute( $sql );
         $added = array();
-        while ( $myrow = $db->fetchArray( $result ) ) {
+        while ( $myrow = $result->fetchRow() ) {
             if ( !in_array( $myrow['bid'], $added ) ) {
                 if ( !$asobject ) {
                     $ret[] = $myrow['bid'];
@@ -403,7 +403,7 @@ class ZariliaBlock extends ZariliaObject {
             case "list":
                 $sql = "SELECT * FROM " . $db->prefix( "newblocks" ) . "" . $where_query;
                 $result = $db->Execute( $sql );
-                while ( $myrow = $db->fetchArray( $result ) ) {
+                while ( $myrow = $result->fetchRow() ) {
                     $block = new ZariliaBlock( $myrow );
                     $name = ( $block->getVar( "block_type" ) != "C" ) ? $block->getVar( "name" ) : $block->getVar( "title" );
                     $ret[$block->getVar( "bid" )] = $name;
