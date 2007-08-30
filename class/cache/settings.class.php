@@ -44,6 +44,13 @@ class ZariliaSettings
 		return $this->_settings[$module] = eval((substr($data = parent::read($module),strpos($data, "\n"))));
 	}
 
+	function &readCat($module, $category) {
+		if (!isset($this->_settings[$module][$category])) {
+			$this->_settings[$module] = eval((substr($data = parent::read($module),strpos($data, "\n"))));
+		}
+		return $this->_settings[$module][$category];
+	}
+
 	function write($module, $category, $setting, $value) {
 		if (($setting === null)||($category===null)) return;
 		$this->readAll($module);
