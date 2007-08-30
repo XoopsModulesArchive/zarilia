@@ -46,4 +46,5 @@ define( 'ZAR_SYSTEM_SECURITY', 35 );
 define( 'ZAR_SYSTEM_TRASH', 36 );
 define( 'ZAR_SYSTEM_CONTEST', 37 );
 define( 'ZAR_SYSTEM_STREAMING', 38 );
+define( 'ZAR_SYSTEM_MS_ML', 39 );
 ?>

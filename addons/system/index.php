@@ -56,7 +56,7 @@ if ( isset( $fct ) && $fct != '' ) {
             'avatars' => 'ZAR_SYSTEM_AVATAR', 'userrank' => 'ZAR_SYSTEM_URANK', 'smilies' => 'ZAR_SYSTEM_SMILE', 'comments' => 'ZAR_SYSTEM_COMMENT', 'tplsets' => 'ZAR_SYSTEM_TPLSET', 'agever' => 'ZAR_SYSTEM_AGEVER', 'userprofiles' => 'ZAR_SYSTEM_PROFILES', 'coreinfo' => 'ZAR_SYSTEM_COREINFO', 'languages' => 'ZAR_SYSTEM_LANGUAGE',
             'events' => 'ZAR_SYSTEM_EVENTS', 'mimetypes' => 'ZAR_SYSTEM_MIMETYPES', 'developer' => 'ZAR_SYSTEM_DEVELOPERS', 'cpanel' => 'ZAR_SYSTEM_CPANEL', 'multilanguage' => 'ZAR_SYSTEM_MULTILANG', 'menus' => 'ZAR_SYSTEM_MENUS', 'section' => 'ZAR_SYSTEM_SECTION',
             'category' => 'ZAR_SYSTEM_CATEGORY', 'static' => 'ZAR_SYSTEM_STATIC', 'rss' => 'ZAR_SYSTEM_RSS', 'errors' => 'ZAR_SYSTEM_ERRORS', 'content' => 'ZAR_SYSTEM_CONTENT', 'security' => 'ZAR_SYSTEM_SECURITY', 'trash' => 'ZAR_SYSTEM_TRASH', 'contest' => 'ZAR_SYSTEM_CONTEST',
-            'streaming' => 'ZAR_SYSTEM_STREAMING', 'developers' => 'ZAR_SYSTEM_DEVELOPERS' );
+            'streaming' => 'ZAR_SYSTEM_STREAMING', 'developers' => 'ZAR_SYSTEM_DEVELOPERS', 'ms_ml' =>  'ZAR_SYSTEM_COREINFO');
         if ( array_key_exists( $fct, $category ) || $zariliaAddon->getVar( 'mid' ) > 1 ) {
             $groups = &$zariliaUser->getGroups();
             $sysperm_handler = &zarilia_gethandler( 'groupperm' );
