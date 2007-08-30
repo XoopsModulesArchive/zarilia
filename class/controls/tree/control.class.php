@@ -51,5 +51,7 @@ class ZariliaControl_Tree
 		return $this->_nodes[] = new ZariliaControl_Tree($title, $icon, $param, $orderNumber, $name);
 	}
 
+
+
 }
 ?>
