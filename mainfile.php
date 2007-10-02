@@ -24,7 +24,7 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 		$zariliaOption['currentsite'] = 'default';
 	}
 	$zariliaOption['localconfig'] = 'siteinfo.'.$zariliaOption['currentsite'].'.en';
-	$zariliaOption['globalconfig'] = 'site.global.php';
+	$zariliaOption['globalconfig'] = 'site.global';
 
 /*    include_once 'siteinfo.php';
     if ( !isset( $cpConfig['root_path'] ) && !defined( 'ZAR_INSTALL' ) )

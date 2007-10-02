@@ -20,22 +20,29 @@ class ZariliaCache {
 		return $obj[$type];
 	}
 
+	function autoDetectCachePath() {
+		if (isset($_SESSION['@zariliaCache'])) return $_SESSION['@zariliaCache'];
+		foreach (array('../../data', '../../../data', './data') as $path) {
+			if (file_exists($path) && is_dir($path)) {
+				$old = getcwd();
+				chdir($path);
+				$_SESSION['@zariliaCache'] = getcwd();
+				chdir($old); 
+				return $_SESSION['@zariliaCache'];
+			}
+		}
+		die('Fatal Error: can\'t autodetect path');
+	}
+
 	function ZariliaCache($type) {
 		if (defined('ZAR_ROOT_PATH')) {
 			$this->path = ZAR_ROOT_PATH.'/data/'.$type.'/';
-			$this->lprefix = ZAR_ROOT_PATH.'/data/locks/'.$type.'_';		
+			$this->lprefix = ZAR_ROOT_PATH.'/data/locks/'.$type.'_';
 		} else {
-			global $zariliaOption;
-			if (@$zariliaOption['isAdmin']) {
-				$this->path = '../../data/'.$type.'/';
-				$this->lprefix = '../../data/locks/'.$type.'_';
-			} elseif (@$zariliaOption['isAjax']) {
-				$this->path = '../../../data/'.$type.'/';
-				$this->lprefix = '../../../data/locks/'.$type.'_';
-			} else {
-				$this->path = './data/'.$type.'/';
-				$this->lprefix = './data/locks/'.$type.'_';
-			}
+			$path = $this->autoDetectCachePath().'/';
+			$lpath = $path .'/locks/';
+			$this->path = $path.$type.'/';
+			$this->lprefix = $lpath.$type.'_';				
 		}
 	}
 

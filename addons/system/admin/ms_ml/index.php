@@ -15,14 +15,17 @@ if ( !is_object( $zariliaUser ) || !is_object( $zariliaAddon ) || !$zariliaUser-
     exit( "Access Denied" );
 }
 
-require_once( 'admin_menu.php' );
-require_once ZAR_ROOT_PATH . '/class/class.menubar.php';
-include_once( 'vars.php' );
-include_once( 'functions.php' );
+if (!isset($op)) {
+	$op = zarilia_cleanRequestVars( $_REQUEST, 'op', 'default', XOBJ_DTYPE_TXTBOX );
+} else {
+	require_once( 'admin_menu.php' );
+	require_once ZAR_ROOT_PATH . '/class/class.menubar.php';
+	include_once( 'vars.php' );
+	include_once( 'functions.php' );
+}
 
-$xlanguage_handler = &zarilia_gethandler( 'language' );
-$xlanguage_handler->loadConfig();
 $type = zarilia_cleanRequestVars( $_REQUEST, 'type', '', XOBJ_DTYPE_TXTBOX );
+
 switch ( $op ) {
     case 'maintenace':
         $act = zarilia_cleanRequestVars( $_REQUEST, 'act', '', XOBJ_DTYPE_TXTBOX );
@@ -72,37 +75,27 @@ switch ( $op ) {
 
     case 'edit':
     case 'create':
-        $isBase = ( isset( $type ) && $type == 'ext' ) ? false : true;
-        if ( isset( $lang_id ) && $lang_id > 0 ) {
-            $lang = &$xlanguage_handler->get( $lang_id, $isBase );
-        } elseif ( isset( $lang_name ) ) {
-            $lang = &$xlanguage_handler->getByName( $lang_name, $isBase );
-        } else {
-            $lang = &$xlanguage_handler->create( true, $isBase );
-        }
-        if ( !$lang ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _AM_US_EVENTNOTFOUND );
-            zarilia_cp_header();
-            $GLOBALS['zariliaLogger']->sysRender();
-            zarilia_cp_footer();
-            exit();
-        }
-        /**
-         */
         zarilia_cp_header();
-        zarilia_admin_menu( _MD_AD_ACTION_BOX, array( $addonversion['adminpath'] . '&amp;op=edit&type=base' => _AM_XLANG_ADDBASE, $addonversion['adminpath'] . '&amp;op=edit&type=ext' => _AM_XLANG_ADDEXT ) );
+        zarilia_admin_menu(
+			_MD_AD_ACTION_BOX, array( $addonversion['adminpath'] . '&amp;op=edit' => _AM_MS_ML_ADD )
+            );
         $menu_handler->render( 2 );
 
-        $lang_name = $lang->getVar( 'lang_name', 'e' );
-        $lang_desc = $lang->getVar( 'lang_desc', 'e' );
-        $lang_code = $lang->getVar( 'lang_code', 'e' );
-        $lang_charset = $lang->getVar( 'lang_charset', 'e' );
-        $lang_image = $lang->getVar( 'lang_image', 'e' );
-        $weight = $lang->getVar( 'weight' );
-        if ( $isBase == false ) {
-            $lang_base = $lang->getVar( 'lang_base' );
-        }
-        include "langform.inc.php";
+		require_once ZAR_CONTROLS_PATH.'/form/control.class.php';
+
+ 	    $id = zarilia_cleanRequestVars( $_REQUEST, 'item_id', '', XOBJ_DTYPE_TXTBOX );
+		$sites = $zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites');
+
+		$form = new ZariliaControl_Form('./addons/system/admin/ms_ml/index.php');
+		$form->addField('hidden','id', $id);
+		$form->addField('text',	'name', @$sites[$id][0], _MA_AD_NAME,  true);
+		$form->addField('text',	'url', @$sites[$id][1], _MA_AD_URL,  true);
+		$form->addField('text',	'prefix', @$sites[$id][2], _MA_AD_PREFIX, true);
+		$form->addField('text',	'move_url', @$sites[$id][3], _MA_AD_URL, false);		
+		
+		$form->addField('hidden', 'op', 'save');
+
+		echo $form->render();
         break;
 
     case 'clone':
@@ -192,11 +185,15 @@ switch ( $op ) {
         break;
 
     case 'list':
-        require_once ZAR_ROOT_PATH . '/class/class.tlist.php';
+
+		$sites = $zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites');
+
+//        require_once ZAR_ROOT_PATH . '/class/class.tlist.php';
+
         /*
         * required for Navigation
         */
-        $nav['start'] = zarilia_cleanRequestVars( $_REQUEST, 'start', 0 );
+	    $nav['start'] = zarilia_cleanRequestVars( $_REQUEST, 'start', 0 );
         $nav['sort'] = zarilia_cleanRequestVars( $_REQUEST, 'sort', 'lang_id' );
         $nav['order'] = zarilia_cleanRequestVars( $_REQUEST, 'order', 'ASC', XOBJ_DTYPE_TXTBOX );
         $nav['limit'] = zarilia_cleanRequestVars( $_REQUEST, 'limit', 10 );
@@ -209,84 +206,55 @@ switch ( $op ) {
         zarilia_cp_header();
         $menu_handler->render( 1 );
         zarilia_admin_menu(
-            _MD_AD_ACTION_BOX, array( $addonversion['adminpath'] . '&amp;op=edit&type=base' => _AM_XLANG_ADDBASE, $addonversion['adminpath'] . '&amp;op=edit&type=ext' => _AM_XLANG_ADDEXT ),
-            _MD_AD_FILTER_BOX, $form
+			_MD_AD_ACTION_BOX, array( $addonversion['adminpath'] . '&amp;op=edit' => _AM_MS_ML_ADD ),
+            _MD_AD_FILTER_BOX
             );
 
 		require_once ZAR_CONTROLS_PATH.'/tlist/control.class.php';
         $tlist = new ZariliaControl_TList();
-        $tlist->AddHeader( 'lang_id', '5%', 'center', false );
-        $tlist->AddHeader( 'lang_name', '25%', 'left', true );
-        $tlist->AddHeader( 'lang_charset', '', 'center', true );
-        $tlist->AddHeader( 'lang_code', '', 'center', true );
-        $tlist->AddHeader( 'lang_image', '', 'center', true );
-        $tlist->AddHeader( 'weight', '', 'center', true );
-        $tlist->AddHeader( 'lang_base', '', 'center', true );
+        $tlist->AddHeader( 'name', '5%', 'center', false );
+        $tlist->AddHeader( 'url', '25%', 'left', true );
+        $tlist->AddHeader( 'prefix', '', 'left', true );
+        $tlist->AddHeader( 'move_url', '', 'left', true );
         $tlist->AddHeader( 'ACTION', '', 'center', false );
         $tlist->AddFormStart( 'post', $addonversion['adminpath'] . '&amp;op=' . $op, 'multilanguage' );
         $tlist->addFooter();
         $tlist->setPath( 'op=' . $op );
 
-		$sites = array_flip(array_flip(array_values($zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites'))));
-		$sites[] = 'default';
 
-		var_dump($sites);
 
 //		$config = &$zariliaSettings->readAll($zariliaOption['localconfig']);
 
         $button = array( 'edit', 'delete', 'clone' );
-        $_xlang_obj = $xlanguage_handler->getAllList();
-        foreach ( $_xlang_obj as $lang_name => $obj ) {
-            $isOrphan = true;
-            if ( isset( $obj['base'] ) ) {
-                if ( is_readable( ZAR_ROOT_PATH . '/images/flags/' . $obj['base']->getVar( 'lang_image' ) ) ) {
-                    $lang_image = $obj['base']->getVar( 'lang_image' );
-                } else {
-                    $lang_image = 'noflag.gif';
-                }
-                $lang_id = $obj['base']->getVar( 'lang_id' );
-                $tlist->addHidden( $lang_id, 'value_id' );
-                $buttons = "<a href='" . $addonversion['adminpath'] . "&amp;op=edit&amp;type=base&amp;lang_id=" . $obj['base']->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'edit', _EDIT ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=delete&amp;type=base&amp;lang_id=" . $obj['base']->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'delete', _DELETE ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=clone&amp;type=base&amp;lang_id=" . $obj['base']->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'clone', _CLONE ) . "</a>";
-                $tlist->add(
-                    array( $lang_id,
-                        $obj['base']->getVar( 'lang_name' ),
-                        $obj['base']->getVar( 'lang_charset' ),
-                        $obj['base']->getVar( 'lang_code' ),
-                        "<img src='" . ZAR_URL . '/images/flags/' . $lang_image . "' alt='" . $obj['base']->getVar( 'lang_desc' ) . "' />",
-                        $obj['base']->getVar( 'weight' ),
-                        "------------",
+        foreach ( $sites as $lang_name => $site ) {
+			  $id = rawurlencode($lang_name);
+              $buttons = "<a href='" . $addonversion['adminpath'] . "&amp;op=edit&amp;type=base&amp;item_id=" . $id . "'>" . zarilia_img_show( 'edit', _EDIT ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=delete&amp;type=base&amp;item_id=" . $id . "'>" . zarilia_img_show( 'delete', _DELETE ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=clone&amp;type=base&amp;item_id=" . $id . "'>" . zarilia_img_show( 'clone', _CLONE ) . "</a>";
+              $tlist->add(
+                    array( $lang_name,
+                        @$site[ 'url' ],
+                        @$site[ 'prefix' ],
+						@$site[ 'move_url' ],
                         $buttons
                         ) );
-            }
-            $isOrphan = false;
-            if ( !isset( $obj['ext'] ) || count( $obj['ext'] ) < 1 ) {
-                continue;
-            }
-            /**
-             */
-            foreach( $obj['ext'] as $ext ) {
-                if ( is_readable( ZAR_ROOT_PATH . '/images/flags/' . $ext->getVar( 'lang_image' ) ) ) {
-                    $lang_image = $ext->getVar( 'lang_image' );
-                } else {
-                    $lang_image = 'noflag.gif';
-                }
-                $lang_base = ( $isOrphan ) ? "<font color='red'>" . $ext->getVar( 'lang_base' ) . "</font>" : $ext->getVar( 'lang_base' );
-                $buttons = "<a href='" . $addonversion['adminpath'] . "&amp;op=edit&amp;type=ext&amp;lang_id=" . $ext->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'edit', _EDIT ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=delete&amp;type=ext&amp;lang_id=" . $ext->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'delete', _DELETE ) . "</a><a href='" . $addonversion['adminpath'] . "&amp;op=clone&amp;type=ext&amp;lang_id=" . $ext->getVar( 'lang_id' ) . "'>" . zarilia_img_show( 'clone', _CLONE ) . "</a>";
-                $tlist->add(
-                    array( $lang_id,
-                        $ext->getVar( 'lang_name' ),
-                        $ext->getVar( 'lang_charset' ),
-                        $ext->getVar( 'lang_code' ),
-                        "<img src = '" . ZAR_URL . '/images/flags/' . $lang_image . "' alt = '" . $ext->getVar( 'lang_desc' ) . "' / >",
-                        $ext->getVar( 'weight' ),
-                        $lang_base,
-                        $buttons
-                        ) );
-            }
         }
+
+//		require_once ZAR_CONTROLS_PATH.'/tree/control.class.php';
+
+//		$sites = array_keys($zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites'));
+//		$sites['default'] = ;
+
+/*		$icon = 'folder.gif';
+		$tree  = new ZariliaControl_Tree("menuLayer", ZAR_CONTROLS_URL.'/tree/images/', '_self');
+		foreach ($sites as $name => $languages) {
+			$tree->add($name, null, $icon);
+		}
+//		$node0 = &$tree->add('INBOX','',$icon,true,false);
+//		$node0->add('file');
+		$tree->render();*/
+
         $tlist->render();
         zarilia_cp_legend( $button );
-        zarilia_pagnav( $_xlang_obj['count'], $nav['limit'], $nav['start'], 'start', 1, $addonversion['adminpath'] . '&amp;op=' . $op );
+//        zarilia_pagnav( $_xlang_obj['count'], $nav['limit'], $nav['start'], 'start', 1, $addonversion['adminpath'] . '&amp;op=' . $op );
         break;
 
     case 'index':

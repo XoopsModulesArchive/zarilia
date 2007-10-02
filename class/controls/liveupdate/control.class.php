@@ -31,7 +31,7 @@ class ZariliaControl_LiveUpdate
 		global $zariliaOption, $zariliaTpl;
 		if (!isset($zariliaOption['liveUpdateIsLoaded'])) {
 			$_SESSION['liveUpdate'] = array();
-			$zariliaOption['liveUpdateInterval'] = $interval;
+			$zariliaOption['liveUpdateInterval'] = $interval*10;
 			$zariliaTpl->addExecBeforeOutput("\$this->headerAdd(ZariliaControl_LiveUpdate::GenerateJS());");
 		} else {
 			if ($zariliaOption['liveUpdateInterval']>$interval) {
