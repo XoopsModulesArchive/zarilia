@@ -91,7 +91,7 @@ switch ( $op ) {
 		$form->addField('text',	'name', @$sites[$id][0], _MA_AD_NAME,  true);
 		$form->addField('text',	'url', @$sites[$id][1], _MA_AD_URL,  true);
 		$form->addField('text',	'prefix', @$sites[$id][2], _MA_AD_PREFIX, true);
-		$form->addField('text',	'move_url', @$sites[$id][3], _MA_AD_URL, false);		
+		$form->addField('text',	'move_url', @$sites[$id][3], _MA_AD_MOVE_URL, false);		
 		
 		$form->addField('hidden', 'op', 'save');
 
@@ -121,26 +121,27 @@ switch ( $op ) {
         break;
 
     case 'save':
-        $type = zarilia_cleanRequestVars( $_REQUEST, 'type', '', XOBJ_DTYPE_TXTBOX );
-        $lang_id = zarilia_cleanRequestVars( $_REQUEST, 'lang_id', 0 );
-        $isBase = ( isset( $type ) && $type == 'ext' ) ? false : true;
-        $_xlang_obj = ( $lang_id > 0 ) ? $xlanguage_handler->get( $lang_id, $isBase ) : $xlanguage_handler->create( true, $isBase );
-        /**
-         */
-        $_xlang_obj->setVars( $_REQUEST );
-        /**
-         */
-        if ( !$xlanguage_handler->insert( $_xlang_obj, false ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, sprintf( _FAILSAVEIMG, $_xlang_obj->getVar( 'lang_name' ) ) );
-        }
-        /**
-         */
+
+		global $zariliaSettings;
+
+        $name = zarilia_cleanRequestVars( $_REQUEST, 'name', '', XOBJ_DTYPE_TXTBOX );
+        $url = zarilia_cleanRequestVars( $_REQUEST, 'url', '', XOBJ_DTYPE_TXTBOX );
+        $prefix = zarilia_cleanRequestVars( $_REQUEST, 'prefix', '', XOBJ_DTYPE_TXTBOX );
+        $murl = zarilia_cleanRequestVars( $_REQUEST, 'move_url', '', XOBJ_DTYPE_TXTBOX );
+        $id = zarilia_cleanRequestVars( $_REQUEST, 'id', 0 );
+
+		if (!($id===0)) {
+			$zariliaSettings->remove($zariliaOption['globalconfig'], 'sites', $id);
+			$isNew = true;
+		}
+		$zariliaSettings->write($zariliaOption['globalconfig'], 'sites', $name, array('url'=>$url,'prefix'=>$prefix,'move_url'=>$murl));
+
         if ( $GLOBALS['zariliaLogger']->getSysErrorCount() ) {
             zarilia_cp_header();
             $menu_handler->render( 1 );
             $GLOBALS['zariliaLogger']->sysRender();
         } else {
-            redirect_header( $addonversion['adminpath'] . '&amp;op=list', 1, ( $_xlang_obj->isNew() ) ? _DBCREATED : _DBUPDATED );
+            return redirect_header( $addonversion['adminpath'] . '&amp;op=list', 1, ( isset($isNew) ) ? _DBCREATED : _DBUPDATED );
         }
         break;   
     case 'delete':
@@ -186,7 +187,7 @@ switch ( $op ) {
 
     case 'list':
 
-		$sites = $zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites');
+		$sites = &$zariliaSettings->readCat( $zariliaOption['globalconfig'], 'sites');
 
 //        require_once ZAR_ROOT_PATH . '/class/class.tlist.php';
 

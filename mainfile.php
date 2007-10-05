@@ -11,12 +11,14 @@
 // URL: http:www.zarilia.com 												//
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
+//die();
 if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 {
     define( "ZAR_MAINFILE_INCLUDED", 1 );
 
 	require_once 'class/cache/settings.class.php';
 	$zariliaSettings = &ZariliaSettings::getInstance();
+	global $zariliaSettings;
 	$cpConfig = &$zariliaSettings->readAll('site.global');
 	if (isset($cpConfig['sites'][$_SERVER['HTTP_HOST']])) {
 		$zariliaOption['currentsite'] = $cpConfig['sites'][$_SERVER['HTTP_HOST']]['info'];
@@ -24,7 +26,7 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 		$zariliaOption['currentsite'] = 'default';
 	}
 	$zariliaOption['localconfig'] = 'siteinfo.'.$zariliaOption['currentsite'].'.en';
-	$zariliaOption['globalconfig'] = 'site.global';
+	$zariliaOption['globalconfig'] = 'site.global';	
 
 /*    include_once 'siteinfo.php';
     if ( !isset( $cpConfig['root_path'] ) && !defined( 'ZAR_INSTALL' ) )
@@ -125,6 +127,6 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
         die( 'Request block, Please wait 1 secounds between requests. This is to stop flooding of our server.' ); //die there flooding
     }
 */
-}
+} 
 
 ?>
