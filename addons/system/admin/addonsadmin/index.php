@@ -18,9 +18,6 @@ require_once ZAR_ROOT_PATH . '/class/zariliablock.php';
 require_once ZAR_ROOT_PATH . '/class/class.menubar.php';
 require_once ZAR_ROOT_PATH . "/addons/system/admin/addonsadmin/addonsadmin.php";
 
-global $ADODB_FETCH_MODE;
-$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
-
 require_once "admin_menu.php";
 $addon_handler = &zarilia_gethandler( 'addon' );
 switch ( $op ) {

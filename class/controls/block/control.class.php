@@ -34,7 +34,7 @@ class ZariliaControl_Block
 		if (!$this->isSysFlag('ajax_blocks_started')) {
 			$function = $this->GenerateFunctionName('Update');
 			$this->RegisterFunction($function);
-			$this->AddTimer($function, 1000);
+			$this->AddTimer($function, 5000);
 			$_SESSION['blocks'] = array();
 			$this->setSysFlag('ajax_blocks_started');
 		}

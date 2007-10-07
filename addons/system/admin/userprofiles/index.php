@@ -639,9 +639,9 @@ switch ( strtolower( $op ) )
         {
         	$profilecat_handler = &zarilia_gethandler( 'Profilecategory' );
         	$menu_items = &$profilecat_handler->getList();
+			if (!is_array($menu_items)) $menu_items = array();
         }
-        if ( !$profilecat_id )
-        {
+        if ( !$profilecat_id ) {
             $menu_Array = array_values( $menu_items );
             $profilecat_id = @$menu_Array[0];
             unset( $menu_Array );
@@ -655,20 +655,20 @@ switch ( strtolower( $op ) )
         zarilia_getSelection( $menu_items, $profilecat_id, 'profile', 1, 0 , false, "", $extra, 0 );
         /**
          */
-        foreach ( $profile['list'] as $obj )
-        {
-            $profile_id = $obj->getVar( 'profile_id' );
-            $tlist->addHidden( $profile_id, 'value_id' );
-            $tlist->add(
-                array( $profile_id,
-                    $obj->getTextbox( 'profile_id', 'profile_name', '30' ),
-                    $obj->getVar( 'profile_desc' ),
-                    $obj->getTextbox( 'profile_id', 'profile_order', '5' ),
-                    $obj->getYesNobox( 'profile_id', 'profile_display' ),
-                    $obj->getCheckbox( 'profile_id' ),
-                    zarilia_cp_icons( $button, 'profile_id', $profile_id )
-                    ) );
-        }
+        if (is_array($profile['list'])) 
+			foreach ( $profile['list'] as $obj ) {
+	            $profile_id = $obj->getVar( 'profile_id' );
+		        $tlist->addHidden( $profile_id, 'value_id' );
+			    $tlist->add(
+				    array( $profile_id,
+					    $obj->getTextbox( 'profile_id', 'profile_name', '30' ),
+	                    $obj->getVar( 'profile_desc' ),
+		                $obj->getTextbox( 'profile_id', 'profile_order', '5' ),
+			            $obj->getYesNobox( 'profile_id', 'profile_display' ),
+				        $obj->getCheckbox( 'profile_id' ),
+					    zarilia_cp_icons( $button, 'profile_id', $profile_id )
+						) );
+	        }
         $tlist->render();
         zarilia_cp_legend( $button );
         zarilia_pagnav( $profile['count'], $nav['limit'], $nav['start'], 'start', 1, $addonversion['adminpath'] . '&amp;op=' . $op . '&amp;profilecat_id=' . $profilecat_id . '&amp;limit=' . $nav['limit'] );

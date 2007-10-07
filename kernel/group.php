@@ -98,8 +98,6 @@ class ZariliaMembershipHandler extends ZariliaPersistableObjectHandler {
      * @return array array of groups the user belongs to
      */
     function getGroupsByUser( $uid ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $ret = array();
         $sql = 'SELECT groupid FROM ' . $this->db->prefix( 'groups_users_link' ) . ' WHERE uid=' . intval( $uid );
         if ( !$result = $this->db->Execute( $sql ) ) {
@@ -121,8 +119,6 @@ class ZariliaMembershipHandler extends ZariliaPersistableObjectHandler {
      * @return array array of users belonging to the group
      */
     function getUsersByGroup( $groupid, $limit = 0, $start = 0 ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $ret = array();
         $sql = 'SELECT uid FROM ' . $this->db->prefix( 'groups_users_link' ) . ' WHERE groupid=' . intval( $groupid );
         if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {

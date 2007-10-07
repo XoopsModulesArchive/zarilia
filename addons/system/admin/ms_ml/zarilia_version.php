@@ -42,6 +42,6 @@ $addonversion = array( 'name' => _MA_INFO_NAME,
     'category' => ZAR_SYSTEM_MULTILANG
     );
 
-$addonversion['menu']['interface'][] = array( 'url' => ZAR_URL . "/addons/system/index.php?fct=ms_ml", 'title' => _MD_AM_MULTILANGUAGE_MENU, 'group' => 'languages', 'class' => 'locale' );
+$addonversion['menu']['interface'][] = array( 'url' => ZAR_URL . "/addons/system/index.php?fct=ms_ml", 'title' => _MD_AM_MULTISITE_MENU, 'group' => 'languages', 'class' => 'locale' );
 
 ?>

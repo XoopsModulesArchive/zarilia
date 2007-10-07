@@ -135,7 +135,7 @@ class ZariliaAddon extends ZariliaObject {
         } else if ( file_exists( ZAR_ROOT_PATH . '/addons/' . $dirname . '/language/english/addoninfo.php' ) ) {
             include_once ZAR_ROOT_PATH . '/addons/' . $dirname . '/language/english/addoninfo.php';
         } else {
-            trigger_error( 'Could not find addoninfo.php for ' . $zariliaConfig['language'] . $dirname . 'language define' );
+            trigger_error( 'Could not find addoninfo.php for ' . $zariliaConfig['language'] .' '. $dirname . ' language define' );
             return false;
         }
 
@@ -341,8 +341,6 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
      * @return object FALSE on fail
      */
     function &getByDirname( $dirname ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $ret = false;
         static $_cachedAddon_mid;
         static $_cachedAddon_dirname;
@@ -397,11 +395,11 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
             $sql = sprintf( "UPDATE %s SET name = %s, dirname = %s, version = %u, last_update = %u, weight = %u, isactive = %u, hasmain = %u, hasadmin = %u, hassearch = %u, hasconfig = %u, hascomments = %u, hasnotification = %u, hasage = %u, hasmimetype = %u WHERE mid = %u", $this->db->prefix( 'addons' ), $this->db->Qmagic( $name ), $this->db->Qmagic( $dirname ), $version, time(), $weight, $isactive, $hasmain, $hasadmin, $hassearch, $hasconfig, $hascomments, $hasnotification, $hasage, $hasmimetype, $mid );
         }
         if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() , __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         if ( empty( $mid ) || $mid == 0 ) {
-            $mid = $this->db->getInsertId();
+            $mid = $this->db->Insert_ID();
         }
         $addon->assignVar( 'mid', $mid );
         if ( !empty( $this->_cachedAddon_dirname[$dirname] ) ) {
@@ -437,7 +435,7 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
         $sql = sprintf( "SELECT block_id FROM %s WHERE addon_id = %u", $this->db->prefix( 'block_addon_link' ), $addon->getVar( 'mid' ) );
         if ( $result = $this->db->Execute( $sql ) ) {
             $block_id_arr = array();
-            while ( $myrow = $this->db->fetchArray( $result ) ) {
+            while ( $myrow = $result->fetchRow() ) {
                 array_push( $block_id_arr, $myrow['block_id'] );
             }
         }
@@ -478,8 +476,6 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
      * @return array
      */
     function &getObjects( $criteria = null, $id_as_key = false ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $ret = array();
         $limit = $start = 0;
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'addons' );
@@ -546,16 +542,17 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
      * @return int
      */
     function getCount( $criteria = null ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_NUM';
+		$old = $this->db->SetFetchMode(ADODB_FETCH_NUM);
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix( 'addons' );
         if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         if ( !$result = &$this->db->Execute( $sql ) ) {
+			$this->db->SetFetchMode($old);
             return 0;
         }
         list( $count ) = $result->FetchRow();
+		$this->db->SetFetchMode($old);
         return $count;
     }
 

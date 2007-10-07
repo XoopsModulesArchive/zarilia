@@ -308,7 +308,6 @@ class ZariliaMessageHandler extends ZariliaPersistableObjectHandler {
     }
 
     function getMessageNums() {
-		global $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $sql = "SELECT count(msg) as msg_total, sum(is_trash) as is_trash_total, MAX(time) AS posted FROM " . $this->db->prefix( 'messages' );
         if ( $result = $this->db->Execute( $sql ) ) {
             $myrow = $result->FetchRow();

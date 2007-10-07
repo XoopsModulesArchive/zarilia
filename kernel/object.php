@@ -157,9 +157,13 @@ class ZariliaObject {
      * @param mixed $value value to assign
      */
     function assignVar( $key, $value ) {
-        if ( isset( $value ) && isset( $this->vars[$key] ) ) {
+        if ( isset( $this->vars[$key] ) ) {			
             $this->vars[$key]['value'] = $value;
-        }
+        } else {
+			if (isset($_REQUEST['debug'])) {
+				echo $key.'='.$value."<br>";
+			}
+		}
     }
 
     /**
@@ -857,6 +861,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             $start = $criteria->getStart();
         }
 //		var_dump($sql);
+//		$this->db->SetFetchMode(ADODB_FETCH_DEFAULT);
 		if ($limit == 0) {
 			$result = $this->db->Execute($sql);
 		} else {
@@ -867,7 +872,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
         if ( !$result ) {
             $ret = false;
             if ( $return_error != false ) {
-                $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() , __FILE__, __LINE__ );
+   				$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             }
             return $ret;
         } else {
@@ -885,11 +890,12 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
      * @return array
      */
     function convertResultSet( &$result, $id_as_key = false, $as_object = true ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+//		$ADODB_FETCH_MODE = ;
+//		$this->db->SetFetchMode(ADODB_FETCH_ASSOC);
         $ret = array();
         while ( $myrow = $result->FetchRow() ) {
             $obj = &$this->create( false );
+//			var_dump($myrow);
             $obj->assignVars( $myrow );
             if ( !$id_as_key ) {
                 if ( $as_object ) {
@@ -933,8 +939,6 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
      * @return
      */
     function getList( $criteria = null, $querie = '', $show = null, $doCriteria = true ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $ret = array();
         $limit = $start = 0;
         if ( $this->doPermissions ) {
@@ -982,7 +986,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             }
         }
         if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         if ( $show == true ) {
@@ -1017,7 +1021,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             }
         }
         if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error '.$this->db->ErrorNo().': '. $this->db->ErrorMsg(), __FILE__, __LINE__ );
             return false;
         }
         $count = $result->RecordCount();
@@ -1080,8 +1084,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 $sql .= $andclause;
             }
         }
-		if ( !$result = $this->db->Execute( $sql ) ) {
-//            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+		if (!$this->db->Execute( $sql ) ) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         return true;
@@ -1112,8 +1116,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
         if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
             $sql .= ' ' . $criteria->renderWhere();
         }
-        if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+        if (!$this->db->Execute($sql)) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
 
@@ -1142,8 +1146,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             $whereclause = $this->keyName . " = " . $obj->getVar( $this->keyName );
         }
         $sql = "DELETE FROM " . $this->db_table . " WHERE " . $whereclause;
-        if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+        if ($this->db->Execute($sql)) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         return true;
@@ -1162,10 +1166,10 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 $sql .= ' ' . $criteria->renderWhere();
             }
             if ( !$result = $this->db->Execute( $sql ) ) {
-                $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+   				$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
                 return false;
             } else {
-                $rows = $this->db->getAffectedRows();
+                $rows = $this->db->Affected_Rows();
                 return ( $returncount == true ) ? $rows : true;
             }
         }
@@ -1190,8 +1194,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             return false;
         }
         $sql = "$act TABLE " . $this->db_table;
-        if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() );
+        if ( !$this->db->Execute( $sql ) ) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         return true;

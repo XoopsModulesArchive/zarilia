@@ -202,7 +202,13 @@ switch ( $op ) {
         }
 
         $banners_handler->expireimpressions();
-        $banner_arr = $banners_handler->getBannersObj( $nav, $criteria, $opt );
+        if ($banner_arr = $banners_handler->getBannersObj( $nav, $criteria, $opt )) {
+		if ($banner_arr['count']===false) {
+			zarilia_cp_header();
+            $menu_handler->render( 1 );
+            $GLOBALS['zariliaLogger']->sysRender( E_USER_ERROR, 'Error' );
+			return;
+		}
         foreach ( $banner_arr['list'] as $obj ) {
             $b_id = $obj->getVar( 'bid' );
             $c_id = $obj->getVar( 'cid' );
@@ -244,6 +250,7 @@ switch ( $op ) {
                     break;
             }
         }
+		}
         $_client_buttons = array( "index.php?fct=banners&op=billinginfo" => 'Billing Information', "index.php?fct=banners&op=clientedit" => 'Create New Client', "banners.php?op=edit&cid=" . $cid => 'Create New Banner' );
         /*start of output*/
         zarilia_cp_header();

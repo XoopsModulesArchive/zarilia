@@ -180,6 +180,7 @@ class ZariliaLogger {
      */
     function setSysError( $errno, $errstr, $errfile = '', $errline = '', $errreport = '' )
     {
+//		var_dump(debug_backtrace());
         $this->sysErrors[] = compact( 'errno', 'errstr', 'errfile', 'errline', 'errreport' );
     }
 

@@ -116,7 +116,6 @@ class ZariliaBannerAddsHandler extends ZariliaPersistableObjectHandler {
      * @return
      */
     function getBanneradds( $limit = 10, $start = 0, $sort = 'name', $order = 'ASC' ) {
-		global $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $ret = array();
         $db = &ZariliaDatabaseFactory::getDatabaseConnection();
         $sql = "SELECT add_id, add_type, add_sizew, add_sizeh FROM " . $db->prefix( "badds" );

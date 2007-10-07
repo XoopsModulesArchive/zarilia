@@ -655,8 +655,6 @@ if ( !defined( "ZAR_LISTS_INCLUDED" ) ) {
         }
 
         function getUserRankList() {
-			global $ADODB_FETCH_MODE;
-			$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
             $db = &ZariliaDatabaseFactory::getDatabaseConnection();
             $sql = "SELECT rank_id, rank_title FROM " . $db->prefix( "ranks" ) . " WHERE rank_special = 1";
             $ret = array();

@@ -131,7 +131,8 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         $prefix = ( $isBase == true ) ? "language_base" : "language_ext";
         $sql = 'SELECT * FROM ' . $this->db->prefix( $prefix ) . ' WHERE lang_id=' . $id;
 		$result = $this->db->Execute( $sql );
-        $array = $result->GetArray();
+        $array = $result->FetchRow();
+//		var_dump($array);
         if ( !is_array( $array ) || count( $array ) == 0 ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'ERROR: Selected item was not found in the database' );
             return false;
@@ -151,13 +152,14 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         $isBase = false;
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_base' ) . ' WHERE lang_name=\'' . $name . '\'';
         $result = $this->db->Execute( $sql );
-        $array = $result->GetRows();
+        $array = $result->FetchRow();
 //		var_dump($sql);
 //		var_dump($array);
         if ( !is_array( $array ) || count( $array ) == 0 ) {
             $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_ext' ) . ' WHERE lang_name=\'' . $name . '\'';
             $result = $this->db->Execute( $sql );
-            $array = $result->GetArray();
+            $array = &$result->FetchRow();
+//			var_dump($array);
             if ( !is_array( $array ) || count( $array ) == 0 ) {
                 $false = false;
                 return $false;
@@ -174,6 +176,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         if ( !isset( $array['lang_base'] ) ) {
             $lang->setBase();
         }
+//		var_dump($lang);
         return $lang;
     }
 
@@ -253,7 +256,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
             }
             $sql = "INSERT INTO " . $lang->table . " (" . implode( ",", $var_array ) . ") VALUES (" . implode( ",", $val_array ) . ")";
             if ( !$result = $this->db->Execute( $sql ) ) {
-                $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+   				$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
                 return false;
             }
             if ( $lang_id == 0 ) $lang_id = $this->db->getInsertId();
@@ -271,7 +274,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
             $set_string = implode( ',', $set_array );
             $sql = "UPDATE " . $lang->table . " SET " . $set_string . " WHERE lang_id = " . $lang->getVar( 'lang_id' );
             if ( !$result = $this->db->Execute( $sql ) ) {
-                $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+   				$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
                 return false;
             }
         }
@@ -282,7 +285,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
     function delete( &$lang ) {
         $sql = "DELETE FROM " . $lang->table . " WHERE lang_id= " . $lang->getVar( 'lang_id' );
         if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         xlanguage_createConfig( $this );

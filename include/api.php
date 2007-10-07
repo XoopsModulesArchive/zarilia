@@ -54,6 +54,7 @@ if ( !is_object( $lang ) ) {
 if ( is_object( $lang )/*&& strcasecmp( $lang->getVar( 'lang_name' ), $zariliaConfig['language'] )*/ ) {
     if ( $lang->isBase() ) {
         $zariliaConfig['language'] = $lang->getVar( 'lang_name' );
+		$zariliaConfig['lang_code'] = $lang->getVar( 'lang_code' );
     } else {
         $lang_base = $xlanguage_handler->getByName( $lang->getVar( 'lang_base' ) );
         if ( is_object( $lang_base ) ) {

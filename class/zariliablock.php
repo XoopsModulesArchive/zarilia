@@ -510,8 +510,6 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllByGroupAddon( $groupid, $addon_id = 0, $toponlyblock = false, $visible = -1, $orderby = 'b.weight,b.bid', $isactive = 1 )
     {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $db = &ZariliaDatabaseFactory::getDatabaseConnection();
         $ret = array();
         $sql = "SELECT DISTINCT gperm_itemid FROM " . $db->prefix( 'group_permission' ) . " WHERE gperm_name = 'block_read' AND gperm_modid = 1";

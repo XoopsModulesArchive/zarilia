@@ -41,7 +41,8 @@ class ZariliaSettings
 	}
 
 	function &readAll($module) {
-		return $this->_settings[$module] = eval((substr($data = parent::read($module),strpos($data, "\n"))));
+		$this->_settings[$module] = eval((substr($data = parent::read($module),strpos($data, "\n"))));
+		return $this->_settings[$module];
 	}
 
 	function &readCat($module, $category) {
@@ -71,7 +72,13 @@ class ZariliaSettings
 		parent::write($module, 'return '.var_export($this->_settings[$module], true).';');
 	}
 
+	function copy($module, $newmodule) {
+		return copy($this->path.$module.'.php', $this->path.$newmodule.'.php');
+	}
 
+	function delete($module) {
+		return unlink($this->path.$module.'.php');
+	}
 }
 
 ?>

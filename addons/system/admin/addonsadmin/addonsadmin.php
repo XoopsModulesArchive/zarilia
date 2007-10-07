@@ -66,7 +66,7 @@ function zarilia_addon_configs( $addon ) {
 }
 
 function zarilia_addon_install( $dirname ) {
-    global $zariliaUser, $zariliaConfig, $zariliaOption, $menu_handler;
+    global $zariliaUser, $zariliaConfig, $zariliaOption, $menu_handler, $ZariliaSettings, $cpConfig;
 
     $db = &ZariliaDatabaseFactory::getDatabaseConnection();
 
@@ -90,18 +90,30 @@ function zarilia_addon_install( $dirname ) {
                 $sql_query = trim( $sql_query );
                 SqlUtility::splitMySqlFile( $pieces, $sql_query );
                 $created_tables = array();
+				require_once ZAR_ROOT_PATH.'/class/cache/settings.class.php';
+				$zariliaSettings = &ZariliaSettings::getInstance();
+				if (!($globalstables = $addon->getInfo( 'globaltables' ))) $globalstables = array();
+				if (!($multisitetables = $addon->getInfo( 'multisitetables' ))) $multisitetables = array();				
                 foreach ( $pieces as $piece ) {
                     // [0] contains the prefixed query
                     // [4] contains unprefixed table name
-                    $prefixed_query = SqlUtility::prefixQuery( $piece, $db->prefix() );
+                    $prefixed_query = SqlUtility::prefixQuery( $piece, $db );
                     if ( !$prefixed_query ) {
                         $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, "<b>$piece</b> is not a valid SQL!" );
                         break;
                     }
                     // check if the table name is reserved
                     if ( !in_array( $prefixed_query[4], $reservedTables ) ) {
+						if (in_array($prefixed_query[4], $globalstables )) {
+							$zariliaSettings->write($zariliaOption['globalconfig'], 'tables', $prefixed_query[4], 0);
+//							$cpConfig[$prefixed_query[4]] = 0;
+						} elseif (in_array($prefixed_query[4], $multisitetables )) {
+							$zariliaSettings->write($zariliaOption['globalconfig'], 'tables', $prefixed_query[4], 1);
+//							$cpConfig[$prefixed_query[4]] = 1;
+						}
+						$prefixed_query = SqlUtility::prefixQuery( $piece, $db );
                         if ( !$db->Execute( $prefixed_query[0] ) ) {
-                            $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, $db->error(), __FILE__, __LINE__ );
+                            $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, $prefixed_query[0], __FILE__, __LINE__ );
                             break;
                         } else {
                             if ( !in_array( $prefixed_query[4], $created_tables ) ) {
@@ -166,6 +178,7 @@ function zarilia_addon_install( $dirname ) {
                         unset( $tpldata );
                     }
                 }
+
                 zarilia_template_clear_addon_cache( $newmid );
                 $blocks = $addon->getInfo( 'blocks' );
                 if ( $blocks != false ) {
@@ -202,10 +215,12 @@ function zarilia_addon_install( $dirname ) {
                             $GLOBALS['zariliaLoger']->setSysError( E_USER_ERROR, 'ERROR: Could not add block <b>' . $block['name'] . '</b> to the database! Database error: <b>' . $db->error() . '</b>' );
                         } else {
                             if ( empty( $newbid ) ) {
-                                $newbid = $db->getInsertId();
+                                $newbid = $db->Insert_ID();
                             }
                             $sql = 'INSERT INTO ' . $db->prefix( 'block_addon_link' ) . ' (block_id, addon_id) VALUES (' . $newbid . ', -1)';
-                            $db->Execute( $sql );
+                            if (!$db->Execute( $sql )) {
+							    $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, 'ERROR: Could not execute query <b>' . $sql . '</b>.' );
+							}
                             if ( $template != '' ) {
                                 $tplfile = &$tplfile_handler->create();
                                 $tplfile->setVar( 'tpl_refid', $newbid );
@@ -327,7 +342,7 @@ function zarilia_addon_install( $dirname ) {
     } else {
         $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, sprintf( _MD_AM_FAILINS, "<b>" . $dirname . "</b>" ) . "&nbsp;" . _MD_AM_ERRORSC . "<br />&nbsp;&nbsp;" . sprintf( _MD_AM_ALEXISTS, $dirname ) );
     }
-    $GLOBALS['zariliaLogger']->sysRender();
+//    $GLOBALS['zariliaLogger']->sysRender();
 }
 
 function &zarilia_addon_gettemplate( $dirname, $template, $block = false ) {
@@ -377,15 +392,19 @@ function &zarilia_addon_gettemplate( $dirname, $template, $block = false ) {
 function zarilia_addon_uninstall( $dirname ) {
     require_once ZAR_ROOT_PATH . '/class/template.php';
 
-    global $zariliaConfig;
+    global $zariliaConfig, $zariliaOption;
 
     $reservedTables = array( 'avatar', 'avatar_users_link', 'block_addon_link', 'comments', 'config', 'configcategory', 'configoption', 'image', 'imagebody', 'imagecategory', 'imgset', 'imgset_tplset_link', 'imgsetimg', 'groups', 'groups_users_link', 'group_permission', 'online', 'ranks', 'session', 'smiles', 'users', 'newblocks', 'addons', 'tplfile', 'tplset', 'tplsource' );
 
     $db = &ZariliaDatabaseFactory::getdatabaseconnection();
-    $addon_handler = &zarilia_gethandler( 'addon' );
-    $addon = &$addon_handler->getByDirname( $dirname );
+    $addon_handler = &zarilia_gethandler( 'addon' );    
 
-    zarilia_template_clear_addon_cache( $addon->getVar( 'mid' ) );
+	if (!($addon = &$addon_handler->getByDirname( $dirname ))) {
+		$GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, sprintf('Can\'t find installed add-on called <b>%s</b>',$dirname));
+        return false;
+	}
+
+	zarilia_template_clear_addon_cache( $addon->getVar( 'mid' ) );
     if ( $addon->getVar( 'dirname' ) == 'system' ) {
         $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, sprintf( _MD_AM_FAILUNINS, "<b>" . $addon->getVar( 'name' ) . "</b>" ) );
         return false;
@@ -492,6 +511,18 @@ function zarilia_addon_uninstall( $dirname ) {
                     }
                 }
             }
+	
+			// removing info about multisite and global tables
+			require_once ZAR_ROOT_PATH.'/class/cache/settings.class.php';
+			$zariliaSettings = &ZariliaSettings::getInstance();
+			if (!($globalstables = $addon->getInfo( 'globaltables' ))) $globalstables = array();
+			if (!($multisitetables = $addon->getInfo( 'multisitetables' ))) $multisitetables = array();		
+			$rtables = array_merge($globalstables, $multisitetables);
+			foreach ($rtables as $name) {
+				$zariliaSettings->remove($zariliaOption['globalconfig'], 'tables', $name);
+			}
+			unset($globalstables, $multisitetables, $rtables, $name);
+
             // delete comments if any
             if ( $addon->getVar( 'hascomments' ) != 0 ) {
                 $msgs[] = 'Deleting comments...';

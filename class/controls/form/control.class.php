@@ -139,7 +139,7 @@ class ZariliaControl_Form
 		}
 	}
 
-	function &addField($type, $name, $value='', $title='') {
+	function &addField($type, $name, $value='', $title='', $required = false) {
 		require_once ZAR_CONTROLS_PATH.'/form/'.$type.'/control.class.php';
 		$class = 'ZariliaControl_FormField_'.ucfirst($type);
 		switch (func_num_args()) {

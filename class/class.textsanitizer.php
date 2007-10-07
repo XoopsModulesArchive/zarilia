@@ -83,8 +83,6 @@ class MyTextSanitizer {
      * @return string
      */
     function &smiley( $message ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $db = &ZariliaDatabaseFactory::getDatabaseConnection();
         if ( count( $this->smileys ) == 0 ) {
             if ( $getsmiles = $db->Execute( "SELECT * FROM " . $db->prefix( "smiles" ) ) ) {

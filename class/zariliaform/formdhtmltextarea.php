@@ -102,8 +102,6 @@ class ZariliaFormDhtmlTextArea extends ZariliaFormTextArea {
      */
     function _renderSmileys() {
 		static $smiles;
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
 
 		//$myts = MyTextSanitizer::getInstance();
 		//$smiles = $myts->getSmileys();

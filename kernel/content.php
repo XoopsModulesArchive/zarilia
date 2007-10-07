@@ -297,7 +297,7 @@ class ZariliaContentHandler extends ZariliaPersistableObjectHandler {
 
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'section' ) . ' WHERE section_id = ' . $id;
         if ( !$result = $this->db->SelectLimit( $sql, 0, 0 ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         } while ( $myrow = $this->db->fetchArray( $result ) ) {
             $ret = &$myrow['section_type'];

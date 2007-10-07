@@ -272,10 +272,9 @@ function checkURL( $url )
  */
 function redirect_header( $url, $time = 1, $message = '', $addredirect = false )
 {
-    global $zariliaConfig, $zariliaRequestUri, $zariliaUserIsAdmin;
+    global $zariliaConfig, $zariliaRequestUri, $zariliaUserIsAdmin, $zariliaOption;
 
-    if ( preg_match( "/[\\0-\\31]|about:|script:/i", $url ) )
-    {
+    if ( preg_match( "/[\\0-\\31]|about:|script:/i", $url ) ) {
         if ( !preg_match( '/^\b(java)?script:([\s]*)history\.go\(-[0-9]*\)([\s]*[;]*[\s]*)$/si', $url ) )
         {
             $url = ZAR_URL;
@@ -304,22 +303,58 @@ function redirect_header( $url, $time = 1, $message = '', $addredirect = false )
         }
     }
     $url = preg_replace( "/&amp;/i", '&', $url );
-    if ( $zariliaConfig['quickredirect'] == 1 OR $time == 0 )
-    {
+    if ( $zariliaConfig['quickredirect'] == 1 OR $time == 0 ) {	
+		if (isset($zariliaOption['isAjax'])) {
+			$objResponse = new xajaxResponse();
+			$objResponse->redirect($url);
+			return $objResponse;
+		} 
         header( "Location: $url" );
         exit();
     }
 
-    require_once ZAR_ROOT_PATH . '/class/template.php';
-    $zariliaTpl = new ZariliaTpl();
-    $zariliaTpl->addCss( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/css/style.css' );
-    $zariliaTpl->assign( 'url', $url );
-    $message = trim( $message ) != '' ? $message : _TAKINGBACK;
-    $zariliaTpl->assign( 'is_redirect', 1 );
-    $zariliaTpl->assign( 'message', $message );
-    $zariliaTpl->assign( 'time', $time );
-    $zariliaTpl->assign( 'lang_ifnotreload', sprintf( _IFNOTRELOAD, $url ) );
-    $zariliaTpl->display( ZAR_THEME_PATH . '/' . $zariliaConfig['theme_set'] . '/addons/system/system_redirect.html' );
+	if (isset($zariliaOption['isAjax'])) {
+		$objResponse = new xajaxResponse();
+/*		$crlf  = "\r\n";
+		$code  = 'window.zarilia_function = function() {'.$crlf;
+/*		$code .= '	var newDoc=document.open("text/html","replace");'.$crlf;
+		$exp = explode(">", ob_get_contents());
+		foreach ($exp as $k) {
+			$code .= '	newDoc.write(unescape("'.rawurlencode($k).')"+">");'.$crlf;
+		}
+		$code .= '	newDoc.close();'.$crlf;*/
+/*		$code .= 'var e = document.createElement("div");
+								e.style.position = "absolute";
+								e.style.left="0px";
+								e.style.top="0px";
+								e.innerHTML="'.addslashes(ob_get_contents()).'";
+								document.body.appendChild(e);'.$crlf;
+		$code .= '}'.$crlf;
+		$code .= 'window.zarilia_function();'.$crlf;
+		$code .= 'window.zarilia_function = null;'.$crlf;
+		ob_clean();*/
+//		$objResponse->script($code);
+//		$filename = '/zr-r'.time().'.html';
+//		file_put_contents(ZAR_CACHE_PATH.$filename, ob_get_clean());
+//		$objResponse->redirect(ZAR_CACHE_URL.$filename);
+		$message = trim( $message ) != '' ? $message : _TAKINGBACK;
+		$objResponse->alert($message);
+		$objResponse->redirect($url);
+		return $objResponse;
+	} else {
+	    require_once ZAR_ROOT_PATH . '/class/template.php';
+		$zariliaTpl = new ZariliaTpl();
+	    $zariliaTpl->addCss( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/css/style.css' );
+
+	    $zariliaTpl->assign( 'url', $url );
+	    $message = trim( $message ) != '' ? $message : _TAKINGBACK;
+	    $zariliaTpl->assign( 'is_redirect', 1 );
+	    $zariliaTpl->assign( 'message', $message );
+		$zariliaTpl->assign( 'time', $time );
+	    $zariliaTpl->assign( 'lang_ifnotreload', sprintf( _IFNOTRELOAD, $url ) );
+//		if (isset($zariliaOption['isAjax'])) ob_start();
+	    $zariliaTpl->display( ZAR_THEME_PATH . '/' . $zariliaConfig['theme_set'] . '/addons/system/system_redirect.html' );
+	}
     exit();
 }
 
@@ -610,6 +645,7 @@ function zarilia_getSelection( $this_array = array(), $selected = 0, $value = ''
         $ret = "<select size='" . $size . "' name='" . $value . "' id='" . $value . "' $extra>";
     if ( $emptyselect )
         $ret .= "<option value='0'>$noselecttext</option>";
+	if (is_array($this_array))
     foreach( $this_array as $key => $content )
     {
         $opt_selected = "";
@@ -709,7 +745,7 @@ function zarilia_pagnav( $tot_num = 0, $num_dis = 10, $start = 0, $from = 'start
     }
     else
     {
-        $output .= "No records found.";
+//        $output .= "No records found.";
     }
 
     $ret = "<div class='navresults'>$output</div><br />";

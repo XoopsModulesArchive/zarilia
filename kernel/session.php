@@ -64,14 +64,15 @@ class ZariliaSessionHandler {
      * @return array Session data
      */
     function read( $sess_id ) {
-		global $ADODB_FETCH_MODE;		
-		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+		$old = $this->db->SetFetchMode(ADODB_FETCH_NUM);
         $sql = sprintf( 'SELECT sess_data FROM %s WHERE sess_id = %s', $this->db->prefix( 'session' ), $this->db->Qmagic( $sess_id ) );
         if ( false != $result = $this->db->Execute( $sql ) ) {
             if ( list( $sess_data ) = $result->FetchRow() ) {
+				$this->db->SetFetchMode($old);
                 return $sess_data;
             }
         }
+		$this->db->SetFetchMode($old);
         return '';
     }
 
@@ -97,11 +98,13 @@ class ZariliaSessionHandler {
      * @return bool
      */
     function write( $sess_id, $sess_data ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+		$old = $this->db->SetFetchMode(ADODB_FETCH_NUM);
         $sess_id = $this->db->Qmagic( $sess_id );		
 		$result = $this->db->Execute( "SELECT COUNT(*) FROM " . $this->db->prefix( 'session' ) . " WHERE sess_id=" . $sess_id );		
+//		var_dump($sql);
         list( $count ) = $result->FetchRow();
+		$this->db->SetFetchMode($old);
+		unset($old);
         if ( $count > 0 ) {
             $sql = sprintf( 'UPDATE %s SET sess_updated = %u, sess_data = %s WHERE sess_id = %s', $this->db->prefix( 'session' ), time(), $this->db->Qmagic( $sess_data ), $sess_id );
         } else {

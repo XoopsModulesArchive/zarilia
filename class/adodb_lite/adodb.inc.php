@@ -22,7 +22,7 @@ define('ADODB_FETCH_ASSOC',2);
 define('ADODB_FETCH_BOTH',3);
 
 GLOBAL $ADODB_FETCH_MODE;
-$ADODB_FETCH_MODE = ADODB_FETCH_DEFAULT;	// DEFAULT, NUM, ASSOC or BOTH. Default follows native driver default...
+$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;	// DEFAULT, NUM, ASSOC or BOTH. Default follows native driver default...
 
 /**
  * Database connection

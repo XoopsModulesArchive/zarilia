@@ -15,17 +15,20 @@
 if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 {
     define( "ZAR_MAINFILE_INCLUDED", 1 );
+	define( 'ZAR_DEFAULT_SITE', 'default');
 
 	require_once 'class/cache/settings.class.php';
 	$zariliaSettings = &ZariliaSettings::getInstance();
 	global $zariliaSettings;
 	$cpConfig = &$zariliaSettings->readAll('site.global');
 	if (isset($cpConfig['sites'][$_SERVER['HTTP_HOST']])) {
-		$zariliaOption['currentsite'] = $cpConfig['sites'][$_SERVER['HTTP_HOST']]['info'];
+		$zariliaOption['currentsite'] = $_SERVER['HTTP_HOST'];
+		$zariliaOption['siteprefix'] = $cpConfig['sites'][$_SERVER['HTTP_HOST']][1];
 	} else {
-		$zariliaOption['currentsite'] = 'default';
+		$zariliaOption['currentsite'] = ZAR_DEFAULT_SITE;
+		$zariliaOption['siteprefix'] = $cpConfig['db']['prefix'];
 	}
-	$zariliaOption['localconfig'] = 'siteinfo.'.$zariliaOption['currentsite'].'.en';
+	$zariliaOption['localconfig'] = 'siteinfo.'.$zariliaOption['currentsite'];
 	$zariliaOption['globalconfig'] = 'site.global';	
 
 /*    include_once 'siteinfo.php';
@@ -110,7 +113,7 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
 
     unset( $groupID );
     unset( $groupName );
-    unset( $cpConfig['groups'] );
+//    unset( $cpConfig['groups'] );
 
     ini_set( 'arg_separator.output' , '&amp;' );
     ini_set( 'url_rewriter.tags' , 'a=href,area=href,frame=src,input=src,fieldset=' );

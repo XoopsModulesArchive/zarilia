@@ -145,12 +145,12 @@ class SqlUtility
      * @param   string  $prefix prefix to add to all table names
 	 * @return  mixed   FALSE on failure
 	 */
-	function prefixQuery($query, $prefix)
+	function prefixQuery($query, &$db)
 	{
 		$pattern = "/^(INSERT INTO|CREATE TABLE|ALTER TABLE|UPDATE)(\s)+([`]?)([^`\s]+)\\3(\s)+/siU";
 		$pattern2 = "/^(DROP TABLE)(\s)+([`]?)([^`\s]+)\\3(\s)?$/siU";
 		if (preg_match($pattern, $query, $matches) || preg_match($pattern2, $query, $matches)) {
-			$replace = "\\1 ".$prefix."_\\4\\5";
+			$replace = "\\1 ".$db->prefix($matches[4])." \\5";
 			$matches[0] = preg_replace($pattern, $replace, $query);
 			return $matches;
 		}

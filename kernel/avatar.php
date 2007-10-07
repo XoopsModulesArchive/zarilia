@@ -107,7 +107,7 @@ class ZariliaAvatarHandler extends ZariliaPersistableObjectHandler
         $sql = sprintf( "DELETE FROM %s WHERE user_id = %u", $this->db->prefix( 'avatar_user_link' ), $user_id );
         if ( !$result2 = &$this->db->Execute( $sql ) )
         {
-            $GLOBALS['zariliaLogger']->setSysError( $this->db->errno(), $this->db->error(), __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
         }
         $sql2 = sprintf( "INSERT INTO %s (avatar_id, user_id) VALUES (%u, %u)", $this->db->prefix( 'avatar_user_link' ), $avatar_id, $user_id );
         if ( !$result2 = &$this->db->Execute( $sql2 ) )
@@ -135,7 +135,7 @@ class ZariliaAvatarHandler extends ZariliaPersistableObjectHandler
         $sql = 'SELECT user_id FROM ' . $this->db->prefix( 'avatar_user_link' ) . ' WHERE avatar_id=' . $obj->getVar( 'avatar_id' );
         if ( !$result = $this->db->Execute( $sql ) )
         {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         while ( $myrow = $this->db->fetchArray( $result ) )

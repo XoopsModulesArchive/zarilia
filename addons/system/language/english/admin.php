@@ -96,6 +96,11 @@ define( '_MD_AM_MDAD_DSC', '' );
 define( '_MD_AM_MDAD_MENU', 'Addons Administration' );
 /**
  */
+define( '_MD_AM_MULTISITE', 'Multi Site Administration' );
+define( '_MD_AM_MULTISITE_DSC', '' );
+define( '_MD_AM_MULTISITE_MENU', 'Multi Site' );
+/**
+ */
 define( '_MD_AM_MULTILANGUAGE', 'Multi Language Administration' );
 define( '_MD_AM_MULTILANGUAGE_DSC', '' );
 define( '_MD_AM_MULTILANGUAGE_MENU', 'Multi Language' );

@@ -27,6 +27,7 @@
 // Author: D.J.(phppp) php_pp@hotmail.com                                    //
 // URL: http://www.zarilia.org.cn                                              //
 // ------------------------------------------------------------------------- //
+
 function xlanguage_convert_encoding( $value, $out_charset, $in_charset )
 {
     if ( is_array( $value ) ) {

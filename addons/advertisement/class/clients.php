@@ -223,7 +223,6 @@ class ZariliaClientsHandler extends ZariliaPersistableObjectHandler {
      * @return
      */
     function getClients( $limit = 10, $start = 0, $sort = 'name', $order = 'ASC' ) {
-		global $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
         $ret = array();
 
         $db = &ZariliaDatabaseFactory::getDatabaseConnection();

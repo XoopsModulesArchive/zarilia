@@ -18,9 +18,8 @@ $addonversion['sqlfile']['mysql'] = "sql/mysql.sql";
 /*
 * Mysql Tables
 */
-$addonversion['tables'][0] = "messages";
-$addonversion['tables'][1] = "messages_buddy";
-$addonversion['tables'][2] = "messages_sent";
+$addonversion['tables'] = array("messages", "messages_buddy", "messages_sent");
+$addonversion['globaltables'] = array("messages", "messages_buddy", "messages_sent");
 
 // install
 // $addonversion['onInstall'] = 'include/install.php';

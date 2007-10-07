@@ -266,8 +266,6 @@ class ZariliaTplfileHandler extends ZariliaPersistableObjectHandler {
     }
 
     function &getObjects( $criteria = null, $getsource = false, $id_as_key = false ) {
-		global $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = 'ADODB_FETCH_ASSOC';
         $ret = array();
         $limit = $start = 0;
         if ( $getsource ) {

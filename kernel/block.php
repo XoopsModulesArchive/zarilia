@@ -172,12 +172,12 @@ class ZariliaBlockHandler extends ZariliaPersistableObjectHandler {
         $id = $obj->getVar( $this->keyName );
         $sql = sprintf( "DELETE FROM %s WHERE bid = %u", $this->db->prefix( 'newblocks' ), $id );
         if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         $sql = sprintf( "DELETE FROM %s WHERE block_id = %u", $this->db->prefix( 'block_addon_link' ), $id );
-        if ( !$result = $this->db->Execute( $sql ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
+        if ( !$this->db->Execute( $sql ) ) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
         return true;
@@ -200,7 +200,7 @@ class ZariliaBlockHandler extends ZariliaPersistableObjectHandler {
             $start = $criteria->getStart();
         }
         if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {
-            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error() , __FILE__, __LINE__ );
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return $ret;
         } while ( $myrow = $this->db->fetchArray( $result ) ) {
             $obj = &$this->create( false );

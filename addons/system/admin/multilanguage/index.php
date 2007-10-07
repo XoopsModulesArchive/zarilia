@@ -73,7 +73,8 @@ switch ( $op ) {
     case 'edit':
     case 'create':
         $isBase = ( isset( $type ) && $type == 'ext' ) ? false : true;
-        if ( isset( $lang_id ) && $lang_id > 0 ) {
+		$lang_id = zarilia_cleanRequestVars( $_REQUEST, 'lang_id', 0 );
+        if ( $lang_id > 0 ) {
             $lang = &$xlanguage_handler->get( $lang_id, $isBase );
         } elseif ( isset( $lang_name ) ) {
             $lang = &$xlanguage_handler->getByName( $lang_name, $isBase );

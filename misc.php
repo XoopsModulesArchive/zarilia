@@ -15,7 +15,6 @@ include "mainfile.php";
 include_once ZAR_ROOT_PATH . '/language/' . $zariliaConfig['language'] . '/misc.php';
 // $op = zarilia_cleanRequestVars( $_REQUEST, 'op', '', XOBJ_DTYPE_TXTBOX );
 $type = zarilia_cleanRequestVars( $_REQUEST, 'type', '', XOBJ_DTYPE_TXTBOX );
-global $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
 zarilia_header( false );
 $closebutton = 1;

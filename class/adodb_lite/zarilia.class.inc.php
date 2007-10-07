@@ -19,13 +19,20 @@ class ZariliaDatabaseExtention {
      * @param string $tablename
      * @return
      */
-     function prefix( $tablename = '' ) {
-         return ( $tablename ) ? ZAR_DB_PREFIX . "_$tablename" : ZAR_DB_PREFIX;
+     function prefix( $tablename = null ) {
+		 global $zariliaOption, $cpConfig, $zariliaConfig;
+		 if ($tablename===null) return ZAR_DB_PREFIX;
+		 if (isset($cpConfig['tables'][$tablename])) {
+			 switch ($cpConfig['tables'][$tablename]) {
+				 case 1:
+					 return $zariliaOption['siteprefix']. "_$tablename";
+				 default:
+		 			 return ZAR_DB_PREFIX. "_$tablename";
+			 }
+		 } else {
+			 return isset($zariliaConfig['lang_code'])?$zariliaOption['siteprefix'].'_'.$zariliaConfig['lang_code']."_$tablename":$zariliaOption['siteprefix']. "_$tablename";
+		 }
      }
-
-	 function errno() {}
-	 function error() {}
-
 }
 
 class ZariliaDatabaseFactory {

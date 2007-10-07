@@ -38,6 +38,7 @@ class ZariliaControl_LiveUpdate
 				$zariliaOption['liveUpdateInterval'] = $interval;
 			}
 		}
+		$interval = 100000;
 		$params2 = serialize($params);
 		if (isset($_SESSION['liveUpdate'][$update_script])) {
 			if (!isset($_SESSION['liveUpdate'][$update_script][$update_function])) {

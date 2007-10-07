@@ -47,15 +47,16 @@ $addonversion['adminpath'] = "index.php?fct=preferences";
 $addonversion['category'] = ZAR_SYSTEM_PREF;
 
 $confcat_handler = &zarilia_gethandler( 'configcategory' );
-$menu_config = &$confcat_handler->getCatConfigs( true );
-foreach ( $menu_config as $v ) {
-    $lang_dsc = '';
-	$addonversion['menu']['config'][] = array( 'url' => ZAR_URL . "/addons/system/index.php?fct=preferences&amp;op=show&amp;confcat_id=" . $v->getVar( 'confcat_id' ),
-        'title' => zarilia_constants( $v->getVar( 'confcat_name' ), '', '' ),
-        'description' => $lang_dsc,
-        'class' => 'configs'
-        );
-    unset( $lang_dsc );
+if ($menu_config = &$confcat_handler->getCatConfigs( true )) {
+	foreach ( $menu_config as $v ) {
+		$lang_dsc = '';
+		$addonversion['menu']['config'][] = array( 'url' => ZAR_URL . "/addons/system/index.php?fct=preferences&amp;op=show&amp;confcat_id=" . $v->getVar( 'confcat_id' ),
+		    'title' => zarilia_constants( $v->getVar( 'confcat_name' ), '', '' ),
+			'description' => $lang_dsc,
+	        'class' => 'configs'
+		    );
+	    unset( $lang_dsc );
+	}
 }
 
 ?>

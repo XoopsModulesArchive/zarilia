@@ -21,6 +21,7 @@ if ( !defined( 'ZAR_ROOT_PATH' ) ) {
     if ( !$_POST["xajaxargs"][3] ) $zariliaOption['nocommon'] = true;
     include_once '../../../mainfile.php';
 }
+$zariliaOption['isAjax'] = true; 
 if ( !isset( $zariliaAjax ) ) {
     //require_once dirname( realpath( __FILE__ ) ) . '\xajax\xajax.inc.php';
 	if (!defined('ZAR_FRAMEWORK_PATH')) require_once ZAR_ROOT_PATH.'/include/defines.php';
