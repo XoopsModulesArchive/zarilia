@@ -129,6 +129,9 @@ class ZariliaAddon extends ZariliaObject {
     function loadInfo( $dirname, $verbose = true ) {
         $ret = false;
         global $zariliaConfig, $addonversion;
+		
+		if (substr($dirname,0,1)=='.') return;
+		if (trim($dirname)=='') return;
 
         if ( file_exists( ZAR_ROOT_PATH . '/addons/' . $dirname . '/language/' . $zariliaConfig['language'] . '/addoninfo.php' ) ) {
             include_once ZAR_ROOT_PATH . '/addons/' . $dirname . '/language/' . $zariliaConfig['language'] . '/addoninfo.php';
