@@ -1146,7 +1146,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             $whereclause = $this->keyName . " = " . $obj->getVar( $this->keyName );
         }
         $sql = "DELETE FROM " . $this->db_table . " WHERE " . $whereclause;
-        if ($this->db->Execute($sql)) {
+        if (!$this->db->Execute($sql)) {
 			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
