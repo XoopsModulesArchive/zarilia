@@ -27,8 +27,8 @@ class ZariliaTree {
         $this->pid = $pid_name;
         $sql = "SELECT * FROM " . $this->table . " ORDER BY " . $this->id;
         $result = $this->db->Execute( $sql );
-        $count = $this->db->getRowsNum( $result );
-        while ( $myrow = $this->db->fetchArray( $result ) ) {
+        $count = $result->NumRows();
+        while ( $myrow = $result->FetchRow() ) {
             $this->arr[$myrow[$this->id]] = $myrow;
             $this->ptrees[$myrow[$this->pid]][] = $myrow[$this->id];
         }
