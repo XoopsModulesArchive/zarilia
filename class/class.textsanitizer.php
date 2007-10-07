@@ -267,6 +267,19 @@ class MyTextSanitizer {
         return $text;
     }
 
+	/*
+	*  for displaying data in html textbox forms (will be removed in future)
+    *
+    * @param	string  $text
+    *
+    * @return	string
+	*/
+	function htmlSpecialChars( $text )
+	{
+		//return preg_replace("/&amp;/i", '&', htmlspecialchars($text, ENT_QUOTES));
+		return preg_replace(array("/&amp;/i", "/&nbsp;/i"), array('&', '&amp;nbsp;'), htmlspecialchars($text, ENT_QUOTES));
+	}
+
 
 	function stripHtmlSpecialChars( $text  )
 	{
