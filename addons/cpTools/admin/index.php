@@ -22,7 +22,7 @@ zarilia_admin_menu( _MD_AD_ACTION_BOX, array( "?op=hash" => 'Hash', "?op=convmod
 switch ( $op ) {
     case 'exec_command':
         $command = zarilia_cleanRequestVars( $_POST, 'command', 'default' );
-        include_once ZAR_ROOT_PATH . '/class/controls/cpsetup.php';
+        include_once ZAR_CONTROLS_PATH . '/cpsetup/control.class.php';
         $file = "exec_$command.php";
         if ( file_exists( $file ) ) {
             include $file;

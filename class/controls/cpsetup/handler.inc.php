@@ -12,6 +12,25 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
+require_once ZAR_CONTROLS_PATH.'/base/control.class.php';
+require_once ZAR_CONTROLS_PATH .'/cpsetup/progressbar.class.php';
+
+if (!function_exists('file_put_contents')) {
+define('FILE_APPEND', 1);
+function file_put_contents($n, $d, $flag = false) {
+    $mode = ($flag == FILE_APPEND || strtoupper($flag) == 'FILE_APPEND') ? 'a' : 'w';
+    $f = @fopen($n, $mode);
+    if ($f === false) {
+        return 0;
+    } else {
+        if (is_array($d)) $d = implode($d);
+        $bytes_written = fwrite($f, $d);
+        fclose($f);
+        return $bytes_written;
+    }
+}
+}
+
 function ZariliaControl_CPSetup_Handler($name, $count, $value, $source, $onfinish) {
 	global $zariliaEvents, $zariliaOption;
 	switch($source['type']) {
@@ -29,8 +48,20 @@ function ZariliaControl_CPSetup_Handler($name, $count, $value, $source, $onfinis
 		break;
 		default:
 //			$zariliaOption['setupMode'] = true;
-//
-			$events = $zariliaEvents->getEvents(XEVENT_DTYPE_ONNEXT);
+			$events = require_once $source['location'];
+			$e = array();
+			$e['code'] = $events[0][0];
+			$e['description'] = $events[0][1];
+			$e['error'] = $events[0][2];
+			$e['errortype'] = $events[0][3];
+			unset($events[0]);
+			if (count($events)>0) {
+				file_put_contents($source['location'], '<?php return '.var_export(array_values($events), true).'; ?>');
+			} else {
+				unlink($source['location']);
+			}
+			$events = &$e;
+//			$events = $zariliaEvents->getEvents(XEVENT_DTYPE_ONNEXT);
 			$fullload = 'true';
 		break;
 	}
@@ -41,9 +72,13 @@ function ZariliaControl_CPSetup_Handler($name, $count, $value, $source, $onfinis
 		if (isset($events['description'])) {
 			$comment['desc'] = $events['description'];
 			require_once ZAR_ROOT_PATH.'/class/class.vmachine.php';
+			require_once ZAR_ROOT_PATH.'/class/adodb_lite/adodb.inc.php';
 			$vm = new vMachine();
 			$events['code'] =	"
-										\$db = &ZariliaDatabaseFactory::getDatabaseConnection( false, true );
+										\$db = ADONewConnection(ZAR_DB_TYPE);
+										if ( !(\$result = \$db->Connect(ZAR_DB_HOST, ZAR_DB_USER, ZAR_DB_PASS, ZAR_DB_NAME)) ) {
+											   trigger_error( \"Database error: could not connect\", E_USER_ERROR );
+										}
 										\$zariliaOption['setupMode'] = true;
 								        ".$events['code'];
 			$comment['msg'] = $vm->exec($events['code'], true);

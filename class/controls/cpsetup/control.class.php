@@ -13,7 +13,24 @@
 // -------------------------------------------------------------------------//
 
 // Loading base class
-require_once ZAR_ROOT_PATH.'/class/ajax/control.class.php';
+require_once ZAR_CONTROLS_PATH.'/base/control.class.php';
+require_once ZAR_CONTROLS_PATH .'/cpsetup/progressbar.class.php';
+
+if (!function_exists('file_put_contents')) {
+define('FILE_APPEND', 1);
+function file_put_contents($n, $d, $flag = false) {
+    $mode = ($flag == FILE_APPEND || strtoupper($flag) == 'FILE_APPEND') ? 'a' : 'w';
+    $f = @fopen($n, $mode);
+    if ($f === false) {
+        return 0;
+    } else {
+        if (is_array($d)) $d = implode($d);
+        $bytes_written = fwrite($f, $d);
+        fclose($f);
+        return $bytes_written;
+    }
+}
+}
 
 /**
  * DHTML/Ajax control bar
@@ -23,6 +40,9 @@ require_once ZAR_ROOT_PATH.'/class/ajax/control.class.php';
  */
 class ZariliaControl_CPSetup
 	extends ZariliaControl {
+
+	var $_tmpEvents = array();
+	var $_tmpEventsPath = '';
 
 	 /**
 	 * Constructor
@@ -44,11 +64,13 @@ class ZariliaControl_CPSetup
 				$this->ZariliaControl('CPSetup',$name,  $code, false);
 			break;
 			default:
-				$this->SetVar('count',0);
+				$this->_tmpEventsPath = ZAR_CACHE_PATH.'/event_commands_'.time().'.php';
+				$source['location'] = $this->_tmpEventsPath;
+/*				$this->SetVar('count',0);
 				if (!is_object($zariliaEvents)) {
 					$zariliaEvents = &zarilia_gethandler( 'events' );
 				}
-				$zariliaEvents->deleteEvents();
+//				$zariliaEvents->deleteEvents();*/
 				$this->ZariliaControl('CPSetup',$name,  $code, true);
 			break;
 		}
@@ -74,14 +96,24 @@ class ZariliaControl_CPSetup
 		global $zariliaEvents, $zariliaUser;
 		$done = "";
 		if (!(is_object($zariliaUser))) return false;
-        $events = $zariliaEvents->create();
+		$this->_tmpEvents[] = array($code, $stepdesc, $error, $errortype);
+/*        $events = new ZariliaEvents();
 		$events->setVar('type',XEVENT_DTYPE_ONNEXT);
 		$events->setVar('uid',$zariliaUser->getVar('uid'));
 		$events->setVar('code',$code);
 		$events->setVar('comment', urlencode(serialize(array("desc"=>$stepdesc,"error"=>$error,"done"=>$done,"errortype"=>$errortype))));
 		$zariliaEvents->insert($events,true);
-		$this->SetVar('count',$this->GetVar('count')+1);
+		$this->SetVar('count',$this->GetVar('count')+1);*/
 		return true;
+	}
+
+	function render() {
+		if ($this->_tmpEventsPath!='') {
+			$this->_tmpEvents[] = array('', '', '', '');
+			file_put_contents($this->_tmpEventsPath, '<?php return '.var_export($this->_tmpEvents, true).'; ?>');
+			$this->SetVar('count',count($this->_tmpEvents)); 
+		}
+		return parent::render();
 	}
 
 	/**

@@ -613,6 +613,7 @@ switch ( $op ) {
                             ) );
                     $i++;
                 }
+				$acount = $addon['count'];
                 break;
 
             case 2:
@@ -626,8 +627,10 @@ switch ( $op ) {
                 $tlist->addFooter();
 
                 $installed_mods = &$addon_handler->getAddons( $nav, 0 );
+				$acount = 0;
                 foreach ( $installed_mods['list'] as $addon ) {
                     $listed_mods[] = $addon->getVar( 'dirname' );
+					$acount++;
                 }
 
                 $addons_dir = ZAR_ROOT_PATH . "/addons";
@@ -662,7 +665,7 @@ switch ( $op ) {
         } // switch
         $tlist->render();
         zarilia_cp_legend( $button );
-        zarilia_pagnav( $addon['count'], $nav['limit'], $nav['start'], 'start', 1, 'index.php?fct=addonsadmin&op=list&act=' . $act );
+        zarilia_pagnav( $acount, $nav['limit'], $nav['start'], 'start', 1, 'index.php?fct=addonsadmin&op=list&act=' . $act );
         break;
 
     case 'index':

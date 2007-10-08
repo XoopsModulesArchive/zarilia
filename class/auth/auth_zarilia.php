@@ -46,6 +46,7 @@ class ZariliaAuthZarilia extends ZariliaAuth {
     var $_rememberme;
     var $_persconnect;
     var $_ipaddress;
+	var $_loginanon = 0;
 
     /**
      * Authentication Service constructor
@@ -75,11 +76,11 @@ class ZariliaAuthZarilia extends ZariliaAuth {
         $this->_verification = $value;
     }
 
-    function setRememberMe( $value = '' ) {
+    function setRememberMe( $value = 0 ) {
         $this->_rememberme = ( intval( $value ) != 0 ) ? 1 : 0 ;
     }
 
-    function setLoginAnon( $value = '' ) {
+    function setLoginAnon( $value = 0 ) {
         $this->_loginanon = ( intval( $value ) != 0 ) ? 1 : 0 ;
     }
     /**
@@ -162,7 +163,7 @@ class ZariliaAuthZarilia extends ZariliaAuth {
         }
 
         if ( $init == true ) {
-            $sql = "UPDATE " . $this->_dao->prefix( 'users' ) . " SET user_cookie='" . session_id() . "', last_login = " . time() . ", user_anon = " . $_SESSION['zariliaLogonanon'] . " WHERE uid = " . $user->getVar( 'uid' );
+            $sql = "UPDATE " . $this->_dao->prefix( 'users' ) . " SET user_cookie='" . session_id() . "', last_login = " . time() . ", user_anon = " . intval($_SESSION['zariliaLogonanon']) . " WHERE uid = " . $user->getVar( 'uid' );
             $this->_dao->Execute( $sql );
             //$user->setVar( 'user_cookie', session_id() );
             //$user->setVar( 'last_login', time() );

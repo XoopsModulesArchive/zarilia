@@ -573,7 +573,7 @@ class ZariliaBlock extends ZariliaObject {
         }
         $result = $db->Execute( $sql );
         $blockids = array();
-        while ( $myrow = $db->fetchArray( $result ) ) {
+        while ( $myrow = $result->FetchRow() ) {
             $blockids[] = $myrow['gperm_itemid'];
         }
 
@@ -604,7 +604,7 @@ class ZariliaBlock extends ZariliaObject {
             $sql .= ' AND b.bid IN (' . implode( ',', $blockids ) . ')';
             $sql .= ' ORDER BY ' . $orderby;
             $result = $db->Execute( $sql );
-            while ( $myrow = $db->fetchArray( $result ) ) {
+            while ( $myrow = $result->FetchRow() ) {
                 $block = &new ZariliaBlock( $myrow );
                 $ret[$myrow['bid']] = &$block;
                 unset( $block );

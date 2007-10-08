@@ -13,8 +13,8 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
-header('Connection: keep-alive;');
-header('Keep-Alive: 30');
+//header('Connection: keep-alive;');
+//header('Keep-Alive: 30');
 
 function conv_all_dirs(&$tk, $dir, $type, $ndir) {
 	if ($handle = opendir($dir)) {

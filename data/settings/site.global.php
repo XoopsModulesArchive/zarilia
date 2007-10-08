@@ -19,9 +19,7 @@ return array (
     'tplsource' => 1,
     'session' => 0,
     'block_addon_link' => 1,
-    'messages' => 0,
-    'messages_buddy' => 0,
-    'messages_sent' => 0,
+	'ranks' => 0
   ),
   'db' => 
   array (
@@ -29,13 +27,13 @@ return array (
     'prefix' => 'perchatenpo',
     'host' => 'localhost',
     'user' => 'root',
-    'pass' => 'rootwdp',
+    'pass' => '',
     'name' => 'zarilia',
     'pconnect' => '0',
   ),
   'path' => 
   array (
-    'root' => 'F:/www/webroot/zarilia',
+    'root' => 'C:/PHPLearnWAMP/Apache2/htdocs/zarilia',
     'check' => 1,
   ),
   'groups' => 

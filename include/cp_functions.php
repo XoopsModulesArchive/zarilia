@@ -84,7 +84,7 @@ function zarilia_cp_header() {
             'text_loginip' => _MD_AM_IPLOGIN,
             'loginip' => getip(),
             'text_loginat' => _MD_AM_LOGINAT,
-            'loginat' => formatTimestamp( $zariliaUser->getVar( 'last_login' ) ),
+            'loginat' => $zariliaUser->getVar( 'last_login' ) ,
             'addon_info' => '<strong>Addons: </strong>' . $zariliaAddon->getVar( 'name' ),
             'metafooter' => '<strong>Zarilia</strong>'
             )

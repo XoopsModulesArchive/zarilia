@@ -48,7 +48,7 @@ class ZariliaUser extends ZariliaObject {
         $this->initVar( 'level', XOBJ_DTYPE_INT, 0, false );
         $this->initVar( 'theme', XOBJ_DTYPE_OTHER, null, false );
         $this->initVar( 'timezone_offset', XOBJ_DTYPE_OTHER, null, false );
-        $this->initVar( 'last_login', XOBJ_DTYPE_LTIME, 0, false );
+        $this->initVar( 'last_login', XOBJ_DTYPE_LTIME, time(), false );
         $this->initVar( 'umode', XOBJ_DTYPE_OTHER, null, false );
         $this->initVar( 'uorder', XOBJ_DTYPE_INT, 1, false );
         $this->initVar( 'ipaddress', XOBJ_DTYPE_TXTBOX, 0, true, 20 );
