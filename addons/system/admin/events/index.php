@@ -28,15 +28,16 @@ $_callback = &zarilia_gethandler( 'events' );
 $do_callback = ZariliaCallback::getSingleton();
 $do_callback->setCallback( $_callback );
 switch ( $op ) {
+    case 'delete':
     case 'maintenace':
     case 'help':
     case 'about':
     case 'edit':
-    case 'delete':
     case 'cloned':
     case "optimize":
         $do_callback->setmenu( 2 );
         call_user_func( array( $do_callback, $op ) );
+		redirect_header( $addonversion['adminpath'] . "&amp;op=list", 1, constant('_MD_AM_EVENT'.strtoupper($op)));
         break;
 
     case 'truncate':
@@ -67,6 +68,7 @@ switch ( $op ) {
 
     case 'save':
         $id = zarilia_cleanRequestVars( $_REQUEST, 'ID', 0 );
+		$event_handler = &$_callback;
         $_obj = ( $id > 0 ) ? $event_handler->get( $id ) : $event_handler->create();
         $_obj->setVars( $_REQUEST );
         $_obj->setDate();
@@ -87,7 +89,7 @@ switch ( $op ) {
     default:
         require_once ZAR_ROOT_PATH . '/class/class.tlist.php';
         $nav['start'] = zarilia_cleanRequestVars( $_REQUEST, 'start', 0 );
-        $nav['sort'] = zarilia_cleanRequestVars( $_REQUEST, 'sort', 'ID' );
+        $nav['sort'] = zarilia_cleanRequestVars( $_REQUEST, 'sort', 'id' );
         $nav['order'] = zarilia_cleanRequestVars( $_REQUEST, 'order', 'DESC', XOBJ_DTYPE_TXTBOX );
         $nav['limit'] = zarilia_cleanRequestVars( $_REQUEST, 'limit', 20 );
 
@@ -114,7 +116,7 @@ switch ( $op ) {
         $tlist->AddHeader( 'ACTION', '', 'center', false );
         $button = array( 'edit', 'delete', 'cloned' );
         foreach ( $_obj['list'] as $obj ) {
-            $id = $obj->getVar( 'ID' );
+            $id = $obj->getVar( 'id' );
             $num = $obj->getVar( 'RepeatNum' );
             $tlist->add(
                 array( $id,

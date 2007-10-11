@@ -84,7 +84,7 @@ function edit_block( $bid ) {
         $result = $db->Execute( $sql );
 
         $addons = array();
-        while ( $row = $db->fetchArray( $result ) ) {
+        while ( $row = $result->FetchRow() ) {
             $addons[] = intval( $row['addon_id'] );
         }
         $is_custom = ( $myblock->getVar( 'block_type' ) == 'C' || $myblock->getVar( 'block_type' ) == 'E' ) ? true : false;

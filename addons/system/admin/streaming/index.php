@@ -297,6 +297,8 @@ switch ( $op ) {
         $nav['streaming_id'] = zarilia_cleanRequestVars( $_REQUEST, 'streaming_id', 0 );
         $nav['streaming_display'] = zarilia_cleanRequestVars( $_REQUEST, 'streaming_display', 3 );
 
+		extract($nav);
+
         $url = ZAR_URL . "/addons/system/" . $addonversion['adminpath'] . "&amp;op=list";
         $form = "
 		 <div class='sidetitle'>" . _MD_AD_DISPLAY_BOX . "</div>

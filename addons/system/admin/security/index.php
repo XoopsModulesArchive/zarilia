@@ -199,7 +199,7 @@ switch ( $op ) {
                         $obj->getTextbox( 'security_id', 'security_title', '50' ),
                         $obj->getVar( 'security_login' ),
                         $obj->getVar( 'security_ip' ),
-                        $obj->formatTimeStamp('security_date'),
+                        $obj->getVar('security_date'),
                         $obj->getCheckbox( 'security_id' ),
                         zarilia_cp_icons( $button, 'security_id', $security_id )
                         ) );

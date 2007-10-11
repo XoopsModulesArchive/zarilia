@@ -133,6 +133,11 @@ function b_system_main_show()
 {
     global $zariliaUser, $zariliaAddon;
     //unset( $_SESSION['user']['mainmenu'] );
+
+	if (@$_REQUEST['debug'] == 'rebuild') {
+		unset($_SESSION['user']['mainmenu'] );
+	}
+
     if ( isset( $_SESSION['user']['mainmenu'] ) )
     {
         return $_SESSION['user']['mainmenu'];
@@ -198,6 +203,10 @@ function b_system_search_show()
 function b_system_user_show()
 {
     global $zariliaUser, $zariliaConfig;
+
+	if (@$_REQUEST['debug'] == 'rebuild') {
+		unset($_SESSION['user']['usermenu'] );
+	}
 
     if ( is_object( $zariliaUser ) )
     {

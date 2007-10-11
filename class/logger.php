@@ -73,7 +73,7 @@ class ZariliaLogger {
         static $instance;
         if ( !isset( $instance ) ) {
             $instance = new ZariliaLogger();
-//            set_error_handler( 'ZariliaErrorHandler_HandleError' );
+            set_error_handler( 'ZariliaErrorHandler_HandleError' );
         }
         return $instance;
     }
@@ -312,7 +312,7 @@ class ZariliaLogger {
         /**
          */
 //        $errno = $errno &error_reporting();
-		if ( $this->showErrors && $errno ) {
+		if (( $this->showErrors && $errno) || ($errno==E_USER_ERROR)) {
             $this->errors[] = compact( 'errno', 'errstr', 'errfile', 'errline' );
         }
         /**
@@ -360,6 +360,7 @@ class ZariliaLogger {
             $log_render->showTimers();
             $log_render->render();
         }
+
     }
 
     function sysRender( $errno = '', $errstr = '', $errfile = '', $errline = '', $title = '', $heading = '', $description = '', $image = '' )

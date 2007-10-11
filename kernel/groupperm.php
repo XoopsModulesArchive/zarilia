@@ -131,8 +131,10 @@ class ZariliaGroupPermHandler extends ZariliaPersistableObjectHandler {
             if ( in_array( ZAR_GROUP_ADMIN, $gperm_groupid ) ) {
                 return true;
             }
-*/
-            $criteria->add( new Criteria( 'gperm_groupid', "(" . implode( ',', $gperm_groupid ) . ")", "IN" ) );
+*/	
+			if (count($gperm_groupid)>0) {
+	            $criteria->add( new Criteria( 'gperm_groupid', "(" . implode( ',', $gperm_groupid ) . ")", "IN" ) );
+			} 
         } else {
             /*
             if ( ZAR_GROUP_ADMIN == $gperm_groupid ) {

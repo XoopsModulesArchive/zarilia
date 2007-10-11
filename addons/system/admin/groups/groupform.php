@@ -21,12 +21,14 @@ $addon_handler = &zarilia_gethandler( 'addon' );
 $handle = opendir( ZAR_ROOT_PATH . '/addons/system/admin' );
 while ( false != $file = readdir( $handle ) ) {
     if ( strtolower( $file ) != 'cvs' && !preg_match( "/[.]/", $file ) && is_dir( ZAR_ROOT_PATH . '/addons/system/admin/' . $file ) ) {
-        @include ZAR_ROOT_PATH . '/addons/system/admin/' . $file . '/zarilia_version.php';
-        if ( !empty( $addonversion['category'] ) ) {
-            $cat_array[ $addonversion['category'] ] = ucfirst( $file );
-        }
-        unset( $addonversion );
-        natsort( $cat_array );
+		if (file_exists(ZAR_ROOT_PATH . '/addons/system/admin/' . $file . '/zarilia_version.php')) {
+		    require ZAR_ROOT_PATH . '/addons/system/admin/' . $file . '/zarilia_version.php';
+	        if ( !empty( $addonversion['category'] ) ) {
+		        $cat_array[ $addonversion['category'] ] = ucfirst( $file );
+	        }
+//		    unset( $addonversion );
+			natsort( $cat_array );
+		}
     }
 }
 $form = new ZariliaThemeForm( $form_title, 'group_form', $addonversion['adminpath'] );

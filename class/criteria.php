@@ -229,11 +229,15 @@ class CriteriaCompo extends CriteriaElement {
         $ret = '';
         $count = count( $this->criteriaElements );
         if ( $count > 0 ) {
-            $ret = '(' . $this->criteriaElements[0]->render();
+            $ret = $this->criteriaElements[0]->render();
             for ( $i = 1; $i < $count; $i++ ) {
-                $ret .= ' ' . $this->conditions[$i] . ' ' . $this->criteriaElements[$i]->render();
+				if ($ret == '') {
+					$ret .= $this->criteriaElements[$i]->render();
+				} else {
+					$ret .= ' ' . $this->conditions[$i] . ' ' . $this->criteriaElements[$i]->render();
+				}                
             }
-            $ret .= ')';
+            $ret = "($ret)";
         }
         return $ret;
     }
@@ -304,6 +308,9 @@ class Criteria extends CriteriaElement {
         $this->prefix = $prefix;
         $this->function = $function;
         $this->column = $column;
+		if (is_array($value) || is_object($value)) {
+			trigger_error( 'Criteria value can\'t be array', E_USER_ERROR);
+		}
         $this->value = $value;
         $this->operator = $operator;
     }

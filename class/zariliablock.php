@@ -55,7 +55,7 @@ class ZariliaBlock extends ZariliaObject {
     function load( $id )
     {
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'newblocks' ) . ' WHERE bid = ' . $id;
-        $arr = $this->db->fetchArray( $this->db->Execute( $sql ) );
+        $arr = $this->db->GetArray( $sql);
         $this->assignVars( $arr );
     }
 
@@ -279,7 +279,8 @@ class ZariliaBlock extends ZariliaObject {
      */
     function &getAllBlocksByGroup( $groupid, $asobject = true, $side = null, $visible = -1, $orderby = "b.weight,b.bid", $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+		global $zariliaDB;
+        $db = &$zariliaDB;
         $ret = array();
         if ( !$asobject ) {
             $sql = "SELECT b.bid ";
@@ -320,9 +321,11 @@ class ZariliaBlock extends ZariliaObject {
         }
         $sql .= " ORDER BY $orderby";
 
+//		echo $sql;
+
         $result = $db->Execute( $sql );
         $added = array();
-        while ( $myrow = $result->fetchRow() ) {
+        while ( $myrow = $result->FetchRow() ) {
             if ( !in_array( $myrow['bid'], $added ) ) {
                 if ( !$asobject ) {
                     $ret[] = $myrow['bid'];
@@ -337,7 +340,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllBlocksMid( $mid, $asobject = true, $visible = -1, $orderby = "b.weight", $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
 
         if ( !$asobject ) {
@@ -372,7 +375,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllBlocks( $rettype = "object", $side = null, $visible = -1, $orderby = "side,weight,bid", $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
         $where_query = " WHERE isactive=" . $isactive;
         if ( isset( $side ) ) {
@@ -429,7 +432,7 @@ class ZariliaBlock extends ZariliaObject {
      */
     function &getByAddon( $addonid, $asobject = true, $visible = 3 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         if ( $asobject == true ) {
             $sql = "SELECT * FROM " . $db->prefix( "newblocks" ) . " WHERE mid=" . $addonid;
         } else {
@@ -454,7 +457,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllByGroupAddonAdmin( $groupid, $selmod, $addon_id = 0, $toponlyblock = false, $visible = 3, $orderby = 'b.weight,b.bid', $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
         $sql = "SELECT DISTINCT gperm_itemid FROM " . $db->prefix( 'group_permission' ) . " WHERE gperm_name = 'block_read' AND gperm_modid = 1";
         if ( is_array( $groupid ) ) {
@@ -510,7 +513,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllByGroupAddon( $groupid, $addon_id = 0, $toponlyblock = false, $visible = -1, $orderby = 'b.weight,b.bid', $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
         $sql = "SELECT DISTINCT gperm_itemid FROM " . $db->prefix( 'group_permission' ) . " WHERE gperm_name = 'block_read' AND gperm_modid = 1";
         if ( is_array( $groupid ) ) {
@@ -561,7 +564,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getAllByGroupAddonSides( $groupid, $addon_id = 0, $toponlyblock = false, $visible = -1, $orderby = 'b.weight,b.bid', $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
         $sql = "SELECT DISTINCT gperm_itemid FROM " . $db->prefix( 'group_permission' ) . " WHERE gperm_name = 'block_read' AND gperm_modid = 1";
         if ( is_array( $groupid ) ) {
@@ -615,7 +618,7 @@ class ZariliaBlock extends ZariliaObject {
 
     function &getNonGroupedBlocks( $addon_id = 0, $toponlyblock = false, $visible = -1, $orderby = 'b.weight,b.bid', $isactive = 1 )
     {
-        $db = &ZariliaDatabaseFactory::getDatabaseConnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $ret = array();
         $bids = array();
         $sql = "SELECT DISTINCT(bid) from " . $db->prefix( 'newblocks' );

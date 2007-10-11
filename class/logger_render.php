@@ -42,6 +42,7 @@ class ZariliaLogger_render {
     var $dumpLog = false;
     var $mailLog = false;
     var $sqlLog = false;
+	var $_developerdebug = false;
 
     var $errortype = array (
         E_ERROR => 'Error',
@@ -184,7 +185,8 @@ class ZariliaLogger_render {
         $zariliaTpl->assign( 'error_errline', $this->data->errors[0]['errline'] );
         $zariliaTpl->addCss( ZAR_THEME_URL . '/default/css/style.css' );
 
-        if ( function_exists( 'debug_backtrace' ) && $dobacktrace ) {
+		$ret = '';
+        if ( function_exists( 'debug_backtrace' ) /*&& $dobacktrace*/ ) {
             $backtrace = debug_backtrace();
             if ( !$this->_developerdebug ) {
                 $ret = '<div><strong>' . _ERR_BACKTRACE . '</strong></div>' . chr( 10 );
@@ -294,7 +296,7 @@ class ZariliaLogger_render {
      */
     function logMail() {
         include ZAR_ROOT_PATH . '/errorconfig.php';
-        if ( $_SESSION['mailer_skip'] == true ) {
+        if ( @$_SESSION['mailer_skip'] == true ) {
             return false;
         }
         if ( func_num_args() == 1 ) {

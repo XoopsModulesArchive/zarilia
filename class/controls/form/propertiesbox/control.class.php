@@ -13,24 +13,30 @@ class ZariliaControl_FormField_Propertiesbox
 	}
 
 	function &addField($type, $name, $value='', $title='') {
+		static $fields_count = 0;
 		require_once ZAR_CONTROLS_PATH.'/form/'.$type.'/control.class.php';
 		$class = 'ZariliaControl_FormField_'.ucfirst($type);
 		$name = $this->name.'['.$name.']';
 		switch (func_num_args()) {
 			case 2:
-				return $this->_fields[] = new $class($name);
+				$this->_fields[$fields_count] = new $class($name);
+				return $this->items[$fields_count++];
 			break;
 			case 3:
-				return $this->_fields[] = new $class($name, $value);
+				$this->_fields[$fields_count] = new $class($name, $value);
+				return $this->items[$fields_count++];
 			break;
 			case 5:
 				$param = func_get_arg(4);
-				return $this->items[] = new $class($name, $value, $title, $param);
+				$this->items[$fields_count] = new $class($name, $value, $title, $param);
+				return $this->items[$fields_count++];
 			break;
 			default:
-				return $this->items[] = new $class($name, $value, $title);
+				$this->items[$fields_count] = new $class($name, $value, $title);
+				return $this->items[$fields_count++];
 			break;
 		}
+		return false;
 	}
 
 	function render() {

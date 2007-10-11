@@ -121,9 +121,16 @@ class ZariliaMembershipHandler extends ZariliaPersistableObjectHandler {
     function getUsersByGroup( $groupid, $limit = 0, $start = 0 ) {
         $ret = array();
         $sql = 'SELECT uid FROM ' . $this->db->prefix( 'groups_users_link' ) . ' WHERE groupid=' . intval( $groupid );
-        if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {
-            return $ret;
-        } while ( $myrow = $result->FetchRow() ) {
+		if (($start == 0) && ($limit == 0))  {
+			$result = $this->db->SelectLimit( $sql);
+		} elseif ($start == 0) {
+			$result = $this->db->SelectLimit( $sql, $limit );
+		} elseif ($limit == 0) {
+			$result = $this->db->SelectLimit( $sql, null, $start );
+		} else {
+			$result = $this->db->SelectLimit( $sql, $limit, $start );
+		}
+		while ( $myrow = $result->FetchRow() ) {
             $ret[] = $myrow['uid'];
         }
         return $ret;

@@ -28,7 +28,7 @@ extends ZariliaObject {
      */
     function ZariliaEvents() {
         $this->zariliaObject();
-        $this->initVar( "ID", XOBJ_DTYPE_INT, null, false );
+        $this->initVar( "id", XOBJ_DTYPE_INT, null, false );
         $this->initVar( "NextTime", XOBJ_DTYPE_INT, time(), true );
         $this->initVar( "RepeatNum", XOBJ_DTYPE_INT, -1, true );
         $this->initVar( "RepeatInterval", XOBJ_DTYPE_INT, null, true );
@@ -98,7 +98,7 @@ extends ZariliaObject {
         global $_REQUEST;
         $_date = zarilia_cleanRequestVars( $_REQUEST, 'NextTime', '' );
         if ( isset( $_date['date'] ) && !empty( $_date['date'] ) ) {
-            if ( strpos( '%T' ) === false ) {
+            if ( strpos( $_date['time'], '%T' ) === false ) {
                 $date = strtotime( $_date['date'] ) + intval( $_date['time'] );
             } else {
                 if ( $_date['time'] == 0 ) $_date['time'] = '00:00';
@@ -125,7 +125,7 @@ class ZariliaEventsHandler extends ZariliaPersistableObjectHandler {
      * @return
      */
     function ZariliaEventsHandler( &$db ) {
-        $this->ZariliaPersistableObjectHandler( $db, 'events', 'zariliaevents', 'ID' );
+        $this->ZariliaPersistableObjectHandler( $db, 'events', 'zariliaevents', 'id' );
     }
 
     /**
@@ -153,7 +153,7 @@ class ZariliaEventsHandler extends ZariliaPersistableObjectHandler {
     function &getEventsObj( $nav, $opt ) {
         $criteria = new CriteriaCompo();
         $obj['count'] = $this->getCount( $criteria );
-
+		
         $criteria->setSort( $nav['sort'] );
         $criteria->setOrder( $nav['order'] );
         $criteria->setStart( $nav['start'] );
@@ -173,7 +173,7 @@ class ZariliaEventsHandler extends ZariliaPersistableObjectHandler {
                 if ( !isset( $criteria ) ) {
                     $criteria = new CriteriaCompo();
                 }
-                $criteria->add( new Criteria( 'ID', $event->getVar( 'ID' ) ) );
+                $criteria->add( new Criteria( 'id', $event->getVar( 'id' ) ) );
             }
         }
         if ( isset( $criteria ) ) {

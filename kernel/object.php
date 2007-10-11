@@ -848,7 +848,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
         } else {
             $sql = 'SELECT  * FROM ' . $this->db_table;
         }
-        if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
+        if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {			
             if ( $this->doPermissions ) {
                 $sql .= ' AND ' . $criteria->render();
             } else {
@@ -860,7 +860,6 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             $limit = $criteria->getLimit();
             $start = $criteria->getStart();
         }
-//		var_dump($sql);
 //		$this->db->SetFetchMode(ADODB_FETCH_DEFAULT);
 		if ($limit == 0) {
 			$result = $this->db->Execute($sql);
@@ -1057,13 +1056,15 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             return false;
         }
 	    if ( $obj->isNew() ) {
-	        if (!is_array( $this->keyName ) ) {
-		        $obj->assignVar( $this->keyName, $this->db->GenID($this->db_table.'_seq') );
-	        }
-            foreach ( $obj->cleanVars as $k => $v ) {
-                $cleanvars[$k] = ( $obj->vars[$k]['data_type'] == XOBJ_DTYPE_INT ) ? intval( $v ) : $this->db->Qmagic( $v );
+            foreach ( $obj->cleanVars as $k => $v ) {				
+				$cleanvars[$k] = ( $obj->vars[$k]['data_type'] == XOBJ_DTYPE_INT ) ? intval( $v ) : $this->db->qstr( $v );
             }
-            unset( $cleanvars[$this->keyName] );
+	        if (!is_array( $this->keyName ) ) {
+				$cleanvars[$this->keyName]  = $this->db->GenID($this->db_table.'_seq');
+		        $obj->assignVar( $this->keyName, $cleanvars[$this->keyName]  );		
+	        } 
+		//	die();
+           // unset( $cleanvars[$this->keyName] );
             $sql = "INSERT INTO " . $this->db_table . " (`" . implode( '`, `', array_keys( $cleanvars ) ) . "`) VALUES (" . implode( ',', array_values( $cleanvars ) ) . ")";
         } else {
             unset( $obj->cleanVars[$this->keyName] );

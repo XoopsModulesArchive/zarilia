@@ -184,10 +184,10 @@ if ( !isset( $show_cblock_down ) ) {
 }
 
 //unset( $_SESSION['user'] );
-if ( !isset( $_SESSION['user']['menu'] ) ) {
+if (( !isset( $_SESSION['user']['menu'] ) ) ||(@$_REQUEST['debug'] == 'rebuild') ){
     $menu_handler = &zarilia_gethandler( 'menus' );
     $menu_handler->displayTopMenu();
-}
+} 
 $zariliaTpl->assign_by_ref( 'system_menu', $_SESSION['user']['menu'] );
 $zariliaTpl->assign_by_ref( 'system_footermenu', $_SESSION['user']['footermenu'] );
 

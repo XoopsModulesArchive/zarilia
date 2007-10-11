@@ -238,6 +238,10 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
 
     function &doSort( &$obj, $type = '' )
     {
+		if (!is_array($obj)) {
+			$false = false;
+			return $false;
+		}
         foreach( $obj as $sort )
         {
             $thisMenu[$sort->getVar( 'menu_type' )][] = $sort; //array( 'url' => $sort->getVar( 'menu_link' ), 'title' => $obj->getVar( 'menu_title' ), 'image' => $obj->getVar( 'menu_image' ) );
@@ -249,8 +253,15 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
     {
         global $zariliaUser, $zariliaTpl;
 
-        $menu_obj = &$this->getMenus( null );
-        $thisMenu = &$this->doSort( $menu_obj['list'] );
+		if (@$_REQUEST['debug'] == 'rebuild') {
+			unset($_SESSION['user']['menu']);
+			unset($_SESSION['user']['footermenu']);
+			unset($_SESSION['user']['topmenu']);
+		}
+
+        if (!($menu_obj = &$this->getMenus( null ))) return false;
+        if (!($thisMenu = &$this->doSort( $menu_obj['list'] ))) return false;
+
 
         if ( isset( $thisMenu['footermenu'] ) )
         {
@@ -364,6 +375,7 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
             }
             $i++;
         }
+		return true;
     }
 }
 

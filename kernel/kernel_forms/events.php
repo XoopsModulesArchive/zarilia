@@ -15,7 +15,7 @@ defined( 'ZAR_ROOT_PATH' ) or die( 'You do not have permission to access this fi
 
 global $addonversion;
 include_once ZAR_ROOT_PATH . '/class/zariliaformloader.php';
-$form = new ZariliaThemeForm( $caption, 'addevent', $addonversion['adminpath'], 'post' );
+$form = new ZariliaThemeForm( @$caption, 'addevent', $addonversion['adminpath'], 'post' );
 $form->addElement( new ZariliaFormDateTime( _MD_AM_EVENTTIME, 'NextTime', 15, $this->getVar( 'NextTime' ), true ) );
 $repeat_num = new ZariliaFormText( 'How many times to repeat this task?', 'RepeatNum', 5, 5, $this->getVar( 'RepeatNum' ), true );
 $repeat_num->setExtra( 'onkeypress="setTimeout(function() {var obj = document.getElementById(\'RepeatNum\'); obj.value = parseInt(obj.value);  if (isNaN(obj.value)) obj.value = 0; if (obj.value<0) obj.value = 0; var obj2 = document.getElementById(\'repeat_block\'); if (obj.value == 1) {obj2.style.display = \'none\';} else {obj2.style.display = \'\';} },200);"' );

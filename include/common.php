@@ -86,10 +86,11 @@ require_once ZAR_ROOT_PATH . '/include/functions.php';
  */
 //require_once ZAR_ROOT_PATH . '/class/database/databasefactory.php';
 //$zariliaDB = &ZariliaDatabaseFactory::getDatabaseConnection();
+require_once ZAR_ROOT_PATH . '/class/adodb_lite/adodb-errorhandler.inc.php';
 require_once ZAR_ROOT_PATH . '/class/adodb_lite/adodb.inc.php';
 $zariliaDB = ADONewConnection(ZAR_DB_TYPE);
 if ( !($result = $zariliaDB->Connect(ZAR_DB_HOST, ZAR_DB_USER, ZAR_DB_PASS, ZAR_DB_NAME)) ) {
-    trigger_error( "Database error: could not connect", E_USER_ERROR );
+    trigger_error( "Database error: could not connect (".$zariliaDB->ErrorMsg().")", E_USER_ERROR );
 }
 // $GLOBALS['zariliaLogger']->sysRender( E_USER_ERROR, _MA_AD_RUSUREINSFAILED, __FILE__, __LINE__ );
 /**

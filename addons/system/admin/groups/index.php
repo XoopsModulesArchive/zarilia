@@ -54,10 +54,11 @@ switch ( $op ) {
         $addonperm_handler = &zarilia_gethandler( 'groupperm' );
         $a_mod_value = call_user_func( array( $addonperm_handler, 'getItemIds' ), 'addon_admin', $_obj->getVar( 'groupid' ) );
         $r_mod_value = call_user_func( array( $addonperm_handler, 'getItemIds' ), 'addon_read', $_obj->getVar( 'groupid' ) );
+
         /*
 		* Get all blocks actually seen by this group membership
 		*/
-        $r_block_value = &ZariliaBlock::getAllBlocksByGroup( $_obj->getVar( 'groupid' ), false );
+        $r_block_value = &ZariliaBlock::getAllBlocksByGroup( $g_id, false );
         $g_id_value = $_obj->getVar( 'groupid' );
         $type_value = $_obj->getVar( 'group_type', 'E' );
         if ( ZAR_GROUP_ADMIN == $g_id ) {
@@ -85,7 +86,8 @@ switch ( $op ) {
         if ( $usercount < 200 && $membercount < 200 ) {
             // do the old way only when counts are small
             $mlist = array();
-            $members = &call_user_func( array( $member_handler, 'getUsersByGroup' ), $g_id );
+            $members = &$member_handler->getUsersByGroup($g_id); 
+			var_dump($members);
             if ( count( $members ) > 0 ) {
                 $member_criteria = new Criteria( 'uid', '(' . implode( ',', $members ) . ')', 'IN' );
                 $member_criteria->setSort( 'uname' );
@@ -108,7 +110,7 @@ switch ( $op ) {
 		    <tr>
 			 <td class="even" valign="top">
 			  <!---form start here-->
-			  <form op="index.php" method="post">
+			  <form action="index.php" method="post">
 			  <select name="uids[]" size="20" multiple="multiple">
               <option value="0">---------------------------------------------------</option>';
             foreach ( $users as $u_id => $u_name ) {
@@ -123,14 +125,16 @@ switch ( $op ) {
 				<input type='hidden' name='op' value='addUser' />
 				<input type='hidden' name='fct' value='groups' />
 				<input type='hidden' name='groupid' value='" . $_obj->getVar( "groupid" ) . "' />
+			    <input type='hidden' name='g_id' value='" . $g_id . "' />
 				<input type='submit' name='submit' value='" . _MA_AD_ADDBUTTON . "' />
 				</form>
 				<!---form end here-->
 				<!---form start here-->
-				<form op='index.php' method='post' />
+				<form action='index.php' method='post' />
 				<input type='hidden' name='op' value='delUser' />
 				<input type='hidden' name='fct' value='groups' />
 				<input type='hidden' name='groupid' value='" . $_obj->getVar( "groupid" ) . "' />
+			    <input type='hidden' name='g_id' value='" . $g_id . "' />
 				<input type='submit' name='submit' value='" . _MA_AD_DELBUTTON . "' />
 			   </td>";
             /*
@@ -157,7 +161,7 @@ switch ( $op ) {
                 $mlist = call_user_func( array( $member_handler, 'getUserList' ), $member_criteria );
             }
             echo '<a href="' . ZAR_URL . '/addons/system/index.php?fct=findusers&amp;group=' . $g_id . '">' . _MA_AD_FINDU4GROUP . '</a><br />
-            	 <form op="index.php" method="post">
+            	 <form action="index.php" method="post">
 				<table class="outer">
 			   <tr>
 			   <th align="center">' . _MA_AD_MEMBERS . '<br />';
@@ -170,6 +174,7 @@ switch ( $op ) {
 				<input type='hidden' name='op' value='delUser' />
 				<input type='hidden' name='fct' value='groups' />
 				<input type='hidden' name='groupid' value='" . $_obj->getVar( 'groupid' ) . "' />
+				<input type='hidden' name='g_id' value='" . $g_id . "' />
 				<input type='hidden' name='memstart' value='" . $memstart . "' />
 				<select name='uids[]' size='10' multiple='multiple'>";
             foreach ( $mlist as $m_id => $m_name ) {
@@ -195,7 +200,7 @@ switch ( $op ) {
         $group->setVar( 'description', $_REQUEST['desc'] );
         if ( !in_array( $group->getVar( 'groupid' ), $zariliaOption['non_delete_groups'] ) ) {
             if ( count( $system_catids ) > 0 ) {
-                $group->setVar( 'group_type232', 'Admin' );
+                $group->setVar( 'group_type', 'Admin' );
             } else {
                 $group->setVar( 'group_type', '' );
             }
@@ -356,7 +361,7 @@ switch ( $op ) {
             $menu_handler->render( 1 );
             $GLOBALS['zariliaLogger']->sysRender();
         } else {
-            redirect_header( $addonversion['adminpath'] . '&amp;op=modify&amp;g_id=' . $g_id, 0, _DBUPDATED );
+            redirect_header( $addonversion['adminpath'] . '&op=user&g_id=' . $g_id, 0, _DBUPDATED );
         }
         break;
 
@@ -377,12 +382,12 @@ switch ( $op ) {
                 }
             }
         }
-        if ( $err ) {
+        if ( @$err ) {
             zarilia_cp_header();
             $menu_handler->render( 0 );
             zarilia_error( $err );
         }
-        redirect_header( $addonversion['adminpath'] . '&amp;op=modify&amp;g_id=' . $groupid . '&amp;memstart=' . $memstart, 0, _DBUPDATED );
+        redirect_header( $addonversion['adminpath'] . '&amp;op=user&amp;g_id=' . $groupid . '&amp;memstart=' . $memstart, 0, _DBUPDATED );
         break;
 
     case 'list':
