@@ -39,7 +39,6 @@ function ZariliaControl_CPSetup_Handler($name, $count, $value, $source, $onfinis
 			if (isset($data[$value])) {
 				$events = unserialize($data[$value]);
 				foreach ($events as $k => $v) $events[$k] = urldecode($v);
-//				var_dump($events);
 			} else {
 				//unlink($source['location']);
 			}
