@@ -168,7 +168,7 @@ class ZariliaRegister {
         global $zariliaDB;
         $count = 0;
         if ( in_array( $vari, array( 'email', 'uname' , 'login', 'ipaddress' ) ) ) {
-            $sql = "SELECT COUNT(*) FROM " . $zariliaDB->prefix( 'users' ) . " where $vari=" . $zariliaDB->Qmagic( $this->_var );
+            $sql = "SELECT COUNT(*) FROM " . $zariliaDB->prefix( 'users' ) . " where $vari=" . $zariliaDB->qstr( $this->_var );
             $result = $zariliaDB->Execute( $sql );
             list( $count ) = $zariliaDB->fetchRow( $result );
         }
