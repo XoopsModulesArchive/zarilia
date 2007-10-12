@@ -41,7 +41,7 @@ class flood_protection {
      * @return
      */
     function _register_user() {
-        $sql = sprintf( 'INSERT INTO %s ( ip, time ) VALUES ( %s, %u )', $this->table, $this->db->Qmagic( $this->_ip ), time() );
+        $sql = sprintf( 'INSERT INTO %s ( ip, time ) VALUES ( %s, %u )', $this->table, $this->db->qstr( $this->_ip ), time() );
         if ( !$result = $this->db->Execute( $sql ) ) {
             return false;
         }
@@ -55,7 +55,7 @@ class flood_protection {
      * @return
      */
     function _find_user() {
-        $result = $this->db->Execute( 'SELECT time FROM ' . $this->table . ' WHERE ip=' . $this->db->Qmagic( $this->_ip ) . ' LIMIT 1' );
+        $result = $this->db->Execute( 'SELECT time FROM ' . $this->table . ' WHERE ip=' . $this->db->qstr( $this->_ip ) . ' LIMIT 1' );
         $count = $this->db->getRowsNum( $result );
         if ( $count > 0 ) {
             return true;
@@ -70,7 +70,7 @@ class flood_protection {
      * @return
      */
     function _user_flooding() {
-        $sql = 'SELECT time FROM ' . $this->table . ' WHERE ip=' . $this->db->Qmagic( $this->_ip ) . ' AND time >=' . ( time() - $this->secs ) . ' LIMIT 1';
+        $sql = 'SELECT time FROM ' . $this->table . ' WHERE ip=' . $this->db->qstr( $this->_ip ) . ' AND time >=' . ( time() - $this->secs ) . ' LIMIT 1';
         $result = $this->db->Execute( $sql );
         $count = $this->db->getRowsNum( $result );
         if ( $count > 0 ) {
@@ -86,7 +86,7 @@ class flood_protection {
      * @return
      */
     function _update_user() {
-        $sql = sprintf( "UPDATE %s SET time = " . time() . " WHERE ip = %u", $this->table, $this->db->Qmagic( $this->_ip ) );
+        $sql = sprintf( "UPDATE %s SET time = " . time() . " WHERE ip = %u", $this->table, $this->db->qstr( $this->_ip ) );
         if ( !$result = $this->db->Execute( $sql ) ) {
             return false;
         }
