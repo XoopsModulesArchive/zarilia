@@ -99,7 +99,7 @@ switch ( strtolower( $op ) ) {
 		zarilia_cp_header();
 
 		require_once ZAR_CONTROLS_PATH.'/form/control.class.php';
-		$form = new ZariliaControl_Form('./addons/system/admin/preferences/index.php');
+		$form = new ZariliaControl_Form('/addons/system/admin/preferences/index.php');
 		foreach ( $configs as $config ) {
 			$form->addField('hidden', 'conf_ids[]', $config->getVar( 'conf_id' ));
 			switch ($formtype = $config->getVar( 'conf_formtype' )) {
@@ -231,7 +231,6 @@ switch ( strtolower( $op ) ) {
 		$form->addField('hidden', 'confcat_id', $confcat_id);
 		$form->addField('hidden', 'fct', $fct);
 		echo $form->render();
-		var_dump(abs(microtime() - $time));
 		break;	
 
         /*
@@ -261,7 +260,6 @@ switch ( strtolower( $op ) ) {
 		*/
         zarilia_cp_header();
         $form->display();
-		var_dump(abs(microtime() - $time));
         break;
 
     case 'save':
@@ -286,8 +284,6 @@ switch ( strtolower( $op ) ) {
             for ( $i = 0; $i < $count; $i++ ) {
                 $config = &$config_handler->getConfig( $_REQUEST['conf_ids'][$i] );
                 $new_value = $_REQUEST[$config->getVar( 'conf_name' )];
-//				var_dump($_REQUEST);
-//				var_dump($config->getVar( 'conf_name' ));
 					//Y-m-d H:i:s
                 if ( is_array( $new_value ) || $new_value != $config->getVar( 'conf_value' ) ) {
                     // if language has been changed
@@ -351,10 +347,6 @@ switch ( strtolower( $op ) ) {
                         $startmod_updated = true;
                     }
                     $config->setConfValueForInput( $new_value );
-//					echo "<br>".$config->getVar( 'conf_name' );
-//					var_dump($new_value);
-//					var_dump($_REQUEST);
-//					die();
                     $config_handler->insertConfig( $config );
                 }
                 unset( $new_value );
