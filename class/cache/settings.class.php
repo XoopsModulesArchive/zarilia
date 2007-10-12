@@ -34,8 +34,6 @@ class ZariliaSettings
 		if (($i = strpos($data = parent::read($module), "\n"))!==false) {
 			$this->_settings[$module] = eval(trim(substr($data,$i)));
 		}
-
-//		var_dump($this->_settings[$module][$category]);
 		if (!isset($this->_settings[$module][$category][$setting])) $this->write($module, $category, $this->_settings, $default);
 		return $this->_settings[$module][$category][$setting];
 	}
