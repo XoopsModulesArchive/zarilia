@@ -136,7 +136,7 @@ class ZariliaBannerAddsHandler extends ZariliaPersistableObjectHandler {
             list( $name ) = $db->fetchRow( $result );
 
             $new_name = preg_replace( '!\s+!', '_', strtolower( $name ) );
-            $banner_dir = ZAR_ROOT_PATH . "/uploads/banners/$new_name";
+            $banner_dir = ZAR_UPLOAD_PATH . "/banners/$new_name";
             zarilia_admin_mkdir( $banner_dir, 0777 );
 
             include_once ZAR_ROOT_PATH . '/class/uploader.php';
