@@ -210,7 +210,6 @@ function zarilia_addon_install( $dirname ) {
 							( bid, mid, func_num, options, name, title, content, side, weight, block_type, c_type, isactive, dirname, func_file, show_func, edit_func, template, bcachetime, last_modified, description, liveupdate )
 								VALUES
 							( $newbid, $newmid, " . intval( $blockkey ) . ", '$options', '" . $block_name . "','" . $block_name . "', '', 9, 0, 'M', 'H', 1, '" . addslashes( $dirname ) . "', '" . addslashes( trim( $block['file'] ) ) . "', '" . addslashes( trim( $block['show_func'] ) ) . "', '" . addslashes( $edit_func ) . "', '" . $template . "', 0, " . time() . ", '" . $block_description . "', $block_liveupdate )";
-                        // var_dump($sql);
                         if ( !$db->Execute( $sql ) ) {
                             $GLOBALS['zariliaLoger']->setSysError( E_USER_ERROR, 'ERROR: Could not add block <b>' . $block['name'] . '</b> to the database! Database error: <b>' . $db->error() . '</b>' );
                         } else {
