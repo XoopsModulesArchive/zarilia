@@ -8,7 +8,7 @@ if ( !is_object( $GLOBALS['zariliaUser'] ) || !is_object( $GLOBALS['zariliaAddon
 if ( isset( $zariliaOption['dyncontent'] ) ) {
 	switch ( getQueryVar( 'op', 0 ) ) {
         case 'php':
-            $_info = array( 0 => INFO_GENERAL, 1 => INFO_CONFIGURATION, 2 => INFO_ADDONS, 3 => INFO_ENVIRONMENT, 4 => INFO_VARIABLES, 5 => INFO_LICENSE );
+            $_info = array( 0 => INFO_GENERAL, 1 => INFO_CONFIGURATION, 2 => INFO_MODULES, 3 => INFO_ENVIRONMENT, 4 => INFO_VARIABLES, 5 => INFO_LICENSE );
             $content = '<div>' . php_info( $_info[getQueryVar( 'opt' )] ) . '<div>';
             break;
         case 'zarilia':
@@ -47,7 +47,7 @@ if ( isset( $zariliaOption['dyncontent'] ) ) {
                     $content .= '<th colspan="2"><img src="' . ZAR_URL . str_replace( '\\', '/', substr( __FILE__, strlen( ZAR_ROOT_PATH ) ) ) . '"></th>';
                     $content .= '</tr>';
                     $content .= '<tr>';
-                    $content .= '<td class="head" valign="top" align="left" width="50%">Version</td><td class="even" valign="top" align="left">' . CODE_PLUS_VERSION . '</td>';
+                    $content .= '<td class="head" valign="top" align="left" width="50%">Version</td><td class="even" valign="top" align="left">' . ZARILIA_VERSION . '</td>';
                     $content .= '</tr>';
                     $content .= '<tr>';
                     $content .= '<td class="head" valign="top" align="left" width="50%">Homepage</td><td class="even" valign="top" align="left"><a href="http://www.zarilia.com" target="_blank">http://www.zarilia.com</a></td>';
@@ -87,7 +87,7 @@ if ( isset( $zariliaOption['dyncontent'] ) ) {
         // break;
         case 'php':
 	        $menu_handler->render( 0 );
-            $_info = array( 0 => INFO_GENERAL, 1 => INFO_CONFIGURATION, 2 => INFO_ADDONS, 3 => INFO_ENVIRONMENT, 4 => INFO_VARIABLES, 5 => INFO_LICENSE );
+            $_info = array( 0 => INFO_GENERAL, 1 => INFO_CONFIGURATION, 2 => INFO_MODULES, 3 => INFO_ENVIRONMENT, 4 => INFO_VARIABLES, 5 => INFO_LICENSE );
             $_text = array( 0 => _MD_CINFO_GENERAL, 1 => _MD_CINFO_CONFIGURATION, 2 => _MD_CINFO_ADDONS, 3 => _MD_CINFO_ENVIRONMENT, 4 => _MD_CINFO_VARIABLES, 5 => _MD_CINFO_LICENSE );
             foreach ( $_info as $k => $v ) {
                 $tabs[ ucfirst( strtolower( $_text[$k] ) ) ] = $url . '&amp;opt=' . $k;
