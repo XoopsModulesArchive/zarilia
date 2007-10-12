@@ -34,7 +34,7 @@ class ZariliaFormSelectImg extends ZariliaFormSelect {
     var $_id;
     var $_imgcat_id;
 
-    var $_category = "uploads";
+    var $_category = '/';
     var $_options = array();
     var $_multiple = false;
     var $_size = 10;
@@ -199,17 +199,17 @@ class ZariliaFormSelectImg extends ZariliaFormSelect {
                 $art_image_array = $image_handler->getList( $this->_imgcat_id, null, 'image' );
                 $this->setCategory( $image_cat_obj->getVar( 'imgcat_dirname' ) );
             } else {
-                $art_image_array = ZariliaLists::getImgListAsArray( ZAR_ROOT_PATH . '/' . $this->getCategory() );
+                $art_image_array = ZariliaLists::getImgListAsArray( ZAR_UPLOAD_PATH . '/' . $this->getCategory() );
             }
         } else {
-            $art_image_array = ZariliaLists::getImgListAsArray( ZAR_ROOT_PATH . '/' . $this->getCategory() );
+            $art_image_array = ZariliaLists::getImgListAsArray( ZAR_UPLOAD_PATH . '/' . $this->getCategory() );
         }
 
         $image_array = array();
         if ( $this->getValue() ) {
             $image_array = explode( '|', $this->getValue() );
             if ( count( $image_array ) == 1 ) {
-                $image_size = @getimagesize ( ZAR_ROOT_PATH . '/' . $this->getCategory() . '/' . $this->getValue() );
+                $image_size = @getimagesize ( ZAR_UPLOAD_PATH . '/' . $this->getCategory() . '/' . $this->getValue() );
                 $image_array[0] = $this->getValue();
                 $image_array[1] = ( $image_size[0] > 300 ) ? '300' : $image_size[0];
                 $image_array[2] = ( $image_size[1] > 250 ) ? '250' : $image_size[1];
@@ -231,15 +231,15 @@ class ZariliaFormSelectImg extends ZariliaFormSelect {
         } else {
             $ret .= " name='" . $this->getName() . "' id='" . $this->getName() . "' ";
         }
-		$ret .= " onchange='chooseImage(this, \"" . $this->_id . "\", \"" . ZAR_URL . '/' . $this->getCategory() . "\", \"\")'>";
+		$ret .= " onchange='chooseImage(this, \"" . $this->_id . "\", \"" . ZAR_UPLOAD_URL . '/' . $this->getCategory() . "\", \"\")'>";
 
 		/**
          */
-        $ret .= " onchange='chooseImage(this, \"" . $this->_id . "\", \"" . ZAR_URL . '/' . $this->getCategory() . "\", \"\")'>";
+        $ret .= " onchange='chooseImage(this, \"" . $this->_id . "\", \"" . ZAR_UPLOAD_URL . '/' . $this->getCategory() . "\", \"\")'>";
 		$result = array_merge( array( '' => 'No Selection' ), $art_image_array );
         foreach ( $result as $value => $name ) {
 			$image_name = explode( '.', $name );
-			$imagesize2 = @getimagesize( ZAR_ROOT_PATH . "/" . $this->getCategory() . "/" . $value );
+			$imagesize2 = @getimagesize( ZAR_UPLOAD_PATH . "/" . $this->getCategory() . "/" . $value );
             $imagewidth = ( $imagesize2[0] > 300 ) ? '300' : $imagesize2[0];
             $imageheight = ( $imagesize2[1] > 250 ) ? '250' : $imagesize2[1];
             unset( $imagesize );
@@ -255,10 +255,10 @@ class ZariliaFormSelectImg extends ZariliaFormSelect {
         }
 		/**/
 		$image = $image_array[0];
-		$image_display = ZAR_URL . '/' . $this->getCategory() . '/' . $image_array[0];
+		$image_display = ZAR_UPLOAD_URL . '/' . $this->getCategory() . '/' . $image_array[0];
 		$ret .= "	</select></div><br /><br />
 			<div id=\"" . $this->_id . "\" style=\"padding: 10px; text-align: center; border:1px solid black;\">
-			  <img src='" . ZAR_URL . "/" . $this->getCategory() . "/" . $image_array[0] . "' onclick='openWithSelfMain(\"".ZAR_URL . "/" . $this->getCategory() . "/" . $image_array[0]."\",\"image\" );' align='absmiddle' width='{$image_array[1]}' height='{$image_array[2]}' />
+			  <img src='" . ZAR_UPLOAD_URL . "/" . $this->getCategory() . "/" . $image_array[0] . "' onclick='openWithSelfMain(\"".ZAR_UPLOAD_URL . "/" . $this->getCategory() . "/" . $image_array[0]."\",\"image\" );' align='absmiddle' width='{$image_array[1]}' height='{$image_array[2]}' />
 			 </div>
 			</td>
 		   </tr>
