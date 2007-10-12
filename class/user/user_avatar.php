@@ -91,7 +91,7 @@ class ZariliaUserAvatar extends ZariliaAuth {
                                 unlink( $oldavatar_path );
                             }
                         }
-                        $sql = sprintf( "UPDATE %s SET user_avatar = %s WHERE uid = %u", $zariliaDB->prefix( 'users' ), $zariliaDB->Qmagic( $uploader->getSavedFileName() ), $zariliaUser->getVar( 'uid' ) );
+                        $sql = sprintf( "UPDATE %s SET user_avatar = %s WHERE uid = %u", $zariliaDB->prefix( 'users' ), $zariliaDB->qstr( $uploader->getSavedFileName() ), $zariliaUser->getVar( 'uid' ) );
                         $zariliaDB->Execute( $sql );
                         $avt_handler->addUser( $avatar->getVar( 'avatar_id' ), $zariliaUser->getVar( 'uid' ) );
                         redirect_header( 'userinfo.php?t=' . time() . '&amp;uid=' . $zariliaUser->getVar( 'uid' ), 0, _US_PROFUPDATED );
@@ -164,7 +164,7 @@ class ZariliaUserAvatar extends ZariliaAuth {
 		-->
 		</script>
 		</head><body>
-		<h4><?php echo _MSC_AVAVATARS;
+		<h4><?php echo _US_AVATAR;
 
         ?></h4>
 		<form name='avatars'>
@@ -172,6 +172,7 @@ class ZariliaUserAvatar extends ZariliaAuth {
 		<?php
         $avatar_handler = &zarilia_gethandler( 'avatar' );
         $avatarslist = &$avatar_handler->getAList( 's' );
+		if (!((count($avatarslist)<2) && ($avatarslist['blank.png'] == _NONE))) {
         $cntavs = 0;
         $counter = isset( $_GET['start'] ) ? intval( $_GET['start'] ) : 0;
         foreach ( $avatarslist as $file => $name ) {
@@ -184,9 +185,12 @@ class ZariliaUserAvatar extends ZariliaAuth {
             }
         }
         echo '</tr></table></form>';
-        if ( $closebutton ) {
+        if ( @$_REQUEST['closebutton'] ) {
             echo '<div style="text-align:center;"><input class="formButton" value="' . _CLOSE . '" type="button" onclick="javascript:window.close();" /></div>';
         }
+		} else {
+			echo _US_NOAVATARS;
+		}
         zarilia_footer();
         exit();
     }
@@ -208,11 +212,17 @@ class ZariliaUserAvatar extends ZariliaAuth {
         $form = new ZariliaThemeForm( _US_CHOOSEAVT, 'uploadavatar', 'edituser.php' );
         $avatar_select = new ZariliaFormSelect( '', 'user_avatar', $zariliaUser->getVar( 'user_avatar' ), 5 );
         $avatar_handler = &zarilia_gethandler( 'avatar' );
-        $avatar_select->addOptionArray( $avatar_handler->getAList( 's' ) );
-        $avatar_select->setExtra( "onchange='showImgSelected(\"avatar\", \"user_avatar\", \"uploads\", \"\", \"" . ZAR_URL . "\")'" );
+		$allitems = &$avatar_handler->getAList( 's' );
+		$extra = '';
+		if ((count($allitems)<2) && ($allitems['blank.png'] == _NONE)) {
+		   $extra = 'disabled="disabled" ';
+		}
+        $avatar_select->addOptionArray( $allitems );
+        $avatar_select->setExtra( "onchange='showImgSelected(\"avatar\", \"user_avatar\", \"\", \"\", \"" . ZAR_UPLOAD_URL . "\")' ".$extra );
         $avatar_tray = new ZariliaFormElementTray( _US_AVATAR, '&nbsp;' );
         $avatar_tray->addElement( $avatar_select );
-        $avatar_tray->addElement( new ZariliaFormLabel( '', "<img src='" . ZAR_UPLOAD_URL . "/" . $zariliaUser->getVar( 'user_avatar' ) . "' name='avatar' valign='middle' id='avatar' alt='' /><br /><br /><a href=\"javascript:openWithSelfMain('" . ZAR_URL . "/index.php?page_type=avatar&amp;act=avatarDisplay','avatars',600,400);\">" . _LIST . "</a><br /><br />" ) );
+		if (($file = $zariliaUser->getVar( 'user_avatar' ))=='') $file = 'blank.png';
+        $avatar_tray->addElement( new ZariliaFormLabel( '', "<img src='" . ZAR_UPLOAD_URL . "/" . $file . "' name='avatar' valign='middle' id='avatar' alt='' /><br /><br /><a href=\"javascript:openWithSelfMain('" . ZAR_URL . "/index.php?page_type=avatar&amp;act=avatarDisplay','avatars',600,400);\">" . _LIST . "</a><br /><br />" ) );
         $form->addElement( $avatar_tray );
 
         $form->addElement( new ZariliaFormHidden( 'uid', $zariliaUser->getVar( 'uid' ) ) );
@@ -221,7 +231,7 @@ class ZariliaUserAvatar extends ZariliaAuth {
 
         $avatar_allow_upload = ( $zariliaConfigUser['avatar_allow_upload'] == 1 && $zariliaUser->getVar( 'posts' ) >= $zariliaConfigUser['avatar_minposts'] ) ? 1 : 0;
         $oldavatar = $zariliaUser->getVar( 'user_avatar' );
-        $avatar_show = ( $oldavatar && $oldavatar != 'blank.gif' ) ? 1 : 0;
+        $avatar_show = ( $oldavatar && $oldavatar != 'blank.png' ) ? 1 : 0;
 
         $content['form'] = $form;
         $content['file'] = 'avatar';
