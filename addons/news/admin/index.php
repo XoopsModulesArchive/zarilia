@@ -420,7 +420,7 @@ function LaunchNewsletter()
 	}
 	$tbltopics = array();
 	$exportedstories = $story->NewsExport($timestamp1, $timestamp2, $topiclist, 0, $tbltopics);
-    $newsfile = ZAR_ROOT_PATH.'/uploads/newsletter.txt';
+    $newsfile = ZAR_UPLOAD_PATH.'/newsletter.txt';
 	if(count($exportedstories)) {
 		$fp = fopen($newsfile,'w');
 		if(!$fp) {
@@ -446,7 +446,7 @@ function LaunchNewsletter()
 			fwrite($fp, $footer);
 		}
 		fclose($fp);
-		$newsfile=ZAR_URL.'/uploads/newsletter.txt';
+		$newsfile=ZAR_UPLOAD_URL.'/newsletter.txt';
 		printf(_AM_NEWS_NEWSLETTER_READY,$newsfile,ZAR_URL.'/addons/news/admin/index.php?op=deletefile&amp;type=newsletter');
 	} else {
 		printf(_AM_NEWS_NOTHING);
@@ -526,7 +526,7 @@ function LaunchExport()
 	$tbltopics=array();
 	$exportedstories=$story->NewsExport($timestamp1, $timestamp2, $topiclist, $topicsexport, $tbltopics);
 	if(count($exportedstories)) {
-		$xmlfile=ZAR_ROOT_PATH.'/uploads/stories.xml';
+		$xmlfile=ZAR_UPLOAD_PATH.'/stories.xml';
 		$fp=fopen($xmlfile,'w');
 		if(!$fp) {
 			redirect_header('index.php',4,sprintf(_AM_NEWS_EXPORT_ERROR,$xmlfile));
@@ -584,7 +584,7 @@ function LaunchExport()
 		}
 		fwrite($fp,news_utf8_encode("</news_stories>\n"));
 		fclose($fp);
-		$xmlfile=ZAR_URL.'/uploads/stories.xml';
+		$xmlfile=ZAR_UPLOAD_URL.'/stories.xml';
 		printf(_AM_NEWS_EXPORT_READY,$xmlfile,ZAR_URL.'/addons/news/admin/index.php?op=deletefile&amp;type=xml');
 	} else {
 		printf(_AM_NEWS_EXPORT_NOTHING);
@@ -1335,7 +1335,7 @@ switch ($op) {
 	case 'deletefile':
 		zarilia_cp_header();
 		if($_GET['type']=='newsletter')	{
-			$newsfile=ZAR_ROOT_PATH.'/uploads/newsletter.txt';
+			$newsfile=ZAR_UPLOAD_PATH.'/newsletter.txt';
 			if(unlink($newsfile)) {
 				redirect_header('index.php', 2, _AM_NEWS_DELETED_OK);
 			} else {
@@ -1343,7 +1343,7 @@ switch ($op) {
 			}
 		} else {
 			if($_GET['type']=='xml') {
-				$xmlfile=ZAR_ROOT_PATH.'/uploads/stories.xml';
+				$xmlfile=ZAR_UPLOAD_PATH.'/stories.xml';
 				if(unlink($xmlfile)) {
 					redirect_header( 'index.php', 2, _AM_NEWS_DELETED_OK );
 				} else {

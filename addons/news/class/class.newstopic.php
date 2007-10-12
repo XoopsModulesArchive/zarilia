@@ -255,7 +255,7 @@ $db=&$zariliaDB;
 	function getTopic($topicid)
 	{
 		$sql = "SELECT * FROM ".$this->table." WHERE topic_id=".$topicid."";
-		$array = $this->db->fetchArray($this->db->Execute($sql));
+		$array = $this->db->GetRow($sql);
 		$this->makeTopic($array);
 	}
 

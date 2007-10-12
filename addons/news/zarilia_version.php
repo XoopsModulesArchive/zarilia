@@ -165,10 +165,10 @@ global $zariliaDB, $zariliaUser, $zariliaConfig, $zariliaAddon, $zariliaAddonCon
 if (is_object($zariliaAddon) && $zariliaAddon->getVar('dirname') == $addonversion['dirname'] && $zariliaAddon->getVar('isactive')) {
 	// 2) If there's no topics to display as sub menus we can go on
 	if(!isset($_SESSION['items_count']) || $_SESSION['items_count']== -1) {
-		$sql = "SELECT COUNT(*) as cpt FROM ".$zariliaDB->prefix("topics")." WHERE menu=1";
+		$sql = "SELECT COUNT(*) cpt FROM ".$zariliaDB->prefix("topics")." WHERE menu=1";
 		$result = $zariliaDB->Execute($sql);
-		list($count) = $result->FetchRow();
-		$_SESSION['items_count'] = $count;
+		$count = $result->FetchRow();
+		$_SESSION['items_count'] = floatval($count['cpt']);
 	} else {
 		$count = $_SESSION['items_count'];
 	}

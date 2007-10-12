@@ -121,22 +121,22 @@ $db=&$zariliaDB;
 
 			// Then we insert all its articles
 			$result = $db->Execute('SELECT * FROM '.$ams_articles.' WHERE topicid='.$ams_topicid.' ORDER BY created');
-			while ( $article = $db->fetchArray($result) ) {
+			while ( $article = $result->FetchRow() ) {
 				$ams_newsid = $article['storyid'];
 
 				// We search for the last version
 				$result2 = $db->Execute('SELECT * FROM '.$ams_text.' WHERE storyid='.$ams_newsid.' AND current=1');
-				$text_lastversion = $db->fetchArray($result2);
+				$text_lastversion = $result2->FetchRow();
 
 				// We search for the number of votes
 				$result3 = $db->Execute('SELECT count(*) as cpt FROM '.$ams_rating.' WHERE storyid='.$ams_newsid);
-				$votes = $db->fetchArray($result3);
+				$votes = $result3->FetchRow();
 
 				// The links
 				$links='';
 				if($use_extlinks) {
 					$result7 = $db->Execute('SELECT * FROM '.$ams_links.' WHERE storyid='.$ams_newsid.' ORDER BY linkid');
-					while ( $link = $db->fetchArray($result7) ) {
+					while ( $link = $result7->FetchRow() ) {
 						if(trim($links)=='') {
 							$links="\n\n"._AMS_NW_RELATEDARTICLES."\n\n";
 						}
@@ -182,7 +182,7 @@ $db=&$zariliaDB;
 
   				// The files
 				$result4 = $db->Execute('SELECT * FROM '.$ams_files.' WHERE storyid='.$ams_newsid);
-				while ( $file = $db->fetchArray($result4) ) {
+				while ( $file = $result4->FetchRow() ) {
 					$sfile = new sFiles();
   					$sfile->setFileRealName($file['filerealname']);
   					$sfile->setStoryid($news_newsid);
@@ -197,7 +197,7 @@ $db=&$zariliaDB;
 
 				// The ratings
 				$result5 = $db->Execute('SELECT * FROM '.$ams_rating.' WHERE storyid='.$ams_newsid);
-				while ( $ratings = $db->fetchArray($result5) ) {
+				while ( $ratings = $result5->FetchRow() ) {
 					$result6 = $db->ExecuteF('INSERT INTO '.$news_stories_votedata." (storyid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (".$news_newsid.','.$ratings['ratinguser'].','.$ratings['rating'].','.$ratings['ratinghostname'].','.$ratings['ratingtimestamp'].')');
 				}
 

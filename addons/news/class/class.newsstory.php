@@ -65,7 +65,7 @@ $this->db=&$zariliaDB;
 	function GetCountStoriesPublishedBefore($timestamp, $expired, $topicslist='')
 	{
 		global $zariliaDB;
-$db=&$zariliaDB;
+		$db=&$zariliaDB;
 		$sql = 'SELECT count(*) as cpt FROM '.$db->prefix('stories').' WHERE published <=' . $timestamp;
 		if($expired) {
 			$sql .=' AND (expired>0 AND expired<='.time().')';
@@ -74,8 +74,8 @@ $db=&$zariliaDB;
 			$sql .=' AND topicid IN ('.$topicslist.')';
 		}
 		$result = $db->Execute($sql);
-		list($count) = $db->fetchRow($result);
-		return $count;
+		$count = $result->FetchRow();
+		return $count['cpt'];
 	}
 
 
@@ -85,7 +85,8 @@ $db=&$zariliaDB;
 	function getStory($storyid)
 	{
 		$sql = 'SELECT s.*, t.* FROM '.$this->table.' s, '.$this->db->prefix('topics').' t WHERE (storyid='.intval($storyid).') AND (s.topicid=t.topic_id)';
-		$array = $this->db->fetchArray($this->db->Execute($sql));
+		$result = $this->db->Execute($sql);		
+		$array = $result->FetchRow();
 		$this->makeStory($array);
 	}
 
@@ -116,7 +117,7 @@ $db=&$zariliaDB;
 			$db->ExecuteF('DELETE FROM '.$vote_prefix.' WHERE storyid='.$myrow['storyid']);	// Delete votes
 			// Remove files and records related to the files
 			$result2 = $db->Execute('SELECT * FROM '.$files_prefix.' WHERE storyid='.$myrow['storyid']);
-			while ($myrow2 = $db->fetchArray($result2)) {
+			while ($myrow2 = $result2->FetchRow()) {
 				$name = ZAR_ROOT_PATH.'/uploads/'.$myrow2['downloadname'];
 				if(file_exists($name)) {
 					unlink($name);
@@ -499,7 +500,7 @@ $db=&$zariliaDB;
 	{
 		global $zariliaDB;
 $db=&$zariliaDB;
-		$sql = 'SELECT COUNT(*) FROM '.$db->prefix('stories').' WHERE published > 0 AND published <= '.time().' AND (expired = 0 OR expired > '.time().')';
+		$sql = 'SELECT COUNT(*) cnt FROM '.$db->prefix('stories').' WHERE published > 0 AND published <= '.time().' AND (expired = 0 OR expired > '.time().')';
 		if ( !empty($topicid) ) {
 			$sql .= ' AND topicid='.intval($topicid);
 		} else {
@@ -515,8 +516,8 @@ $db=&$zariliaDB;
 		    }
 		}
 		$result = $db->Execute($sql);
-		list($count) = $db->fetchRow($result);
-		return $count;
+		$count = $result->FetchRow();
+		return floatval($count['cnt']);
 	}
 
 
@@ -776,7 +777,7 @@ $db=&$zariliaDB;
 				$sql .=' AND topicid IN ('.$topicslist.')';
 			}
 			$result = $this->db->Execute($sql);
-			while ( $myrow = $this->db->fetchArray($result) ) {
+			while ( $myrow = $result->FetchRow() ) {
 				$tbltopics[]=$myrow['topicid'];
 			}
 		}
@@ -788,7 +789,7 @@ $db=&$zariliaDB;
 		}
 		$sql .= " ORDER BY $order DESC";
 		$result = $this->db->Execute($sql);
-		while ($myrow = $this->db->fetchArray($result)) {
+		while ($myrow = $result->FetchRow()) {
 			if ($asobject) {
 				$ret[] = new NewsStory($myrow);
 			} else {

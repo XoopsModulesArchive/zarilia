@@ -107,7 +107,7 @@ $this->db=&$zariliaDB;
        $ret = array();
        $sql = "SELECT * FROM ".$this->table." WHERE storyid=".intval($storyid);
        $result = $this->db->Execute($sql);
-       while( $myrow = $this->db->fetchArray($result)) {
+       while( $myrow = $result->FetchRow()) {
 			$ret[] = new sFiles($myrow);
        }
        return $ret;
@@ -116,7 +116,8 @@ $this->db=&$zariliaDB;
     function getFile($id)
     {
        $sql = "SELECT * FROM ".$this->table." WHERE fileid=".intval($id);
-       $array = $this->db->fetchArray($this->db->Execute($sql));
+	   $result = $this->db->Execute($sql);
+       $array = $result->FetchRow();
        $this->makeFile($array);
     }
 
@@ -295,7 +296,7 @@ $this->db=&$zariliaDB;
     {
        $sql = "SELECT count(fileid) as cnt FROM ".$this->table." WHERE storyid=".intval($storyid)."";
        $result = $this->db->Execute($sql);
-       $myrow = $this->db->fetchArray($result);
+       $myrow = $result->FetchRow();
        return $myrow['cnt'];
     }
 
@@ -307,7 +308,7 @@ $this->db=&$zariliaDB;
 			$sql = "SELECT storyid, count(fileid) as cnt FROM ".$this->table." WHERE storyid IN (";
         	$sql .= implode(',', $stories).") GROUP BY storyid";
 	       	$result = $this->db->Execute($sql);
-	       	while( $myrow = $this->db->fetchArray($result)) {
+	       	while( $myrow = $result->FetchRow()) {
 	    		$ret[$myrow['storyid']]=$myrow['cnt'];
 	       	}
        	}
