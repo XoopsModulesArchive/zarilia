@@ -140,7 +140,9 @@ switch(substr( $file, -4 )) {
 'define("_EDIT"' => 'if (!defined(\'_EDIT\')) define("_EDIT"',
 'define("_DELETE"' => 'if (!defined(\'_DELETE\')) define("DELETE"',
 'OpenTable();' => '',
-'CloseTable();' => ''
+'CloseTable();' => '',
+'ZAR_ROOT_PATH.\'/uploads' => 'ZAR_UPLOAD_PATH.\'',
+'ZAR_URL.\'/uploads' => 'ZAR_UPLOAD_URL.\''
 		);
 		$contents = file_get_contents( "$source/$file" );
 		$contents = str_replace(array_keys($replace_data), array_values($replace_data), $contents);
