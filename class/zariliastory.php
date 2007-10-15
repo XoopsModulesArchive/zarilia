@@ -213,7 +213,8 @@ class ZariliaStory
 	function getStory($storyid)
 	{
 		$sql = "SELECT * FROM ".$this->table." WHERE storyid=".$storyid."";
-		$array = $this->db->fetchArray($this->db->query($sql));
+		$result = $this->db->Execute($sql);
+		$array = $result->FetchRow();
 		$this->makeStory($array);
 	}
 

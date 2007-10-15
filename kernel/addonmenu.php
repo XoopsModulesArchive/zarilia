@@ -117,9 +117,12 @@ class ZariliaAddonMenuHandler extends ZariliaAddonHandler {
         /*
 		* Selects current menu tab
 		*/
-        foreach ( $this->_menutabs as $k => $menus ) {
-            $menuItems[] = $menus;
-        }
+//        foreach ( $this->_menutabs as $k => $menus ) {
+//            $menuItems[] = $menus;
+  //      } 
+		$menuItems =  array_values($this->_menutabs);
+		$count = count($menuItems)-1;
+		if ($currentoption>$count) $currentoption = $count;
         $breadcrumb = $menuItems[$currentoption];
         $menuItems[$currentoption] = 'current';
 

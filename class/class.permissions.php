@@ -71,7 +71,7 @@ class cpPermission {
         }
 
         if ( $this->db->getRowsNum( $result ) ) {
-            while ( $_row_arr = $this->db->fetcharray( $result ) ) {
+            while ( $_row_arr = $result->FetchArray() ) {
                 $_form_info->addItem( $_row_arr[$_arr['cid']], $_row_arr[$_arr['title']], $_row_arr[$_arr['pid']] );
             }
             $ret = $_form_info->render();

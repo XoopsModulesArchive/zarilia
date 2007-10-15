@@ -88,7 +88,7 @@ class ZariliaImagesetHandler extends ZariliaPersistableObjectHandler {
         if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
             return $ret;
-        } while ( $myrow = $this->db->fetchArray( $result ) ) {
+        } while ( $myrow = $result->FetchRow() ) {
             $obj = &$this->create( false );
             $obj->assignVars( $myrow );
             if ( !$id_as_key ) {

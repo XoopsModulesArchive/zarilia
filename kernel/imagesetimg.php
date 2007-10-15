@@ -72,7 +72,7 @@ class ZariliaImagesetimgHandler extends ZariliaPersistableObjectHandler {
         if ( !$result = $this->db->Execute( $sql, $limit, $start )) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this -> db -> errno()." ".$this -> db -> error() , __FILE__, __LINE__ );
             return $ret;
-        } while ( $myrow = $this->db->fetchArray( $result ) ) {
+        } while ( $myrow = $result->FetchRow() ) {
             $imgsetimg = new ZariliaImagesetimg();
             $imgsetimg->assignVars( $myrow );
             if ( !$id_as_key ) {
@@ -92,15 +92,15 @@ class ZariliaImagesetimgHandler extends ZariliaPersistableObjectHandler {
      * @return 
      **/
     function getCount( $criteria = null ) {
-        $sql = 'SELECT COUNT(i.imgsetimg_id) FROM ' . $this -> db_table . ' i LEFT JOIN ' . $this -> db_table_link . ' l ON l.imgset_id=i.imgsetimg_imgset';
+        $sql = 'SELECT COUNT(i.imgsetimg_id) crx FROM ' . $this -> db_table . ' i LEFT JOIN ' . $this -> db_table_link . ' l ON l.imgset_id=i.imgsetimg_imgset';
         if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
             $sql .= ' ' . $criteria->renderWhere() . ' GROUP BY i.imgsetimg_id';
         } 
         if ( !$result = &$this->db->Execute( $sql ) ) {
             return 0;
         } 
-        list( $count ) = $this->db->fetchRow( $result );
-        return $count;
+        $count  = $result->FetchRow();
+        return $count['crx'];
     } 
 
     /**

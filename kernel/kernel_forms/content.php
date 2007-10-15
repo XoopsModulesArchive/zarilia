@@ -21,6 +21,7 @@ $category_handler = &zarilia_gethandler( 'category' );
 global $addonversion, $zariliaUser, $_callback;
 
 $opt = zarilia_cleanRequestVars( $_REQUEST, 'opt', 0 );
+$pagetype = zarilia_cleanRequestVars( $_REQUEST, 'pagetype', 'static' );
 $tabbar = new ZariliaTabMenu( $opt );
 $url = $addonversion['adminpath'] . '&op=edit&amp;content_id=' . $this->getVar( 'content_id' );
 $this_array = array( _MA_AD_CONTENT_INFO => $url );
@@ -91,10 +92,12 @@ switch ( intval( $opt ) ) {
         $content_subtitle->setDescription( _MA_AD_ECONTENT_SUBTITLE_DSC );
         $form->addElement( $content_subtitle, true );
 
+		echo $GLOBALS['zariliaUser']->getVar( 'editor' ).'-0----------------------------';
+
         if ( $this->getVar( 'content_type' ) != 'static' ) {
             $options['name'] = 'content_intro';
             $options['value'] = $this->getVar( 'content_intro', 'e' );
-            $content_intro = new ZariliaFormEditor( _MA_AD_ECONTENT_BODY, $GLOBALS['zariliaUser']->getVar( 'editor' ), $options, $nohtml = false, $onfailure = 'textarea' );
+            $content_intro = new ZariliaFormEditor( _MA_AD_ECONTENT_BODY, $GLOBALS['zariliaUser']->getVar( 'editor' ), $options );
             $content_intro->setDescription( _MA_AD_ECONTENT_BODY_DSC );
             $content_intro->setNocolspan( 1 );
             $form->addElement( $content_intro );

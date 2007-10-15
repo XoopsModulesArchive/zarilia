@@ -87,7 +87,6 @@ switch ( $op ) {
             // do the old way only when counts are small
             $mlist = array();
             $members = &$member_handler->getUsersByGroup($g_id); 
-			var_dump($members);
             if ( count( $members ) > 0 ) {
                 $member_criteria = new Criteria( 'uid', '(' . implode( ',', $members ) . ')', 'IN' );
                 $member_criteria->setSort( 'uname' );

@@ -63,14 +63,14 @@ class ZariliaTplsetHandler extends ZariliaPersistableObjectHandler {
     function &getByName( $tplset_name ) {
         $tplset_name = trim( $tplset_name );
         if ( $tplset_name != '' ) {
-            $sql = 'SELECT * FROM ' . $this->db->prefix( 'tplset' ) . ' WHERE tplset_name=' . $this->db->Qmagic( $tplset_name );
+            $sql = 'SELECT * FROM ' . $this->db->prefix( 'tplset' ) . ' WHERE tplset_name=' . $this->db->qstr( $tplset_name );
             if ( !$result = $this->db->Execute( $sql ) ) {
                 return false;
             }
             $numrows = $this->db->getRowsNum( $result );
             if ( $numrows == 1 ) {
                 $tplset = new ZariliaTplset();
-                $tplset->assignVars( $this->db->fetchArray( $result ) );
+                $tplset->assignVars( $result->FetchRow() );
                 return $tplset;
             }
         }
@@ -85,7 +85,7 @@ class ZariliaTplsetHandler extends ZariliaPersistableObjectHandler {
         if ( !$result = $this->db->Execute( $sql ) ) {
             return false;
         }
-        $sql = sprintf( "DELETE FROM %s WHERE tplset_name = %s", $this->db->prefix( 'imgset_tplset_link' ), $this->db->Qmagic( $tplset->getVar( 'tplset_name' ) ) );
+        $sql = sprintf( "DELETE FROM %s WHERE tplset_name = %s", $this->db->prefix( 'imgset_tplset_link' ), $this->db->qstr( $tplset->getVar( 'tplset_name' ) ) );
         $this->db->Execute( $sql );
         return true;
     }

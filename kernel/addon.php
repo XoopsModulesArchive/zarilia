@@ -204,8 +204,6 @@ class ZariliaAddon extends ZariliaObject {
         global $zariliaUser, $zariliaOption;
         $groupperm_handler = &zarilia_gethandler( 'groupperm' );
         $groups = $zariliaUser ? $zariliaUser->getGroups() : ZAR_GROUP_ANONYMOUS;
-//		var_dump($groups);
-//		die();
         if ( file_exists( './zarilia_version.php' ) ) {
             $right = 'addon_read';
         } elseif ( file_exists( '../zarilia_version.php' ) ) {
@@ -214,8 +212,6 @@ class ZariliaAddon extends ZariliaObject {
         } else {
             return $ret;
         }
-//		var_dump($groupperm_handler->checkRight( $right, $this->getVar( 'mid' ), $groups ));
-//		die('ooo');
         return $groupperm_handler->checkRight( $right, $this->getVar( 'mid' ), $groups );
     }
 
@@ -359,7 +355,6 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
                 $addon = new ZariliaAddon();
                 $myrow = $result->FetchRow();// $this->db->FetchArray( $result );
                 $addon->assignVars( $myrow );
-//				var_dump($addon);
                 $_cachedAddon_dirname[$dirname] = &$addon;
                 $_cachedAddon_mid[$addon->getVar( 'mid' )] = &$addon;
                 return $addon;
@@ -438,7 +433,7 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
         $sql = sprintf( "SELECT block_id FROM %s WHERE addon_id = %u", $this->db->prefix( 'block_addon_link' ), $addon->getVar( 'mid' ) );
         if ( $result = $this->db->Execute( $sql ) ) {
             $block_id_arr = array();
-            while ( $myrow = $result->fetchRow() ) {
+            while ( $myrow = $result->FetchRow() ) {
                 array_push( $block_id_arr, $myrow['block_id'] );
             }
         }
@@ -521,7 +516,7 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
         } elseif ( $type == 2 ) {
             $sql = 'SELECT dirname FROM ' . $this->db->prefix( 'addons' );
             $result = &$this->db->Execute( $sql );
-            while ( $myrow = $this->db->fetchArray( $result ) ) {
+            while ( $myrow = $result->FetchRow() ) {
                 $obj['list'] = $myrow['dirname'];
             }
             $obj['count'] = count( $obj['list'] );

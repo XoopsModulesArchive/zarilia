@@ -59,7 +59,6 @@ function adodb_errormsg($value)
 
 function adodb_error($provider,$dbType,$errno)
 {
-	//var_dump($errno);
 	if (is_numeric($errno) && $errno == 0)
 		return 0;
 
@@ -100,8 +99,6 @@ function adodb_error($provider,$dbType,$errno)
 		default:
 			return DB_ERROR;
 	}	
-	//print_r($map);
-	//var_dump($errno);
 	if (isset($map[$errno])) 
 		return $map[$errno];
 	return DB_ERROR;

@@ -19,6 +19,20 @@ return array (
     'tplsource' => 1,
     'session' => 0,
     'block_addon_link' => 1,
+    'ranks' => 0,
+    'zarilianotifications' => 0,
+    'configcategory' => 0,
+    'smiles' => 0,
+    'streaming' => 0,
+    'security' => 0,
+    'avatar' => 0,
+    'mediacategory' => 0,
+    'zariliacomments' => 0,
+    'errors' => 0,
+    'profile' => 1,
+    'messages' => 0,
+    'messages_buddy' => 0,
+    'messages_sent' => 0,
 	'ranks' => 0,
 	'zarilianotifications' => 0,
 	'configcategory' => 0,
@@ -33,14 +47,14 @@ return array (
     'type' => 'mysql',
     'prefix' => 'perchatenpo',
     'host' => 'localhost',
-    'user' => 'skycom',
-	'pass' => 'TwApuDsdees65',
-	'name' => 'skycom',
-	'pconnect' => '0',
+    'user' => 'root',
+    'pass' => '',
+    'name' => 'zarilia',
+    'pconnect' => '0',
   ),
   'path' => 
   array (
-    'root' => '/home/skycom/web/beta',
+    'root' => 'C:/PHPLearnWAMP/Apache2/htdocs/zarilia',
     'check' => 1,
   ),
   'groups' => 
@@ -54,6 +68,6 @@ return array (
     7 => 'BANNED',
   ),
   'sites' => 
-  array (  
+  array (
   ),
 );

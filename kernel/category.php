@@ -141,7 +141,7 @@ class ZariliaCategoryHandler extends ZariliaPersistableObjectHandler {
         $sql = 'SELECT DISTINCT category_id, category_image FROM ' . $db->prefix( 'category' );
         $result = $db->Execute( $sql );
         $ret = '';
-        while ( $myrow = $this->db->fetchArray( $result ) ) {
+        while ( $myrow = $result->FetchRow() ) {
             if ( $myrow['category_image'] != '||' ) {
                 $ret[$myrow['category_id']] = htmlSpecialChars( $myrow['category_image'], ENT_QUOTES );
             }

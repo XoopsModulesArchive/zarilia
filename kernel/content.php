@@ -263,7 +263,7 @@ class ZariliaContentHandler extends ZariliaPersistableObjectHandler {
         $criteria->add( new Criteria( 'content_id', $this->_id, '=' ) );
         $criteria->add( new Criteria( 'content_display', 1, '=' ) );
         $criteria->add( new Criteria( 'content_approved', 1, '=' ) );
-        // $criteria->add( new Criteria( 'content_status', 3, '!=' ) );
+        $criteria->add( new Criteria( 'content_status', 3, '!=' ) );
         $criteria->add( new Criteria( 'content_published', 0, '>' ), 'AND' );
         $criteria->add( new Criteria( 'content_published', time(), '<=' ), 'AND' );
         $criteria->add( new Criteria( 'content_expired', 0, '=' ), 'AND' );
@@ -299,7 +299,7 @@ class ZariliaContentHandler extends ZariliaPersistableObjectHandler {
         if ( !$result = $this->db->SelectLimit( $sql, 0, 0 ) ) {
 			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
-        } while ( $myrow = $this->db->fetchArray( $result ) ) {
+        } while ( $myrow = $result->FetchRow() ) {
             $ret = &$myrow['section_type'];
         }
         return $ret;

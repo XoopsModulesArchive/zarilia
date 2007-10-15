@@ -138,7 +138,7 @@ class ZariliaAvatarHandler extends ZariliaPersistableObjectHandler
 			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;
         }
-        while ( $myrow = $this->db->fetchArray( $result ) )
+        while ( $myrow = $result->FetchRow() )
         {
             $ret[] = &$myrow['user_id'];
         }
@@ -152,7 +152,7 @@ class ZariliaAvatarHandler extends ZariliaPersistableObjectHandler
      * @param unknown $avatar_display
      * @return
      */
-    function getAList( $avatar_type = null, $avatar_display = null )
+    function &getAList( $avatar_type = null, $avatar_display = null )
     {
         $this->keyName = 'avatar_file';
         $query = 'avatar_file, avatar_name';

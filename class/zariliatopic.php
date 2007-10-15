@@ -76,7 +76,8 @@ class ZariliaTopic
 	function getTopic($topicid)
 	{
 		$sql = "SELECT * FROM ".$this->table." WHERE topic_id=".$topicid."";
-		$array = $this->db->fetchArray($this->db->query($sql));
+		$result = $this->db->FetchRow();
+		$array = $result->FetchRow();
 		$this->makeTopic($array);
 	}
 

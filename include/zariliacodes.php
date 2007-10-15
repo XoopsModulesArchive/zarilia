@@ -72,7 +72,7 @@ function zariliaSmilies($textarea_id)
 	if (empty($smileys)) {
 		$db =& ZariliaDatabaseFactory :: getdatabaseconnection();
 		if ($result = $db->Execute('SELECT * FROM '.$db->prefix('smiles').' WHERE display=1')) {
-			while ($smiles = $db->fetchArray($result)) {
+			while ($smiles = $result->FetchRow()) {
 			//hack smilies move for the smilies !!
 				echo "<img src='".ZAR_UPLOAD_URL."/".htmlspecialchars($smiles['smile_url'])."' border='0' onmouseover='style.cursor=\"hand\"' alt='' onclick='zariliaCodeSmilie(\"".$textarea_id."\", \" ".$smiles['code']." \");' />";
 			//fin du hack

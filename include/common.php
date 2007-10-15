@@ -109,7 +109,6 @@ include_once ZAR_ROOT_PATH . "/class/class.textsanitizer.php";
  */
 $config_handler = &zarilia_gethandler( 'config' );
 $zariliaConfig = &$config_handler->getConfigsByCat( array( ZAR_CONF, ZAR_CONF_LOCALE, ZAR_CONF_SERVER, ZAR_CONF_EVENTS ) );
-//var_dump($zariliaConfig);
 $zariliaLogger->setDebugmode();
 
 /**

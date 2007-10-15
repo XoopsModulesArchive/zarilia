@@ -180,7 +180,6 @@ class ZariliaLogger {
      */
     function setSysError( $errno, $errstr, $errfile = '', $errline = '', $errreport = '' )
     {
-//		var_dump(debug_backtrace());
         $this->sysErrors[] = compact( 'errno', 'errstr', 'errfile', 'errline', 'errreport' );
     }
 
@@ -386,6 +385,7 @@ class ZariliaLogger {
 
         $errno = ( isset( $_SERVER['REDIRECT_STATUS'] ) ) ? $_SERVER['REDIRECT_STATUS'] : '404';
         $errstr = sprintf( constant( '_ERR_TITLE_' . $errno ), "HTTP $errno -" );
+		$strlen = strlen($_SERVER['REQUEST_URI']);
         if ( substr( $_SERVER['REQUEST_URI'], ( $strlen-9 ), 9 ) == 'index.php' ) {
             $_SERVER['REQUEST_URI'] = substr_replace( $_SERVER['REQUEST_URI'], '', ( $strlen-9 ), 9 );
         }

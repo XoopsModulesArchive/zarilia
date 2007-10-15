@@ -313,7 +313,7 @@ function b_system_info_show( $options )
         {
             $prev_caption = "";
             $i = 0;
-            while ( $userinfo = $zariliaDB->fetchArray( $result ) )
+            while ( $userinfo = $result->FetchArray() )
             {
                 if ( $prev_caption != $userinfo['groupname'] )
                 {
@@ -368,11 +368,9 @@ function b_system_info_show( $options )
     {
         $block['logourl'] = '';
     }
-    // var_dump( $options[2] );
     if ( $options[2] )
     {
         // echo $options[2];
-        // var_dump( $block['logourl'] );
     }
     $block['recommendlink'] = "<a href=\"javascript:openWithSelfMain('" . ZAR_URL . "/misc.php?type=friend&amp;op=sendform&amp;t=" . time() . "','friend'," . $options[0] . "," . $options[1] . ")\">" . _MB_SYSTEM_RECO . "</a>";
     return $block;

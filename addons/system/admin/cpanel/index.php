@@ -20,9 +20,7 @@ switch ( $op ) {
     case 'help':
         zarilia_cp_header();
         $menu_handler->render( 0 );
-        if ( file_exists( ZAR_ROOT_PATH . "/addons/system/admin/" . $fct . "/admin_help.php" ) ) {
-            @include ZAR_ROOT_PATH . "/addons/system/admin/" . $fct . "/admin_help.php";
-        }
+        @include ZAR_ROOT_PATH . "/addons/system/admin/" . $fct . "/admin_help.php";
         break;
 
     case 'about':
@@ -33,6 +31,7 @@ switch ( $op ) {
         $zarilia_about->display();
         break;
 
+    case 'list':
     case 'onlineusers':
         zarilia_cp_header();
         $menu_handler->render( 2 );

@@ -2,7 +2,7 @@
 return array (
   'config' => 
   array (
-    'url' => 'http://skycommunity.lt/beta',
+    'url' => 'http://localhost/zarilia',
     'prefix' => '852b3',
   ),
 );

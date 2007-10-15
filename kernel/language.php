@@ -56,7 +56,7 @@ class Blanguage extends ZariliaObject {
                 case XOBJ_DTYPE_EMAIL:
                     $cleanv = ( $v['changed'] )?$cleanv:'';
                     if ( !isset( $v['not_gpc'] ) || !$v['not_gpc'] ) {
-                        $cleanv = $this->db->Qmagic( $cleanv );
+                        $cleanv = $this->db->qstr( $cleanv );
                     }
                     break;
                 case XOBJ_DTYPE_INT:
@@ -132,7 +132,6 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         $sql = 'SELECT * FROM ' . $this->db->prefix( $prefix ) . ' WHERE lang_id=' . $id;
 		$result = $this->db->Execute( $sql );
         $array = $result->FetchRow();
-//		var_dump($array);
         if ( !is_array( $array ) || count( $array ) == 0 ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'ERROR: Selected item was not found in the database' );
             return false;
@@ -153,13 +152,10 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_base' ) . ' WHERE lang_name=\'' . $name . '\'';
         $result = $this->db->Execute( $sql );
         $array = $result->FetchRow();
-//		var_dump($sql);
-//		var_dump($array);
         if ( !is_array( $array ) || count( $array ) == 0 ) {
             $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_ext' ) . ' WHERE lang_name=\'' . $name . '\'';
             $result = $this->db->Execute( $sql );
             $array = &$result->FetchRow();
-//			var_dump($array);
             if ( !is_array( $array ) || count( $array ) == 0 ) {
                 $false = false;
                 return $false;
@@ -176,7 +172,6 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         if ( !isset( $array['lang_base'] ) ) {
             $lang->setBase();
         }
-//		var_dump($lang);
         return $lang;
     }
 

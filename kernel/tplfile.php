@@ -131,7 +131,7 @@ class ZariliaTplfileHandler extends ZariliaPersistableObjectHandler {
                 $this->setErrors( 101 );
                 return false;
             }
-            $myrow = $this->db->fetchArray( $result );
+            $myrow = $result->FetchRow();
             $obj->assignVar( 'tpl_source', $myrow['tpl_source'] );
         }
         return true;
@@ -187,7 +187,7 @@ class ZariliaTplfileHandler extends ZariliaPersistableObjectHandler {
 
             $obj->assignVar( $this->keyName, $tpl_id );
         } else {
-            $sql = sprintf( "UPDATE %s SET tpl_tplset = %s, tpl_file = %s, tpl_desc = %s, tpl_lastimported = %u, tpl_lastmodified = %u WHERE tpl_id = %u", $this->db_table, $this->db->Qmagic( $tpl_tplset ), $this->db->qstr( $tpl_file ), $this->db->qstr( $tpl_desc ), $tpl_lastimported, $tpl_lastmodified, $tpl_id );
+            $sql = sprintf( "UPDATE %s SET tpl_tplset = %s, tpl_file = %s, tpl_desc = %s, tpl_lastimported = %u, tpl_lastmodified = %u WHERE tpl_id = %u", $this->db_table, $this->db->qstr( $tpl_tplset ), $this->db->qstr( $tpl_file ), $this->db->qstr( $tpl_desc ), $tpl_lastimported, $tpl_lastmodified, $tpl_id );
             if ( !$result = $this->db->Execute( $sql ) ) {
                 $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, $this->db->errno() . " " . $this->db->error(), __FILE__, __LINE__ );
                 return false;
@@ -296,15 +296,15 @@ class ZariliaTplfileHandler extends ZariliaPersistableObjectHandler {
     }
 
     function getCount( $criteria = null ) {
-        $sql = 'SELECT COUNT(*) FROM ' . $this->db_table;
+        $sql = 'SELECT COUNT(*) xrx FROM ' . $this->db_table;
         if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         if ( !$result = &$this->db->Execute( $sql ) ) {
             return 0;
         }
-        list( $count ) = $this->db->fetchRow( $result );
-        return $count;
+        $count  = $result->FetchRow();
+        return $count['xrx'];
     }
 
     function getAddonTplCount( $tplset ) {

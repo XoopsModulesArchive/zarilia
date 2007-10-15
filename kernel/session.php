@@ -65,7 +65,7 @@ class ZariliaSessionHandler {
      */
     function read( $sess_id ) {
 		$old = $this->db->SetFetchMode(ADODB_FETCH_NUM);
-        $sql = sprintf( 'SELECT sess_data FROM %s WHERE sess_id = %s', $this->db->prefix( 'session' ), $this->db->Qmagic( $sess_id ) );
+        $sql = sprintf( 'SELECT sess_data FROM %s WHERE sess_id = %s', $this->db->prefix( 'session' ), $this->db->qstr( $sess_id ) );
         if ( false != $result = $this->db->Execute( $sql ) ) {
             if ( list( $sess_data ) = $result->FetchRow() ) {
 				$this->db->SetFetchMode($old);
@@ -84,7 +84,7 @@ class ZariliaSessionHandler {
      * @return bool
      */
     function getIp( $ip ) {
-        $sess_id = $this->db->Qmagic( $sess_id );
+        $sess_id = $this->db->qstr( $sess_id );
         list( $count ) = $this->db->fetchRow( $this->db->Execute( "SELECT COUNT(*) FROM " . $this->db->prefix( 'session' ) . " WHERE sess_ip=" . $ip ) );
         $ret = ( $count > 0 ) ? true : false;
         return $ret;
@@ -99,16 +99,15 @@ class ZariliaSessionHandler {
      */
     function write( $sess_id, $sess_data ) {
 		$old = $this->db->SetFetchMode(ADODB_FETCH_NUM);
-        $sess_id = $this->db->Qmagic( $sess_id );		
+        $sess_id = $this->db->qstr( $sess_id );		
 		$result = $this->db->Execute( "SELECT COUNT(*) FROM " . $this->db->prefix( 'session' ) . " WHERE sess_id=" . $sess_id );		
-//		var_dump($sql);
         list( $count ) = $result->FetchRow();
 		$this->db->SetFetchMode($old);
 		unset($old);
         if ( $count > 0 ) {
-            $sql = sprintf( 'UPDATE %s SET sess_updated = %u, sess_data = %s WHERE sess_id = %s', $this->db->prefix( 'session' ), time(), $this->db->Qmagic( $sess_data ), $sess_id );
+            $sql = sprintf( 'UPDATE %s SET sess_updated = %u, sess_data = %s WHERE sess_id = %s', $this->db->prefix( 'session' ), time(), $this->db->qstr( $sess_data ), $sess_id );
         } else {
-            $sql = sprintf( 'INSERT INTO %s (sess_id, sess_updated, sess_ip, sess_data) VALUES (%s, %u, %s, %s)', $this->db->prefix( 'session' ), $sess_id, time(), $this->db->Qmagic( $_SERVER['REMOTE_ADDR'] ), $this->db->Qmagic( $sess_data ) );
+            $sql = sprintf( 'INSERT INTO %s (sess_id, sess_updated, sess_ip, sess_data) VALUES (%s, %u, %s, %s)', $this->db->prefix( 'session' ), $sess_id, time(), $this->db->qstr( $_SERVER['REMOTE_ADDR'] ), $this->db->qstr( $sess_data ) );
         }
         if ( !$this->db->Execute( $sql ) ) {
             return false;
@@ -123,7 +122,7 @@ class ZariliaSessionHandler {
      * @return bool
      */
     function destroy( $sess_id ) {
-        $sql = sprintf( 'DELETE FROM %s WHERE sess_id = %s', $this->db->prefix( 'session' ), $this->db->Qmagic( $sess_id ) );
+        $sql = sprintf( 'DELETE FROM %s WHERE sess_id = %s', $this->db->prefix( 'session' ), $this->db->qstr( $sess_id ) );
         if ( !$result = $this->db->Execute( $sql ) ) {
             return false;
         }

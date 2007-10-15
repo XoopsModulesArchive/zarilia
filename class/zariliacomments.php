@@ -51,8 +51,9 @@ class ZariliaComments extends ZariliaObject {
     }
 
     function load( $id ) {
-        $sql = "SELECT * FROM " . $this->ctable . " WHERE comment_id=" . $id . "";
-        $arr = $this->db->fetchArray( $this->db->Execute( $sql ) );
+        $sql = "SELECT * FROM " . $this->ctable . " WHERE comment_id=" . $id . "";		
+		$result = $this->db->Execute( $sql );
+        $arr = $result->FetchRow();
         $this->assignVars( $arr );
     }
 
@@ -143,13 +144,13 @@ class ZariliaComments extends ZariliaObject {
         if ( !$asobject ) {
             $sql = "SELECT comment_id FROM " . $this->ctable . "$where_query ORDER BY $orderby";
             $result = $this->db->Execute( $sql, $limit, $start );
-            while ( $myrow = $this->db->fetchArray( $result ) ) {
+            while ( $myrow = $result->FetchRow() ) {
                 $ret[] = $myrow['comment_id'];
             }
         } else {
             $sql = "SELECT * FROM " . $this->ctable . "" . $where_query . " ORDER BY $orderby";
             $result = $this->db->Execute( $sql, $limit, $start );
-            while ( $myrow = $this->db->fetchArray( $result ) ) {
+            while ( $myrow = $result->FetchRow() ) {
                 $ret[] = new ZariliaComments( $this->ctable, $myrow );
             }
         }

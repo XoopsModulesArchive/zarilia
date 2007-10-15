@@ -71,14 +71,14 @@ class ZariliaBlock extends ZariliaObject {
         if ( empty( $bid ) ) {
             $bid = $this->db->genId( $this->db->prefix( "newblocks" ) . "_bid_seq" );
             $sql = sprintf( "INSERT INTO %s ( bid, mid, func_num, options, name, title, content, side, weight, block_type, c_type, isactive, dirname, func_file, show_func, edit_func, template, bcachetime, last_modified) VALUES (%u, %u, %u, %s, %s, %s, %s, %u, %u, %s, %s, %u, %s, %s, %s, %s, %s, %u, %u)", $this->db->prefix( 'newblocks' ),
-                $bid, $mid, $func_num, $this->db->Qmagic( $options ), $this->db->Qmagic( $name ), $this->db->Qmagic( $title ), $this->db->Qmagic( $content ), $side, $weight, $this->db->Qmagic( $block_type ), $this->db->Qmagic( $c_type ), 1, $this->db->Qmagic( $dirname ), $this->db->Qmagic( $func_file ), $this->db->Qmagic( $show_func ), $this->db->Qmagic( $edit_func ), $this->db->Qmagic( $template ), $bcachetime, time() );
+                $bid, $mid, $func_num, $this->db->qstr( $options ), $this->db->qstr( $name ), $this->db->qstr( $title ), $this->db->qstr( $content ), $side, $weight, $this->db->qstr( $block_type ), $this->db->qstr( $c_type ), 1, $this->db->qstr( $dirname ), $this->db->qstr( $func_file ), $this->db->qstr( $show_func ), $this->db->qstr( $edit_func ), $this->db->qstr( $template ), $bcachetime, time() );
         } else {
-            $sql = "UPDATE " . $this->db->prefix( "newblocks" ) . " SET options=" . $this->db->Qmagic( $options );
+            $sql = "UPDATE " . $this->db->prefix( "newblocks" ) . " SET options=" . $this->db->qstr( $options );
             // a custom block needs its own name
             if ( $block_type == "C" ) {
-                $sql .= ", name=" . $this->db->Qmagic( $name );
+                $sql .= ", name=" . $this->db->qstr( $name );
             }
-            $sql .= ", isactive=" . $isactive . ", title=" . $this->db->Qmagic( $title ) . ", content=" . $this->db->Qmagic( $content ) . ", side=" . $side . ", weight=" . $weight . ", c_type=" . $this->db->Qmagic( $c_type ) . ", template=" . $this->db->Qmagic( $template ) . ", bcachetime=" . $bcachetime . ", last_modified=" . time() . " WHERE bid=" . $bid;
+            $sql .= ", isactive=" . $isactive . ", title=" . $this->db->qstr( $title ) . ", content=" . $this->db->qstr( $content ) . ", side=" . $side . ", weight=" . $weight . ", c_type=" . $this->db->qstr( $c_type ) . ", template=" . $this->db->qstr( $template ) . ", bcachetime=" . $bcachetime . ", last_modified=" . time() . " WHERE bid=" . $bid;
         }
         if ( !$this->db->Execute( $sql ) ) {
             $this->setErrors( "Could not save block data into database" );
@@ -360,7 +360,7 @@ class ZariliaBlock extends ZariliaObject {
         $result = $db->Execute( $sql );
 
         $added = array();
-        while ( $myrow = $db->fetchArray( $result ) ) {
+        while ( $myrow = $result->FetchRow() ) {
             if ( !in_array( $myrow['bid'], $added ) ) {
                 if ( !$asobject ) {
                     $ret[] = $myrow['bid'];
@@ -399,14 +399,14 @@ class ZariliaBlock extends ZariliaObject {
             case "object":
                 $sql = "SELECT * FROM " . $db->prefix( "newblocks" ) . "" . $where_query;
                 $result = $db->Execute( $sql );
-                while ( $myrow = $db->fetchArray( $result ) ) {
+                while ( $myrow = $result->FetchRow() ) {
                     $ret[] = new ZariliaBlock( $myrow );
                 }
                 break;
             case "list":
                 $sql = "SELECT * FROM " . $db->prefix( "newblocks" ) . "" . $where_query;
                 $result = $db->Execute( $sql );
-                while ( $myrow = $result->fetchRow() ) {
+                while ( $myrow = $result->FetchRow() ) {
                     $block = new ZariliaBlock( $myrow );
                     $name = ( $block->getVar( "block_type" ) != "C" ) ? $block->getVar( "name" ) : $block->getVar( "title" );
                     $ret[$block->getVar( "bid" )] = $name;
@@ -415,7 +415,7 @@ class ZariliaBlock extends ZariliaObject {
             case "id":
                 $sql = "SELECT bid FROM " . $db->prefix( "newblocks" ) . "" . $where_query;
                 $result = $db->Execute( $sql );
-                while ( $myrow = $db->fetchArray( $result ) ) {
+                while ( $myrow = $result->FetchRow() ) {
                     $ret[] = $myrow['bid'];
                 }
                 break;

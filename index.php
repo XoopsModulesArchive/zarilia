@@ -28,8 +28,9 @@ $cont['act'] = zarilia_cleanRequestVars( $_REQUEST, 'act', '', XOBJ_DTYPE_TXTBOX
 $cont['direct'] = zarilia_cleanRequestVars( $_REQUEST, 'direct', false, XOBJ_DTYPE_TXTBOX );
 
 $zariliaOption['show_cblock'] = ( $cont['page_type'] != null ) ? 0 : 1;
+
 // check if start page is defined
-if ( isset( $zariliaConfig['startpage'] ) && !empty( $zariliaConfig['startpage'] ) )
+if (( isset( $zariliaConfig['startpage'] ) && !empty( $zariliaConfig['startpage'] ) ) && (!$cont['page_type']))
 {
     header( 'Location: ' . ZAR_URL . '/addons/' . $zariliaConfig['startpage'] . '/' );
     exit();

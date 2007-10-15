@@ -243,7 +243,7 @@ class ZariliaMemberHandler {
         }
         if ( !$result = $zariliaDB->SelectLimit( $sql, $limit, $start ) ) {
             return $ret;
-        } while ( $myrow = $zariliaDB->fetchArray( $result ) ) {
+        } while ( $myrow = $result->FetchRow() ) {
             $ret[$myrow['uid']] = $myrow['uname'];
         }
         return $ret;
@@ -285,7 +285,7 @@ class ZariliaMemberHandler {
         }
         if ( !$result = $zariliaDB->SelectLimit( $sql, $limit, $start ) ) {
             return $ret;
-        } while ( $myrow = $result->fetchRow( $result ) ) {
+        } while ( $myrow = $result->FetchRow() ) {
             $user = &$this->getUser( $myrow['uid'] );
             if ( is_object( $user ) ) {
                 $ret[] = &$user;

@@ -60,7 +60,7 @@ function save_block( $bside, $bweight, $btitle, $bcontent, $bctype, $baddon, $bc
         exit();
     }
 
-    $db = &ZariliaDatabaseFactory::getdatabaseconnection();
+    global $zariliaDB; $db = &$zariliaDB;
     foreach ( $baddon as $bmid ) {
         $sql = 'INSERT INTO ' . $db->prefix( 'block_addon_link' ) . ' (block_id, addon_id) VALUES (' . $newid . ', ' . intval( $bmid ) . ')';
         $db->Execute( $sql );
@@ -79,7 +79,7 @@ function edit_block( $bid ) {
     if ( $bid ) {
         $myblock = new ZariliaBlock( $bid );
 
-        $db = &ZariliaDatabaseFactory::getdatabaseconnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $sql = 'SELECT addon_id FROM ' . $db->prefix( 'block_addon_link' ) . ' WHERE block_id=' . intval( $bid );
         $result = $db->Execute( $sql );
 
@@ -160,7 +160,7 @@ function update_block( $bid, $bside, $bweight, $btitle, $bcontent, $bctype, $bca
     }
     $msg = _DBUPDATED;
     if ( $myblock->store() != false ) {
-        $db = &ZariliaDatabaseFactory::getdatabaseconnection();
+        global $zariliaDB; $db = &$zariliaDB;
         $sql = sprintf( "DELETE FROM %s WHERE block_id = %u", $db->prefix( 'block_addon_link' ), $bid );
         $db->Execute( $sql );
         foreach ( $baddon as $bmid ) {
@@ -232,11 +232,11 @@ function clone_block( $bid ) {
     global $zariliaConfig;
     zarilia_cp_header();
     $myblock = new ZariliaBlock( $bid );
-    $db = &ZariliaDatabaseFactory::getdatabaseconnection();
+    global $zariliaDB; $db = &$zariliaDB;
     $sql = 'SELECT addon_id FROM ' . $db->prefix( 'block_addon_link' ) . ' WHERE block_id=' . intval( $bid );
     $result = $db->Execute( $sql );
     $addons = array();
-    while ( $row = $db->fetchArray( $result ) ) {
+    while ( $row = $result->FetchRow() ) {
         $addons[] = intval( $row['addon_id'] );
     }
     $is_custom = ( $myblock->getVar( 'block_type' ) == 'C' || $myblock->getVar( 'block_type' ) == 'E' ) ? true : false;
@@ -292,7 +292,7 @@ function clone_block_ok( $bid, $bside, $bweight, $bcachetime, $baddon, $options 
         }
     }
 
-    $db = &ZariliaDatabaseFactory::getdatabaseconnection();
+    global $zariliaDB; $db = &$zariliaDB;
     foreach ( $baddon as $bmid ) {
         $sql = 'INSERT INTO ' . $db->prefix( 'block_addon_link' ) . ' (block_id, addon_id) VALUES (' . $newid . ', ' . $bmid . ')';
         $db->Execute( $sql );

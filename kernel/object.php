@@ -472,8 +472,6 @@ class ZariliaObject {
                             continue;
                         }
                         $ts = &MyTextSanitizer::getInstance();
-//						var_dump($cleanv);
-//						die();
 						$cleanv = ( !$v['not_gpc'] ) ? stripslashes( $ts->censorString( $cleanv ) ) : $ts->censorString( $cleanv );
                         break;
 
@@ -860,14 +858,11 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
             $limit = $criteria->getLimit();
             $start = $criteria->getStart();
         }
-//		$this->db->SetFetchMode(ADODB_FETCH_DEFAULT);
 		if ($limit == 0) {
 			$result = $this->db->Execute($sql);
 		} else {
 			$result = $this->db->SelectLimit($sql, $limit, $start);
 		}
-//        $result = $this->db->query( $sql, $limit, $start );
-//		var_dump($limit);
         if ( !$result ) {
             $ret = false;
             if ( $return_error != false ) {
@@ -894,7 +889,6 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
         $ret = array();
         while ( $myrow = $result->FetchRow() ) {
             $obj = &$this->create( false );
-//			var_dump($myrow);
             $obj->assignVars( $myrow );
             if ( !$id_as_key ) {
                 if ( $as_object ) {
@@ -909,8 +903,6 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 }
             } else {
                 if ( $as_object ) {
-//			var_dump($myrow);
-//			var_dump($this->keyName);
                     $ret[$myrow[$this->keyName]] = &$obj;
                 } else {
                     $row = array();
@@ -1076,7 +1068,7 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 if ( $obj->vars[$k]['data_type'] == XOBJ_DTYPE_INT ) {
                     $sql .= " " . $k . " = " . intval( $v );
                 } else {
-                    $sql .= " " . $k . " = " . $this->db->Qmagic( $v );
+                    $sql .= " " . $k . " = " . $this->db->qstr( $v );
                 }
                 $notfirst = true;
             }
@@ -1107,11 +1099,11 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 if ( isset( $notfirst ) ) {
                     $set_clause .= ", ";
                 }
-                $set_clause .= is_numeric( $key ) ? " " . $key . " = " . $value : " " . $key . " = " . $this->db->Qmagic( $value );
+                $set_clause .= is_numeric( $key ) ? " " . $key . " = " . $value : " " . $key . " = " . $this->db->qstr( $value );
                 $notfirst = true;
             }
         } else {
-            $set_clause = is_numeric( $fieldvalue ) ? $fieldname . ' = ' . $fieldvalue : $fieldname . ' = ' . $this->db->Qmagic( $fieldvalue );
+            $set_clause = is_numeric( $fieldvalue ) ? $fieldname . ' = ' . $fieldvalue : $fieldname . ' = ' . $this->db->qstr( $fieldvalue );
         }
         $sql = 'UPDATE ' . $this->db_table . ' SET ' . $set_clause;
         if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
