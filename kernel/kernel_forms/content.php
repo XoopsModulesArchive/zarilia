@@ -92,7 +92,7 @@ switch ( intval( $opt ) ) {
         $content_subtitle->setDescription( _MA_AD_ECONTENT_SUBTITLE_DSC );
         $form->addElement( $content_subtitle, true );
 
-		echo $GLOBALS['zariliaUser']->getVar( 'editor' ).'-0----------------------------';
+		//echo $GLOBALS['zariliaUser']->getVar( 'editor' ).'-0----------------------------';
 
         if ( $this->getVar( 'content_type' ) != 'static' ) {
             $options['name'] = 'content_intro';
