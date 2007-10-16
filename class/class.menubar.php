@@ -135,8 +135,7 @@ class ZariliaTabMenu
 			 </li>";
             $i++;
         }
-        $buttons .= "</ul></div>
-		<br clear='all' />";
+        $buttons .= "</ul></div>";
         if ( $asOutput ) {
             return $buttons;
         } else {
