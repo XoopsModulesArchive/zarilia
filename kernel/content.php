@@ -153,7 +153,7 @@ class ZariliaContent extends ZariliaObject {
                 $ret['name'] = $this->getVar( 'content_alias' );
             }
             if ( $is_linked ) {
-                $ret['name'] = '<a href="' . ZAR_URL . '/userinfo.php?uid=' . $content_user->getVar( 'uid' ) . '">' . $ret['name'] . '</a>';
+                $ret['name'] = '<a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $content_user->getVar( 'uid' ) . '">' . $ret['name'] . '</a>';
             }
             $ret['avatar'] = $content_user->getVar( 'user_avatar' ) ? $content_user->getVar( 'user_avatar' ) : 'nouserimage.jpg';
             $ret['online'] = $content_user->isOnline();
@@ -530,7 +530,7 @@ function &getcpUser( $is_linked = true, $usereal = false, $uid = null ) {
             $ret['name'] = $content_user->getVar( 'uname' );
         }
         if ( $is_linked == true ) {
-            $ret['name'] = '<a href="' . ZAR_URL . '/userinfo.php?uid=' . $content_user->getVar( 'uid' ) . '">' . $ret['name'] . '</a>';
+            $ret['name'] = '<a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $content_user->getVar( 'uid' ) . '">' . $ret['name'] . '</a>';
         }
         $ret['avatar'] = $content_user->getVar( 'user_avatar' ) ? $content_user->getVar( 'user_avatar' ) : 'nouserimage.jpg';
         $ret['online'] = $content_user->isOnline();

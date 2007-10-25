@@ -67,6 +67,7 @@ class ZariliaTpl extends Smarty {
         $this->plugins_dir = array( ZAR_ROOT_PATH . '/class/smarty/plugins' );
         $this->default_template_handler_func = 'zarilia_template_create';
         $this->use_sub_dirs = false;
+//		var_dump($_SERVER);
         if ( eregi( 'index.php', $_SERVER['REQUEST_URI'] ) ) {
             if ( $_SERVER['QUERY_STRING'] == '' ) {
                 unset( $_SERVER['REQUEST_URI'] );
@@ -196,12 +197,12 @@ class ZariliaTpl extends Smarty {
         eval( $this->_BeforeOutputTags );
         if ( $showheaders ) {
             global $zariliaConfig;
-            $zarilia_header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+/*            $zarilia_header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
             // doc type
             $zarilia_header = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
             $zarilia_header .= "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$zariliaConfig['language']}\" lang=\"{$zariliaConfig['language']}\" dir=\"ltr\" >\n";
-            $zarilia_header .= "<head>\n";
-            $zarilia_header .= $this->_title;
+            $zarilia_header .= "<head>\n";*/
+            $zarilia_header = $this->_title;
             // $zarilia_header .= "  <base href=\"" . ZAR_URL . "\" />\n";
             foreach( $this->_metatags as $k => $v ) {
                 $zarilia_header .= $v;
@@ -213,8 +214,8 @@ class ZariliaTpl extends Smarty {
             foreach( $this->_script as $k => $v ) {
                 $zarilia_header .= $v;
             }
-            $zarilia_header .= "</head>\n";
-            $zarilia_header .= $this->_body;
+       //     $zarilia_header .= "</head>\n";
+//            $zarilia_header .= $this->_body;
             $this->assign( array( 'zarilia_header' => $zarilia_header ) );
         }
         $this->fetch( $resource_name, $cache_id, $compile_id, true );

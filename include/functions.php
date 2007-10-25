@@ -12,6 +12,11 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 // ################## Various functions from here ################
+
+function themecenterposts($title, $content) {
+      echo '<table cellpadding="4" cellspacing="1" width="98%" class="outer"><tr><td class="head">'.$title.'</td></tr><tr><td><br />'.$content.'<br /></td></tr></table>';
+}
+
 function zarilia_header( $closehead = true )
 {
     global $zariliaConfig;
@@ -49,10 +54,14 @@ function zarilia_footer()
 function zarilia_confirm( $hiddens, $op, $msg, $submit = '', $cancel = '', $noarray = false, $echo = true )
 {
     $submit = ( $submit != '' ) ? trim( $submit ) : _SUBMIT;
-    $cancel = ( $cancel != '' ) ? "onclick=\"location='" . htmlspecialchars( trim( $cancel ), ENT_QUOTES ) . "'\"" : 'onClick="history.go(-1);return true;"';
+    $cancel = ( $cancel != '' ) ? "onclick=\"location='" . htmlspecialchars( trim( $cancel ), ENT_QUOTES ) . "'\"" : 'onclick="history.go(-1);return true;"';
     $ret = '
-	<form method="post" op="' . $op . '">
+	<form method="post" action="' . $op . '">
 	<div class="confirmMsg">' . $msg . '';
+	if (isset($hiddens['op']) && is_array($hiddens['op']))  {
+		$op2 = unserialize(serialize($hiddens['op']));
+		unset($hiddens['op']);
+	}
     foreach ( $hiddens as $name => $value )
     {
         if ( is_array( $value ) && $noarray == true )
@@ -80,8 +89,15 @@ function zarilia_confirm( $hiddens, $op, $msg, $submit = '', $cancel = '', $noar
     }
     $ret .= "</div>";
     $ret .= "<div class='confirmButtons'>
-			 <input type='button' class='formbutton' name='confirm_back' $cancel value='Cancel' />
-			 <input type='submit' class='formbutton' name='confirm_submit' value='$submit' /></div>";
+			 <input type='button' class='formbutton' name='confirm_back' $cancel value='"._CANCEL."' />
+			 <input type='submit' class='formbutton' name='confirm_submit' value='$submit'".(isset($op2)?' style="display:none;"':'')." />";
+	if (isset($op2)) {
+			 $name = 'zcOp'.time().'_id';
+			 $ret .= '<input type="hidden" name="op" id="'.$name.'" value="" />';
+			 foreach ($op2 as $caption => $value) {
+				 $ret .= '<input type="submit" onclick="document.getElementById(\''.$name.'\').value=\''.htmlentities($value).'\'; this.form.submit();" value="'.$caption.'" /> ';
+			 }
+	}
     $ret .= "</div></form>";
     if ( $echo )
     {
@@ -618,7 +634,7 @@ function zarilia_getLinkedUnameFromId( $userid = 0, $usereal = 0, $is_linked = 1
         }
         if ( $is_linked )
         {
-            $name = '<a href="' . ZAR_URL . '/userinfo.php?uid=' . $userid . '">' . $name . '</a>';
+            $name = '<a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $userid . '">' . $name . '</a>';
         }
     }
     else
@@ -789,7 +805,7 @@ function zarilia_show_buttons( $butt_align = 'right', $butt_id = 'button', $clas
         return false;
     }
     $ret = "<div style='text-align: $butt_align; margin-bottom: 12px;'>\n";
-    $ret .= "<form id='{$butt_id}' op='showbuttons'>\n";
+    $ret .= "<form id='{$butt_id}' action='showbuttons'>\n";
     foreach ( $button_array as $k => $v )
     {
         $ret .= "<input type='button' style='cursor: hand;' class='{$class_id}'  name='" . trim( $v ) . "' onclick=\"location='" . htmlspecialchars( trim( $k ), ENT_QUOTES ) . "'\" value='" . trim( $v ) . "' />&nbsp;&nbsp;";

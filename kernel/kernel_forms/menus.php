@@ -27,7 +27,7 @@ if ( method_exists( $_callback, 'getMenublock' ) ) {
 // $addon_list = &$_cachedAddon_list;
 // } else {
 $criteria = new CriteriaCompo();
-$criteria->add( new Criteria( 'menu_pid', 0 ) );
+//$criteria->add( new Criteria( 'menu_pid', 0 ) );
 $addon_list = &$addon_handler->getList( $criteria );
 // $_cachedAddon_list = &$addon_list;
 // }

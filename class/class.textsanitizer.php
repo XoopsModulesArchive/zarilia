@@ -85,7 +85,7 @@ class MyTextSanitizer {
     function &smiley( $message ) {
         $db = &ZariliaDatabaseFactory::getDatabaseConnection();
         if ( count( $this->smileys ) == 0 ) {
-            if ( $getsmiles = $db->Execute( "SELECT * FROM " . $db->prefix( "smiles" ) ) ) {
+            if ( $getsmiles = $db->Execute( "SELECT * FROM " . $db->prefix( "smiles" ) .' WHERE display = 1') ) {
                 while ( $smiles = $getsmiles->FetchRow() ) {
                     $message = str_replace( $smiles['code'], '<img src="' . ZAR_UPLOAD_URL . '/' . htmlspecialchars( $smiles['smile_url'] ) . '" alt="" />', $message );
                     array_push( $this->smileys, $smiles );

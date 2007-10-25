@@ -68,7 +68,7 @@ class ZariliaUserUserinfo extends ZariliaAuth
         }
         $ret['template_main'] = 'system_userinfo.html';
         $ret['user_ownpage'] = ( $zariliaUserIsAdmin ) ? $this->user->getVar( 'uid' ) : '';
-        $ret['user_online_image'] = ( $this->user->isOnline() ) ? ZAR_UPLOAD_URL.'/user_online.gif' : ZAR_UPLOAD_URL.'/user_offline.gif';
+        $ret['user_online_image'] = ( $this->user->isOnline() ) ? ZAR_UPLOAD_URL.'/user_online.png' : ZAR_UPLOAD_URL.'/user_offline.png';
         $ret['user_online_status'] = ( $this->user->isOnline() ) ? 'Online' : 'Offline';
         $ret['user_lastlogin'] = $this->user->getVar( 'last_login' );
         $ret['user_avatarurl'] = $this->user->avatar();

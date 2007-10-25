@@ -155,7 +155,7 @@ class ZariliaGroupPermForm extends ZariliaForm {
 
         $ret = '<h4>' . $this->getTitle() . '</h4>';
         $ret .= '<div><b>' . $this->_permDesc . '</b></div><br />';
-        $ret .= "<form name='" . $this->getName() . "' id='" . $this->getName() . "' op='" . $this->getAction() . "' method='" . $this->getMethod() . "'" . $this->getExtra() . ">\n";
+        $ret .= "<form name='" . $this->getName() . "' id='" . $this->getName() . "' action='" . $this->getAction() . "' method='" . $this->getMethod() . "'" . $this->getExtra() . ">\n";
         $ret .= "<table width='100%' cellspacing='1' class='outer'>\n";
         $elements = &$this->getElements();
         foreach ( array_keys( $elements ) as $i ) {

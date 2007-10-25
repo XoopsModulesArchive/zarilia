@@ -184,7 +184,10 @@ case 'delete_one':
 
 case 'delete_all':
 	$comment_handler = zarilia_gethandler('comment');
-	$comment =& $comment_handler->get($com_id);
+	if (! ($comment =& $comment_handler->get($com_id))) {
+		redirect_header($redirect_page.'='.$com_itemid.'&amp;com_order='.$com_order.'&amp;com_mode='.$com_mode, 1, _CM_COMDELETED);
+		break;
+	}
 	$com_rootid = $comment->getVar('com_rootid');
 
 	// get all comments posted later within the same thread
@@ -245,11 +248,13 @@ case 'delete_all':
 			$comment_config['callback']['update']($com_itemid, $comment_count);
 		}
 	}
+	
+	redirect_header($redirect_page.'='.$com_itemid.'&amp;com_order='.$com_order.'&amp;com_mode='.$com_mode, 1, $msgsD);
 
-	include ZAR_ROOT_PATH.'/header.php';
+/*	include ZAR_ROOT_PATH.'/header.php';
 	zarilia_result($msgs);
 	echo '<br /><a href="'.$redirect_page.'='.$com_itemid.'&amp;com_order='.$com_order.'&amp;com_mode='.$com_mode.'">'._BACK.'</a>';
-	include ZAR_ROOT_PATH.'/footer.php';
+	include ZAR_ROOT_PATH.'/footer.php';*/
 	break;
 
 case 'delete':

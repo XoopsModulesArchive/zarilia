@@ -246,7 +246,7 @@ function b_news_top_show($options) {
 
            	if($displayname!=3) {
         		$spotlight['author'] = sprintf("%s %s",_POSTEDBY,$tmpstory->uname());
-       			$spotlight['author_with_link'] = sprintf("%s <a href='%s'>%s</a>",_POSTEDBY,ZAR_URL.'/userinfo.php?uid='.$tmpstory->uid(),$tmpstory->uname());
+       			$spotlight['author_with_link'] = sprintf("%s <a href='%s'>%s</a>",_POSTEDBY,ZAR_URL.'/index.php?page_type=userinfo&uid='.$tmpstory->uid(),$tmpstory->uname());
        		} else {
         		$spotlight['author'] = '';
        			$spotlight['author_with_link'] = '';

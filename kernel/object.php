@@ -253,9 +253,11 @@ class ZariliaObject {
      * @return mixed formatted value of the variable
      */
     function &getVar( $key, $format = 'show' ) {
-        // if ( !isset( $this->vars[$key] ) ) {
-        // $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, "ERROR: Key '$key' does not exist in this object" );
-        // }
+        if ( !isset( $this->vars[$key] ) ) {
+			$GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, "ERROR: Key '$key' does not exist in this object" );
+			$null = null;
+			return $null;
+        }
         $ret = $this->vars[$key]['value'];
         $format = substr( $format, 0, 1 );
         switch ( $this->vars[$key]['data_type'] ) {
@@ -336,6 +338,19 @@ class ZariliaObject {
                         $var = strip_tags( $var );
                         return $var;
                         break 1;
+					
+					case 'c':
+						global $zariliaUser;
+                        if ( $zariliaUser )   {
+                            $ret = str_replace( '{X_UID}', $zariliaUser->getVar( 'uid' ), $ret );
+							$ret = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $ret );
+                        } else {
+                            $ret = str_replace( '{X_UID}', -time(), $ret );
+							$ret = str_replace( '{X_USERNAME}', soundex(md5(time())), $ret );
+						}
+                        return $ret;
+					break 1;
+
                     case 'n':
                     default:
                         break 1;

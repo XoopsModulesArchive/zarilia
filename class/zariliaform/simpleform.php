@@ -45,7 +45,7 @@ class ZariliaSimpleForm extends ZariliaForm
 	 */
 	function render()
 	{
-		$ret = $this->getTitle()."\n<form name='".$this->getName()."' id='".$this->getName()."' op='".$this->getAction()."' method='".$this->getMethod()."'".$this->getExtra().">\n";
+		$ret = $this->getTitle()."\n<form name='".$this->getName()."' id='".$this->getName()."' action='".$this->getAction()."' method='".$this->getMethod()."'".$this->getExtra().">\n";
 		foreach ( $this->getElements() as $ele ) {
 			if ( !$ele->isHidden() ) {
 				$ret .= "<b>".$ele->getCaption()."</b><br />".$ele->render()."<br />\n";

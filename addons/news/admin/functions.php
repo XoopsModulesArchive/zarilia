@@ -75,7 +75,7 @@ function adminmenu($currentoption = 0, $breadcrumb = '')
 
 		echo "<div id='buttontop'>";
 		echo "<table style=\"width: 100%; padding: 0; \" cellspacing=\"0\"><tr>";
-		echo "<td style=\"width: 60%; font-size: 10px; text-align: left; color: #2F5376; padding: 0 6px; line-height: 18px;\"><a class=\"nobutton\" href=\"".ZAR_URL."/addons/system/admin.php?fct=preferences&amp;op=showmod&amp;mod=".$zariliaAddon->getVar('mid')."\">" . _AM_NEWS_GENERALSET . "</a> | <a href=\"../index.php\">" . _AM_NEWS_GOTOMOD . "</a> | <a href=\"#\">" . _AM_NEWS_HELP . "</a> | <a href='index.php?op=verifydb'>". _AM_NEWS_VERIFY_TABLES ."</a></td>";
+		echo "<td style=\"width: 60%; font-size: 10px; text-align: left; color: #2F5376; padding: 0 6px; line-height: 18px;\"><a class=\"nobutton\" href=\"".ZAR_URL."/addons/system/index.php?fct=preferences&amp;op=showmod&amp;mod=".$zariliaAddon->getVar('mid')."\">" . _AM_NEWS_GENERALSET . "</a> | <a href=\"../index.php\">" . _AM_NEWS_GOTOMOD . "</a> | <a href=\"#\">" . _AM_NEWS_HELP . "</a> | <a href='index.php?op=verifydb'>". _AM_NEWS_VERIFY_TABLES ."</a></td>";
 		echo "<td style=\"width: 40%; font-size: 10px; text-align: right; color: #2F5376; padding: 0 6px; line-height: 18px;\"><b>" . $zariliaAddon->getVar('name') . "  " . _AM_NEWS_MODULEADMIN . "</b> " . $breadcrumb . "</td>";
 		echo '</tr></table>';
 		echo '</div>';
@@ -104,7 +104,7 @@ function adminmenu($currentoption = 0, $breadcrumb = '')
 	</script>
 	<script>
 		function load_app(id){
- 			urltogo = new Array("../../system/admin.php?fct=preferences&op=showmod&mod=<?php echo $zariliaAddon->getVar('mid'); ?>","../index.php","#","index.php?op=verifydb","index.php?op=topicsmanager","index.php?op=newarticle","groupperms.php","index.php?op=prune","index.php?op=export","index.php?op=configurenewsletter","index.php?op=stats","index.php?op=metagen","upgrade.php");
+ 			urltogo = new Array("../../system/index.php?fct=preferences&op=showmod&mod=<?php echo $zariliaAddon->getVar('mid'); ?>","../index.php","#","index.php?op=verifydb","index.php?op=topicsmanager","index.php?op=newarticle","groupperms.php","index.php?op=prune","index.php?op=export","index.php?op=configurenewsletter","index.php?op=stats","index.php?op=metagen","upgrade.php");
     		window.location.href = urltogo[id];
 		}
 	</script>

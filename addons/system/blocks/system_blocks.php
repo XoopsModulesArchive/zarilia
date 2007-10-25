@@ -28,7 +28,7 @@ function b_system_online_show()
         {
             if ( $online->getVar( 'online_uid' ) > 0 && $online->getVar( 'online_hidden' ) != 1 )
             {
-                $members .= ' <a href="' . ZAR_URL . '/userinfo.php?uid=' . $online->getVar( 'online_uid' ) . '">' . $online->getVar( 'online_uname' ) . '</a>,';
+                $members .= ' <a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $online->getVar( 'online_uid' ) . '">' . $online->getVar( 'online_uname' ) . '</a>,';
             }
             else
             {
@@ -458,7 +458,7 @@ function b_system_comments_show( $options )
             $poster = &$member_handler->getUser( $comments[$i]->getVar( 'com_uid' ) );
             if ( is_object( $poster ) )
             {
-                $com['poster'] = '<a href="' . ZAR_URL . '/userinfo.php?uid=' . $comments[$i]->getVar( 'com_uid' ) . '">' . $poster->getVar( 'uname' ) . '</a>';
+                $com['poster'] = '<a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $comments[$i]->getVar( 'com_uid' ) . '">' . $poster->getVar( 'uname' ) . '</a>';
             }
             else
             {

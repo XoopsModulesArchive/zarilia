@@ -99,7 +99,7 @@ class ZariliaEditorHandler {
 
     function &_loadEditor( $name = "", $options = null )
     {
-        $editor_path = $this->root_path . "/" . $name;
+        $editor_path = $this->root_path . "/" . strtolower($name);
         if ( !is_readable( $editor_path . "/editor_registry.php" ) ) {
             return false;
         }

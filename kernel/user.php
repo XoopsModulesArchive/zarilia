@@ -102,7 +102,7 @@ class ZariliaUser extends ZariliaObject {
                 }
             }
             if ( $is_linked ) {
-                $name = '<a href="' . ZAR_URL . '/userinfo.php?uid=' . $userid . '">' . $name . '</a>';
+                $name = '<a href="' . ZAR_URL . '/index.php?page_type=userinfo&uid=' . $userid . '">' . $name . '</a>';
             }
         } else {
             $name = $GLOBALS['zariliaConfig']['anonymous'];

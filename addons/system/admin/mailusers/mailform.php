@@ -21,7 +21,7 @@ if ( !empty( $_REQUEST['memberslist_id'] ) ) {
     for ( $i = 0; $i < $user_count; $i++ ) {
         $uid_hidden = new ZariliaFormHidden( "mail_to_user[]", $_POST['memberslist_id'][$i] );
         $form->addElement( $uid_hidden );
-        $display_names .= "<a href='" . ZAR_URL . "/userinfo.php?uid=" . $_POST['memberslist_id'][$i] . "' target='_blank'>" . $_POST['memberslist_uname'][$_POST['memberslist_id'][$i]] . "</a>, ";
+        $display_names .= "<a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $_POST['memberslist_id'][$i] . "' target='_blank'>" . $_POST['memberslist_uname'][$_POST['memberslist_id'][$i]] . "</a>, ";
         unset( $uid_hidden );
     }
     $users_label = new ZariliaFormLabel( _AM_SENDTOUSERS2, substr( $display_names, 0, -2 ) );
@@ -36,7 +36,7 @@ if ( !empty( $_REQUEST['uid'] ) ) {
     $display_names = "";
     $uid_hidden = new ZariliaFormHidden( "mail_to_user[]", $uid );
     $form->addElement( $uid_hidden );
-    $display_name = "<a href='" . ZAR_URL . "/userinfo.php?uid=" . $uid . "' target='_blank'>" . $thisUser->getVar( 'uname' ) . "</a>";
+    $display_name = "<a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $uid . "' target='_blank'>" . $thisUser->getVar( 'uname' ) . "</a>";
     $users_label = new ZariliaFormLabel( _AM_SENDTOUSERS2, $display_name );
     $form->addElement( $users_label );
     $display_criteria = 0;

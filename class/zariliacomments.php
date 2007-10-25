@@ -250,7 +250,7 @@ class ZariliaComments extends ZariliaObject {
             } else {
                 $online_image = "";
             }
-            $profile_image = "<a href='" . ZAR_URL . "/userinfo.php?uid=" . $poster->getVar( "uid" ) . "'>Profile</a>";
+            $profile_image = "<a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $poster->getVar( "uid" ) . "'>Profile</a>";
             $pm_image = "";
 
             if ( $poster->getVar( "user_viewemail" ) ) {
@@ -291,7 +291,7 @@ class ZariliaComments extends ZariliaObject {
         } else {
             $icon = "icons/no_posticon.gif";
         }
-        echo "<tr class='$bg' align='left'><td>" . $prefix . "<img src='" . ZAR_URL . "/images/" . $icon . "'>&nbsp;<a href='" . $_SERVER['PHP_SELF'] . "?item_id=" . $this->getVar( "item_id" ) . "&amp;comment_id=" . $this->getVar( "comment_id" ) . "&amp;mode=" . $mode . "&amp;order=" . $order . "#" . $this->getVar( "comment_id" ) . "'>" . $this->getVar( "subject" ) . "</a></td><td><a href='" . ZAR_URL . "/userinfo.php?uid=" . $this->getVar( "user_id" ) . "'>" . ZariliaUser::getUnameFromId( $this->getVar( "user_id" ) ) . "</a></td><td>" . $date . "</td></tr>";
+        echo "<tr class='$bg' align='left'><td>" . $prefix . "<img src='" . ZAR_URL . "/images/" . $icon . "'>&nbsp;<a href='" . $_SERVER['PHP_SELF'] . "?item_id=" . $this->getVar( "item_id" ) . "&amp;comment_id=" . $this->getVar( "comment_id" ) . "&amp;mode=" . $mode . "&amp;order=" . $order . "#" . $this->getVar( "comment_id" ) . "'>" . $this->getVar( "subject" ) . "</a></td><td><a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $this->getVar( "user_id" ) . "'>" . ZariliaUser::getUnameFromId( $this->getVar( "user_id" ) ) . "</a></td><td>" . $date . "</td></tr>";
     }
 
     function showTreeFoot() {

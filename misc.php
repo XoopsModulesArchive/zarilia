@@ -68,7 +68,7 @@ switch ( $type ) {
             }
             printCheckForm();
             echo '</head><body>
-				<form op="' . ZAR_URL . '/misc.php" method="post" onsubmit="return checkForm();"><table  width="100%" class="outer" cellspacing="1"><tr><th colspan="2">' . _MSC_RECOMMENDSITE . '</th></tr>';
+				<form action="' . ZAR_URL . '/misc.php" method="post" onsubmit="return checkForm();"><table  width="100%" class="outer" cellspacing="1"><tr><th colspan="2">' . _MSC_RECOMMENDSITE . '</th></tr>';
             echo "<tr><td class='head'>
 	   				<input type='hidden' name='op' value='sendsite' />
 					<input type='hidden' name='op' value='showpopups' />

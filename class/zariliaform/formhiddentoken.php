@@ -25,13 +25,15 @@ class ZariliaFormHiddenToken extends ZariliaFormHidden {
      * @param string $name "name" attribute
      */
     function ZariliaFormHiddenToken( $name = null, $timeout = 360 ) {
-        if ( empty( $name ) ) {
+        /*if ( empty( $name ) ) {
             $token = &ZariliaMultiTokenHandler::quickCreate( ZAR_TOKEN_DEFAULT );
             $name = $token->getTokenName();
         } else {
             $token = &ZariliaSingleTokenHandler::quickCreate( ZAR_TOKEN_DEFAULT );
-        }
-        $this->ZariliaFormHidden( $name, $token->getTokenValue() );
+        }*/
+		$zs = new ZariliaSecurity();		
+		if ($name===null) $name = 'ZAR_TOKEN_REQUEST';
+        $this->ZariliaFormHidden( $name, $zs->createToken($timeout) );
     }
 }
 ?>

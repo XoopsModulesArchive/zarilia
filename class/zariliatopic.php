@@ -76,7 +76,7 @@ class ZariliaTopic
 	function getTopic($topicid)
 	{
 		$sql = "SELECT * FROM ".$this->table." WHERE topic_id=".$topicid."";
-		$result = $this->db->FetchRow();
+		$result = $this->db->Execute($sql);
 		$array = $result->FetchRow();
 		$this->makeTopic($array);
 	}
@@ -207,7 +207,8 @@ class ZariliaTopic
 	function topic_title($format="S")
 	{
 		$myts =& MyTextSanitizer::getInstance();
-		switch($format){
+		$title = $this->topic_title;
+/*		switch($format){
 			case "S":
 				$title = $myts->displayTarea($this->topic_title);
 				break;
@@ -220,7 +221,7 @@ class ZariliaTopic
 			case "F":
 				$title = $myts->makeTboxData4PreviewInForm($this->topic_title);
 				break;
-		}
+		}*/
 		return $title;
 	}
 
@@ -329,14 +330,10 @@ class ZariliaTopic
 	}
 
 	function topicExists($pid, $title) {
-		$sql = "SELECT COUNT(*) from ".$this->table." WHERE topic_pid = ".intval($pid)." AND topic_title = '".trim($title)."'";
-		$rs = $this->db->query($sql);
-        list($count) = $this->db->fetchRow($rs);
-		if ($count > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		$sql = "SELECT COUNT(*) c from ".$this->table." WHERE topic_pid = ".intval($pid)." AND topic_title = '".trim($title)."'";
+		$rs = $this->db->Execute($sql);
+		$r = $rs->FetchRow();
+		return floatval($r['c']) > 0;
 	}
 }
 ?>

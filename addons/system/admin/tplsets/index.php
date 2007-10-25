@@ -136,7 +136,7 @@ switch ( $op ) {
 */
 
         echo '<h4>' . $modname . '</h4>
-		<form op="index.php" method="post" enctype="multipart/form-data"><table width="100%" class="outer" cellspacing="1">
+		<form action="index.php" method="post" enctype="multipart/form-data"><table width="100%" class="outer" cellspacing="1">
 		<tr><th width="40%">' . _MD_FILENAME . '</th><th>' . _MD_LASTMOD . '</th>';
         if ( $tplset != 'default' ) {
             echo '<th>' . _MD_LASTIMP . '</th><th colspan="2">' . _ACTION . '</th></tr>';

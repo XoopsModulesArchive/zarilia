@@ -12,7 +12,11 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 define( 'ZAR_CPFUNC_LOADED', 1 );
-require_once ZAR_ROOT_PATH . "/addons/system/language/" . $zariliaConfig['language'] . "/admin.php";
+if (file_exists($file = ZAR_ROOT_PATH . "/addons/system/language/" . $zariliaConfig['language'] . "/admin.php")) {
+	require_once ZAR_ROOT_PATH . "/addons/system/language/" . $zariliaConfig['language'] . "/admin.php";
+} else {
+	require_once ZAR_ROOT_PATH . "/addons/system/language/english/admin.php";
+}
 require_once ZAR_ROOT_PATH . "/addons/system/constants.php";
 
 $list_array = array( 1 => '1', 2 => '2', 3 => '3', 5 => '5', 10 => '10', 15 => '15', 25 => '25', 50 => '50', 100 => '100', 0 => 'All' );
@@ -365,5 +369,7 @@ function zariliaMainAction( $drop = false ) {
 
     return $maintenance;
 }
+
+
 
 ?>

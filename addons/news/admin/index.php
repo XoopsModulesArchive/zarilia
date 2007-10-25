@@ -76,7 +76,7 @@ function newSubmissions()
             } else {
                 echo "&nbsp;<a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $newstory -> storyid() . "'>" . $title . "</a>\n";
             }
-            echo "</td><td>" . $newstory->topic_title() . "</td><td align='center' class='nw'>" . formatTimestamp($newstory->created(),$dateformat) . "</td><td align='center'><a href='" . ZAR_URL . "/userinfo.php?uid=" . $newstory->uid() . "'>" . $newstory->uname() . "</a></td><td align='right'><a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $newstory->storyid() . "'>" . _AM_DELETE . "</a></td></tr>\n";
+            echo "</td><td>" . $newstory->topic_title() . "</td><td align='center' class='nw'>" . formatTimestamp($newstory->created(),$dateformat) . "</td><td align='center'><a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $newstory->uid() . "'>" . $newstory->uname() . "</a></td><td align='right'><a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $newstory->storyid() . "'>" . _AM_DELETE . "</a></td></tr>\n";
         }
         echo '</table></div>';
         echo "<div align='right'>".$pagenav->renderNav().'</div><br />';
@@ -117,7 +117,7 @@ function autoStories()
         	echo "<td align='center'><b>" . $autostory -> storyid() . "</b>
         		</td><td align='left'><a href='" . ZAR_URL . "/addons/news/article.php?storyid=" . $autostory->storyid() . "'>" . $autostory->title() . "</a>
         		</td><td align='center'>" . $topic->topic_title() . "
-        		</td><td align='center'><a href='" . ZAR_URL . "/userinfo.php?uid=" . $autostory->uid() . "'>" . $autostory->uname() . "</a></td><td align='center' class='nw'>" . formatTimestamp($autostory->published(),$dateformat) . "</td><td align='center'>" . $expire . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $autostory->storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $autostory->storyid() . "'>" . _AM_DELETE . "</a>";
+        		</td><td align='center'><a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $autostory->uid() . "'>" . $autostory->uname() . "</a></td><td align='center' class='nw'>" . formatTimestamp($autostory->published(),$dateformat) . "</td><td align='center'>" . $expire . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $autostory->storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $autostory->storyid() . "'>" . _AM_DELETE . "</a>";
             echo "</td></tr>\n";
         }
         echo '</table></div>';
@@ -162,7 +162,7 @@ function lastStories()
         echo "<td align='center'><b>" . $eachstory -> storyid() . "</b>
         	</td><td align='left'><a href='" . ZAR_URL . "/addons/news/article.php?storyid=" . $eachstory -> storyid() . "'>" . $eachstory -> title() . "</a>
         	</td><td align='center'>" . $topic -> topic_title() . "
-        	</td><td align='center'><a href='" . ZAR_URL . "/userinfo.php?uid=" . $eachstory -> uid() . "'>" . $eachstory -> uname() . "</a></td><td align='center' class='nw'>" . $published . "</td><td align='center'>" . $eachstory -> counter() . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_DELETE . "</a>";
+        	</td><td align='center'><a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $eachstory -> uid() . "'>" . $eachstory -> uname() . "</a></td><td align='center' class='nw'>" . $published . "</td><td align='center'>" . $eachstory -> counter() . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_DELETE . "</a>";
         echo "</td></tr>\n";
     }
     echo '</table><br />';
@@ -221,7 +221,7 @@ function expStories()
         	echo "<td align='center'><b>" . $eachstory -> storyid() . "</b>
 	        	</td><td align='left'><a href='" . ZAR_URL . "/addons/news/article.php?returnside=1&amp;storyid=" . $eachstory -> storyid() . "'>" . $eachstory -> title() . "</a>
         		</td><td align='center'>" . $topic -> topic_title() . "
-        		</td><td align='center'><a href='" . ZAR_URL . "/userinfo.php?uid=" . $eachstory -> uid() . "'>" . $eachstory -> uname() . "</a></td><td align='center' class='nw'>" . $created . "</td><td align='center' class='nw'>" . $expired . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_DELETE . "</a>";
+        		</td><td align='center'><a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $eachstory -> uid() . "'>" . $eachstory -> uname() . "</a></td><td align='center' class='nw'>" . $created . "</td><td align='center' class='nw'>" . $expired . "</td><td align='center'><a href='".ZAR_URL."/addons/news/submit.php?returnside=1&amp;op=edit&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_EDIT . "</a>-<a href='".ZAR_URL."/addons/news/admin/index.php?op=delete&amp;storyid=" . $eachstory -> storyid() . "'>" . _AM_DELETE . "</a>";
         	echo "</td></tr>\n";
     	}
     	echo '</table><br />';
@@ -984,7 +984,7 @@ function addTopic()
 			$fldname = (get_magic_quotes_gpc()) ? stripslashes($fldname['name']) : $fldname['name'];
 			if(zarilia_trim($fldname!='')) {
 				$sfiles = new sFiles();
-				$dstpath = ZAR_ROOT_PATH . '/addons/' . $zariliaAddon -> dirname() . '/images/topics';
+				$dstpath = ZAR_ROOT_PATH . '/addons/' . $zariliaAddon -> getVar('dirname') . '/images/topics';
 				$destname=$sfiles->createUploadName($dstpath ,$fldname, true);
 				$permittedtypes=array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
 				$uploader = new ZariliaMediaUploader($dstpath, $permittedtypes, $zariliaAddonConfig['maxuploadsize']);
@@ -1127,7 +1127,7 @@ function Stats()
 	foreach ( $mostreadednews as $storyid => $data ) {
 		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
 		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
-		$url3=ZAR_URL . '/userinfo.php?uid=' . $data['uid'];
+		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),$data['counter']);
 	}
@@ -1140,7 +1140,7 @@ function Stats()
 	foreach ( $lessreadednews as $storyid => $data ) {
 		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
 		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
-		$url3=ZAR_URL . '/userinfo.php?uid=' . $data['uid'];
+		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),$data['counter']);
 	}
@@ -1153,7 +1153,7 @@ function Stats()
 	foreach ( $besratednews as $storyid => $data ) {
 		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
 		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
-		$url3=ZAR_URL . '/userinfo.php?uid=' . $data['uid'];
+		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),number_format($data['rating'], 2));
 	}
@@ -1166,7 +1166,7 @@ function Stats()
 	echo "<div style='text-align: center;'><b>" . _AM_NEWS_STATS10 . '</b><br /><br />' . _AM_NEWS_STATS7 . "<br />\n";
 	echo "<table border='0' width='100%'><tr class='bg3'><td>"._AM_POSTER.'</td><td>' . _NW_VIEWS . "</td></tr>\n";
 	foreach ( $mostreadedauthors as $uid => $reads) {
-		$url=ZAR_URL . '/userinfo.php?uid=' . $uid;
+		$url=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $uid;
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url,$myts->htmlSpecialChars($news->uname($uid)),$reads);
 	}
@@ -1177,7 +1177,7 @@ function Stats()
 	echo '<br /><br />'._AM_NEWS_STATS8;
 	echo "<table border='0' width='100%'><tr class='bg3'><td>"._AM_POSTER."</td><td>" . _NW_RATING . "</td></tr>\n";
 	foreach ( $bestratedauthors as $uid => $rating) {
-		$url=ZAR_URL . '/userinfo.php?uid=' . $uid;
+		$url=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $uid;
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url,$myts->htmlSpecialChars($news->uname($uid)),$rating);
 	}
@@ -1188,7 +1188,7 @@ function Stats()
 	echo '<br /><br />'._AM_NEWS_STATS9;
 	echo "<table border='0' width='100%'><tr class='bg3'><td>"._AM_POSTER."</td><td>" . _AM_NEWS_STATS11 . "</td></tr>\n";
 	foreach ( $biggestcontributors as $uid => $count) {
-		$url=ZAR_URL . '/userinfo.php?uid=' . $uid;
+		$url=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $uid;
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url,$myts->htmlSpecialChars($news->uname($uid)),$count);
 	}
@@ -1527,7 +1527,7 @@ switch ($op) {
         echo "<br /><br />\n";
         echo " - <b><a href='groupperms.php'>" . _AM_GROUPPERM . "</a></b>\n";
         echo "<br /><br />\n";
-        echo " - <b><a href='" . ZAR_URL . '/addons/system/admin.php?fct=preferences&amp;op=showmod&amp;mod=' . $zariliaAddon -> getVar( 'mid' ) . "'>" . _AM_GENERALCONF . "</a></b>";
+        echo " - <b><a href='" . ZAR_URL . '/addons/system/index.php?fct=preferences&amp;op=showmod&amp;mod=' . $zariliaAddon -> getVar( 'mid' ) . "'>" . _AM_GENERALCONF . "</a></b>";
         echo "<br /><br />\n";
         echo " - <b><a href='index.php?op=prune'>" . _AM_NEWS_PRUNENEWS . "</a></b>\n";
         echo "<br /><br />\n";

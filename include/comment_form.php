@@ -49,7 +49,7 @@ $options['name'] = 'com_text';
 $options['value'] = $com_text;
 $ele = new ZariliaFormEditor( _CM_MESSAGE, $zariliaUser->getVar( "editor" ), $options, $nohtml = false, $onfailure = "textarea" );
 $ele->setNocolspan( 1 );
-$form->addElement( $ele );
+$cform->addElement( $ele );
 
 $option_tray = new ZariliaFormElementTray(_OPTIONS,'<br />');
 $button_tray = new ZariliaFormElementTray('' ,'&nbsp;');
@@ -91,6 +91,7 @@ $cform->addElement(new ZariliaFormHidden('com_id', $com_id));
 $cform->addElement(new ZariliaFormHidden('com_itemid', $com_itemid));
 $cform->addElement(new ZariliaFormHidden('com_order', $com_order));
 $cform->addElement(new ZariliaFormHidden('com_mode', $com_mode));
+$cform->addElement(new ZariliaFormHiddenToken());
 
 // add addon specific extra params
 

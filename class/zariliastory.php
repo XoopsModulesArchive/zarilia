@@ -246,7 +246,7 @@ class ZariliaStory
 	function updateComments($total)
 	{
 		$sql = sprintf("UPDATE %s SET comments = %u WHERE storyid = %u", $this->table, $total, $this->storyid);
-		if ( !$result = $this->db->queryF($sql) ) {
+		if ( !$result = $this->db->Execute($sql) ) {
 			return false;
 		}
 		return true;
@@ -281,16 +281,18 @@ class ZariliaStory
 		}
 		switch ( $format ) {
 		case "Show":
-			$title = $myts->makeTboxData4Show($this->title,$smiley);
+//			$title = $myts->makeTboxData4Show($this->title,$smiley);
+			$title = $this->title;
 			break;
 		case "Edit":
-			$title = $myts->makeTboxData4Edit($this->title);
+			//$title = $myts->makeTboxData4Edit($this->title);
+		$title = $this->title;
 			break;
 		case "Preview":
-			$title = $myts->makeTboxData4Preview($this->title,$smiley);
+			$title = $this->title;
 			break;
 		case "InForm":
-			$title = $myts->makeTboxData4PreviewInForm($this->title);
+			$title = $this->title;
 			break;
 		}
 		return $title;

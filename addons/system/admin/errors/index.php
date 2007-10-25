@@ -48,7 +48,7 @@ switch ( $op ) {
         $pulldate = ( is_string( $pulldate ) ) ? strtotime( $pulldate ) : $pulldate;
 
         zarilia_cp_header();
-        $content = '<form op="' . $addonversion['adminpath'] . '" method="get" >';
+        $content = '<form action="' . $addonversion['adminpath'] . '" method="get" >';
         $content .= "<div class='sidetitle'>" . _MA_AD_SELECT_DATE . "</div>";
         $content .= "<div class='sidecontent'>" . showHtmlCalendar( false, $pulldate ) . "</div>";
         $content .= '<input align="right" type="submit" class="formbutton" value="' . _GO . '" name="selsubmit" />

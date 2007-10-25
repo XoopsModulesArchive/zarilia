@@ -140,7 +140,7 @@ switch ( $op ) {
         $addon_list2[0] = _AM_ALLPAGES;
         ksort( $addon_list2 );
 
-        $content = '<form op="' . $addonversion['adminpath'] . '" method="get">
+        $content = '<form action="' . $addonversion['adminpath'] . '" method="get">
 			<input type="hidden" name="op" value="list" />
 			<div class="sidetitle">' . _AM_DISPLAYINADDON . '</div>
 			<div class="sidecontent">' . zarilia_getSelection( $addon_list, $addonid, "addonid", 1, 0, false, false, "style=\"width: 90%\" onchange=\"location='" . $addonversion['adminpath'] . "&amp;op=" . $op . "&amp;selmod=$selmod&amp;selvis=$selvis&amp;selgrp=$selgrp&amp;addonid='+this.options[this.selectedIndex].value\"" , 0, false ) . '</div>
@@ -168,7 +168,7 @@ switch ( $op ) {
         $addon_list2[0] = '&nbsp;';
 
         echo "<br />
-		<form op='index.php' name='blockadmin' method='post'>
+		<form action='index.php' name='blockadmin' method='post'>
 		 <table width='100%' cellpadding='2' cellspacing='1' class='outer'>
 		  <tr>
 		   <th width='2%'>&nbsp;</th>

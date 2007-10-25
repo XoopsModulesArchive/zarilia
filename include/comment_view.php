@@ -24,27 +24,24 @@ if ( ZAR_COMMENT_APPROVENONE != $zariliaAddonConfig['com_rule'] ) {
 
     include_once ZAR_ROOT_PATH . '/language/' . $zariliaConfig['language'] . '/comment.php';
     $comment_config = $zariliaAddon->getInfo( 'comments' );
-    $com_itemid = ( trim( $comment_config['itemName'] ) != '' && isset( $_GET[$comment_config['itemName']] ) ) ? intval( $_GET[$comment_config['itemName']] ) : 0;
+    $com_itemid = ( trim( $comment_config['itemName'] ) != '' && isset( $_GET[$comment_config['itemName']] ) ) ? floatval( $_GET[$comment_config['itemName']] ) : 0;
 
+	
     if ( $com_itemid > 0 ) {
-        $com_mode = isset( $_GET['com_mode'] ) ? htmlspecialchars( trim( $_GET['com_mode'] ), ENT_QUOTES ) : '';
-        if ( $com_mode == '' ) {
-            if ( is_object( $zariliaUser ) ) {
-                $com_mode = $zariliaUser->getVar( 'umode' );
-            } else {
-                $com_mode = $zariliaConfig['com_mode'];
-            }
-        }
+		
+		global $zariliaUser, $zariliaConfig;
+		if (is_object( $zariliaUser )) {
+			$com_mode = zarilia_cleanRequestVars( $_REQUEST, 'com_mode', ($zariliaUser->getVar( 'umode' )=='')?$zariliaConfig['com_mode']:$zariliaUser->getVar( 'umode' ), XOBJ_DTYPE_TXTBOX );
+			$com_order = zarilia_cleanRequestVars( $_REQUEST, 'com_order', ($zariliaUser->getVar( 'uorder' )=='')?$zariliaConfig['uorder']:$zariliaUser->getVar( 'uorder' ), XOBJ_DTYPE_INT );
+		} else {
+			$com_mode = zarilia_cleanRequestVars( $_REQUEST, 'com_mode', $zariliaConfig['com_mode'], XOBJ_DTYPE_TXTBOX );
+			$com_order = zarilia_cleanRequestVars( $_REQUEST, 'com_order', $zariliaConfig['uorder'], XOBJ_DTYPE_INT );
+		}
+
+//		trigger_error($com_mode, E_USER_ERROR);
+
+
         $zariliaTpl->assign( 'comment_mode', $com_mode );
-        if ( !isset( $_GET['com_order'] ) ) {
-            if ( is_object( $zariliaUser ) ) {
-                $com_order = $zariliaUser->getVar( 'uorder' );
-            } else {
-                $com_order = $zariliaConfig['com_order'];
-            }
-        } else {
-            $com_order = intval( $_GET['com_order'] );
-        }
         if ( $com_order != ZAR_COMMENT_OLD1ST ) {
             $zariliaTpl->assign( array( 'comment_order' => ZAR_COMMENT_NEW1ST, 'order_other' => ZAR_COMMENT_OLD1ST ) );
             $com_dborder = 'DESC';
@@ -131,7 +128,7 @@ if ( ZAR_COMMENT_APPROVENONE != $zariliaAddonConfig['com_rule'] ) {
         }
         // assign comment nav bar
         $navbar = '
-<form method="get" op="' . $comment_config['pageName'] . '">
+<form method="get" action="' . $comment_config['pageName'] . '">
 <table width="95%" class="outer" cellspacing="1">
   <tr>
     <td class="even" align="center"><select name="com_mode"><option value="flat"';

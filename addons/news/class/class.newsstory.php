@@ -607,7 +607,7 @@ $db=&$zariliaDB;
 	    $story['author_name'] = $this->uname();
 	    $story['author_uid'] = $this->uid();
 	    if ( $story['poster'] != false ) {
-	        $story['poster'] = "<a href='".ZAR_URL."/userinfo.php?uid=".$this->uid()."'>".$story['poster']."</a>";
+	        $story['poster'] = "<a href='".ZAR_URL."/index.php?page_type=userinfo&uid=".$this->uid()."'>".$story['poster']."</a>";
 	    } else {
 			if($zariliaAddonConfig['displayname']!=3) {
 				$story['poster'] = $zariliaConfig['anonymous'];
@@ -840,7 +840,7 @@ $db=&$zariliaDB;
 			$sql = sprintf("UPDATE %s SET title='%s', published=%u, expired=%u, nohtml=%u, nosmiley=%u, hometext='%s', bodytext='%s', topicid=%u, ihome=%u, topicdisplay=%u, topicalign='%s', comments=%u, rating=%u, votes=%u, uid=%u, description='%s', keywords='%s' WHERE storyid = %u", $this->table, $title, intval($this->published()), $expired, intval($this->nohtml()), intval($this->nosmiley()), $hometext, $bodytext, intval($this->topicid()), intval($this->ihome()), intval($this->topicdisplay()), $this->topicalign, intval($this->comments()), $rating, $votes, intval($this->uid()), $description, $keywords, intval($this->storyid()));
 			$newstoryid = intval($this->storyid());
 		}
-		if (!$this->db->ExecuteF($sql)) {
+		if (!$this->db->Execute($sql)) {
 			return false;
 		}
 		if (empty($newstoryid)) {
@@ -1209,7 +1209,7 @@ $db=&$zariliaDB;
 			$hometext = $myts->previewTarea($this->hometext,$html,$smiley,$xcodes);
 			break;
 		case 'InForm':
-			$hometext = $myts->makeTareaData4PreviewInForm($this->hometext);
+			$hometext = $myts->htmlSpecialChars($this->hometext);
 			break;
 		}
 		return $hometext;
@@ -1241,11 +1241,10 @@ $db=&$zariliaDB;
 			$bodytext = $myts->previewTarea($this->bodytext,$html,$smiley, $xcodes);
 			break;
 		case 'InForm':
-			$bodytext = $myts->makeTareaData4PreviewInForm($this->bodytext);
+			$bodytext = $this->bodytext;
 			break;
 		}
 		return $bodytext;
 	}
 }
 ?>
-                              

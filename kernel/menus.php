@@ -280,6 +280,7 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
                         if ( $zariliaUser )
                         {
                             $url = str_replace( '{X_UID}', $zariliaUser->getVar( 'uid' ), $url );
+							$url = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $url );
                         }
                         /**
                          */
@@ -302,7 +303,9 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
         }
 
         $i = 1;
-        foreach( $thisMenu['topmenu'] as $obj )
+		$menuTypes = array_keys($thisMenu);
+		foreach ($menuTypes as $menuType) 
+        foreach( $thisMenu[$menuType] as $obj )
         {
             if ( $obj->getVar( 'menu_link' ) )
             {
@@ -310,6 +313,7 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
                 if ( $zariliaUser )
                 {
                     $url = str_replace( '{X_UID}', $zariliaUser->getVar( 'uid' ), $url );
+					$url = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $url );
                 }
                 /**
                  */
@@ -334,7 +338,7 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
                 {
                     $_SESSION['user']['menu'][$name] = array( 'url' => $link, 'title' => $name, 'items' => array(), 'id' => $i++ );
                 }
-                foreach( $thisMenu['topmenu'] as $obj2 )
+                foreach( $thisMenu[$menuType] as $obj2 )
                 {
                     if ( $obj2->getVar( 'menu_pid' ) == $obj->getVar( 'menu_id' ) )
                     {
@@ -345,6 +349,7 @@ class ZariliaMenusHandler extends ZariliaPersistableObjectHandler
                             if ( $zariliaUser )
                             {
                                 $url = str_replace( '{X_UID}', $zariliaUser->getVar( 'uid' ), $url );
+								$url = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $url );
                             }
                             /**
                              */

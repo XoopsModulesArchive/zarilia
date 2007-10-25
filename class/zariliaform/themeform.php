@@ -164,7 +164,7 @@ class ZariliaThemeForm extends ZariliaForm {
             $mledit = new MultiLanguageEditor();
             $ret = $mledit->render( $this, null, ( strval( $validation ) != '' ) );
         } else {
-            $ret = "<form name='" . $this->getName() . "' id='" . $this->getName() . "' op='" . $this->getAction() . "' method='" . $this->getMethod() . "'";
+            $ret = "<form name='" . $this->getName() . "' id='" . $this->getName() . "' action='" . $this->getAction() . "' method='" . $this->getMethod() . "'";
             if ( $validation ) {
                 $ret .= " onsubmit='return zariliaFormValidate_" . $this->getName() . "();'";
             }

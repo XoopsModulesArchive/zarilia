@@ -120,7 +120,7 @@ switch ( $op ) {
 
         $addon_array = &$addon_handler->getList( new Criteria( 'hascomments', 1 ) );
 
-        $form = '<form op="index.php" method="get">';
+        $form = '<form action="index.php" method="get">';
         $form .= '<div class="sidetitle">Addons:</div>';
         $form .= '<div class="sidecontent"><select name="addon" style="width: 90%">';
         $addon_array[0] = _MD_AM_ALLMODS;

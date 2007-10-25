@@ -222,4 +222,4 @@ if (!isset($type)) {
 $type_hidden = new ZariliaFormHidden('type', $type);
 $sform->addElement($type_hidden);
 $sform->display();
-?>          
+?>

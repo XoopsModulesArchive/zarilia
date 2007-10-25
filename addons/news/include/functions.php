@@ -172,6 +172,12 @@ function &news_getWysiwygForm($caption, $name, $value = '', $width = '100%', $he
 	if(substr($xv,2,1)=='2') {
 		$x22=true;
 	}
+
+	$options['name'] = $name;
+    $options['value'] = $value;
+    $editor = new ZariliaFormEditor($caption, $GLOBALS['zariliaUser']->getVar( 'editor' ), $options );
+	return $editor;
+
 	$editor_configs=array();
 	$editor_configs['name'] =$name;
 	$editor_configs['value'] = $value;
@@ -466,7 +472,7 @@ function news_updateCache() {
 	$tplfile_handler = &zarilia_gethandler('tplfile');
 	$tpllist = $tplfile_handler->find(null, null, null, $folder);
 	$zariliaTpl = new ZariliaTpl();
-	zarilia_template_clear_module_cache($zariliaAddon->getVar('mid'));			// Clear module's blocks cache
+	zarilia_template_clear_addon_cache($zariliaAddon->getVar('mid'));			// Clear module's blocks cache
 
 	// Remove cache for each page.
 	foreach ($tpllist as $onetemplate) {

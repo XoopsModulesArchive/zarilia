@@ -47,8 +47,10 @@ $xlanguage_handler = &zarilia_gethandler( 'language' );
 $xlanguage_handler->loadConfig();
 $lang = $xlanguage_handler->getByName( $xlanguage["lang"] );
 if ( !is_object( $lang ) ) {
-    $lang = $xlanguage_handler->get( 1, true );
-    $zariliaConfig['language'] = ( is_object( $lang ) ) ? $lang->getVar( 'lang_name' ) : 'english';
+//    $lang = $xlanguage_handler->get( 1, true );
+	$lang = &$xlanguage_handler->getFirst();
+    $zariliaConfig['language'] = ( is_object( $lang ) ) ? $lang->getVar( 'lang_name' ) : 'lithuanian';
+    $zariliaConfig['lang_code'] = ( is_object( $lang ) ) ? $lang->getVar( 'lang_code' ) : 'lt';
 }
 
 if ( is_object( $lang )/*&& strcasecmp( $lang->getVar( 'lang_name' ), $zariliaConfig['language'] )*/ ) {
@@ -68,6 +70,9 @@ if ( is_object( $lang )/*&& strcasecmp( $lang->getVar( 'lang_name' ), $zariliaCo
     }
     unset( $lang );
 }
+
+
+//var_dump($zariliaConfig['lang_code']);
 
 if ( $xlanguage["op"] ) {
     // if(CONV_REQUEST && (!empty($_GET)||!empty($_POST))){

@@ -30,13 +30,18 @@ class widgEditor
      * @param binary $checkCompatible true - return false on failure
      */
     function widgEditor( $configs, $checkCompatible = false ) {
-		global $zariliaConfig, $zariliaTpl;
+		global $zariliaConfig, $zariliaTpl, $zariliaOption;
 
-		$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgEditor/css/info.css');
-		$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgEditor/css/main.css');
-		$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgEditor/css/widgEditor.css');
+		if (!isset($zariliaOption['widgEditor_loaded']) && isset($zariliaTpl)) {
 
-		$zariliaTpl->addScript( ZAR_URL.'/class/zariliaeditor/widgEditor/scripts/widgEditor.js');
+			$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgeditor/css/info.css');
+			$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgeditor/css/main.css');
+			$zariliaTpl->addCss( ZAR_URL.'/class/zariliaeditor/widgeditor/css/widgEditor.css');
+
+			$zariliaTpl->addScript( ZAR_URL.'/class/zariliaeditor/widgeditor/scripts/widgEditor.js');
+
+			$zariliaOption['widgEditor_loaded'] = true;
+		}
 
 		$this->Value = &$this->value;
 		

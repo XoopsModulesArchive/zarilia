@@ -23,7 +23,7 @@ $zariliaTpl->assign( 'content_title', $this->_content_obj->getVar( 'content_titl
 $zariliaTpl->assign( 'content_subtitle', $this->_content_obj->getVar( 'content_subtitle' ) );
 $zariliaTpl->assign( 'content_published', $this->_content_obj->getVar( 'content_published' ) );
 $zariliaTpl->assign( 'content_updated', $this->_content_obj->getVar( 'content_updated' ) );
-$zariliaTpl->assign( 'content_body', $this->_content_obj->getVar( 'content_body' ) );
+$zariliaTpl->assign( 'content_body', $this->_content_obj->getVar( 'content_body' , 'c') );
 $zariliaTpl->assign( 'content_icons', $this->_content_obj->getIcons() );
 $zariliaTpl->assign( 'zarilia_pagetitle', $this->_content_obj->getVar( 'content_title' ) );
 

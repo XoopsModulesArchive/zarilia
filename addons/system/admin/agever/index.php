@@ -56,7 +56,7 @@ switch ( $op ) {
          */
         zarilia_cp_header();
         $extra = "style=\"width: 90%;\" onchange=\"location='" . ZAR_URL . "/addons/system/" . $addonversion['adminpath'] . "&amp;op=list&amp;mod_id='+this.options[this.selectedIndex].value\"";
-        $content = '<form op="' . $addonversion['adminpath'] . '" method="get" >';
+        $content = '<form action="' . $addonversion['adminpath'] . '" method="get" >';
         $content .= "<div class='sidetitle'>" . _MA_AD_SELECT_ADDON . "</div>";
         $content .= "<div class='sidecontent'>" . zarilia_getSelection( $addon_list, $mod_id, 'mod_id', 1, 0 , false, "", $extra, 0, false ) . "</div>";
         $content .= "<div class='sidetitle'>" . _MA_AD_SELECT_DATE . "</div>";

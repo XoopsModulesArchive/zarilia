@@ -140,7 +140,7 @@ switch ( $op ) {
                         $results[$i]['uid'] = intval( $results[$i]['uid'] );
                         if ( !empty( $results[$i]['uid'] ) ) {
                             $uname = ZariliaUser::getUnameFromId( $results[$i]['uid'] );
-                            echo "&nbsp;&nbsp;<a href='" . ZAR_URL . "/userinfo.php?uid=" . $results[$i]['uid'] . "'>" . $uname . "</a>\n";
+                            echo "&nbsp;&nbsp;<a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $results[$i]['uid'] . "'>" . $uname . "</a>\n";
                         } 
                         echo $results[$i]['time'] ? " (" . formatTimestamp( intval( $results[$i]['time'] ) ) . ")" : "";
                         echo "</small><br />\n";
@@ -197,7 +197,7 @@ switch ( $op ) {
                 $results[$i]['uid'] = intval( $results[$i]['uid'] );
                 if ( !empty( $results[$i]['uid'] ) ) {
                     $uname = ZariliaUser::getUnameFromId( $results[$i]['uid'] );
-                    echo "&nbsp;&nbsp;<a href='" . ZAR_URL . "/userinfo.php?uid=" . $results[$i]['uid'] . "'>" . $uname . "</a>\n";
+                    echo "&nbsp;&nbsp;<a href='" . ZAR_URL . "/index.php?page_type=userinfo&uid=" . $results[$i]['uid'] . "'>" . $uname . "</a>\n";
                 } 
                 echo $results[$i]['time'] ? " (" . formatTimestamp( intval( $results[$i]['time'] ) ) . ")" : "";
                 echo "</small><br />\n";

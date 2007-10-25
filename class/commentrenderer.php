@@ -297,7 +297,7 @@ class ZariliaCommentRenderer {
 		if ($poster['id'] > 0) {
 			$com_poster =& $this->_memberHandler->getUser($poster_id);
 			if (is_object($com_poster)) {
-				$poster['uname'] = '<a href="'.ZAR_URL.'/userinfo.php?uid='.$poster['id'].'">'.$com_poster->getVar('uname').'</a>';
+				$poster['uname'] = '<a href="'.ZAR_URL.'/index.php?page_type=userinfo&uid='.$poster['id'].'">'.$com_poster->getVar('uname').'</a>';
 				return $poster;
 			}
 		}
@@ -320,10 +320,10 @@ class ZariliaCommentRenderer {
 		if ($poster['id'] > 0) {
 			$com_poster =& $this->_memberHandler->getUser($poster['id']);
 			if (is_object($com_poster)) {
-				$poster['uname'] = '<a href="'.ZAR_URL.'/userinfo.php?uid='.$poster['id'].'">'.$com_poster->getVar('uname').'</a>';
+				$poster['uname'] = '<a href="'.ZAR_URL.'/index.php?page_type=userinfo&uid='.$poster['id'].'">'.$com_poster->getVar('uname').'</a>';
 				$poster_rank = $com_poster->rank();
-				$poster['rank_image'] = ($poster_rank['image'] != '') ? $poster_rank['image'] : 'blank.gif'; 
-				$poster['rank_title'] = $poster_rank['title'];
+				$poster['rank_image'] = ($poster_rank->getVar('rank_image') != '') ? $poster_rank->getVar('rank_image') : 'blank.gif'; 
+				$poster['rank_title'] = $poster_rank->getVar('rank_title');
 				$poster['avatar'] = $com_poster->getVar('user_avatar');
 				$poster['regdate'] = formatTimestamp($com_poster->getVar('user_regdate'), 's');
 				$poster['from'] = $com_poster->getVar('user_from');

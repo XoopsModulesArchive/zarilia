@@ -50,11 +50,11 @@ $zariliaTpl->addIcon( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/favi
  * assign Zarilia JS
  */
 $zariliaTpl->addScript( ZAR_URL . '/include/javascript/zarilia.js' );
-$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/JSCookMenu.js' );
-$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/pngfix.js' );
-$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/ThemeOffice/theme.js' );
-$zariliaTpl->addCss( ZAR_THEME_URL . "/" . $zariliaConfig['theme_set'] . '/css/style.css' );
-$zariliaTpl->addCss( ZAR_THEME_URL . "/" . $zariliaConfig['theme_set'] . '/js/ThemeOffice/user_theme.css' );
+//$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/JSCookMenu.js' );
+//$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/pngfix.js' );
+//$zariliaTpl->addScript( ZAR_THEME_URL . '/' . $zariliaConfig['theme_set'] . '/js/ThemeOffice/theme.js' );
+//$zariliaTpl->addCss( ZAR_THEME_URL . "/" . $zariliaConfig['theme_set'] . '/css/style.css' );
+//$zariliaTpl->addCss( ZAR_THEME_URL . "/" . $zariliaConfig['theme_set'] . '/js/ThemeOffice/user_theme.css' );
 /**
  * get all blocks and assign to smarty
  */
@@ -188,6 +188,7 @@ if (( !isset( $_SESSION['user']['menu'] ) ) ||(@$_REQUEST['debug'] == 'rebuild')
     $menu_handler = &zarilia_gethandler( 'menus' );
     $menu_handler->displayTopMenu();
 } 
+
 $zariliaTpl->assign_by_ref( 'system_menu', $_SESSION['user']['menu'] );
 $zariliaTpl->assign_by_ref( 'system_footermenu', $_SESSION['user']['footermenu'] );
 

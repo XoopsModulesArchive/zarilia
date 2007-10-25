@@ -24,6 +24,8 @@
 //  along with this program; if not, write to the Free Software              //
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
+
+
 if (!defined('ZAR_ROOT_PATH')) {
 	include_once '../../mainfile.php';
 }
@@ -38,6 +40,8 @@ if (file_exists(ZAR_ROOT_PATH.'/addons/news/language/'.$zariliaConfig['language'
 } else {
     include_once ZAR_ROOT_PATH.'/addons/news/language/english/admin.php';
 }
+
+
 $myts = &MyTextSanitizer::getInstance();
 $module_id = $zariliaAddon->getVar('mid');
 $storyid=0;
@@ -280,7 +284,10 @@ switch ($op) {
 		}
 		$topicalign2 = isset($story->topicalign) ? 'align="'.$story->topicalign().'"' : '';
 		$p_hometext = (($xt->topic_imgurl() != '') && $topicdisplay) ? '<img src="images/topics/'.$xt->topic_imgurl().'" '.$topicalign2.' alt="" />'.$p_hometext : $p_hometext;
-		themecenterposts($p_title, $p_hometext);
+
+		echo '<h1>'.$p_title.'</h1>';
+		echo $p_hometext;
+//		themecenterposts($p_title, $p_hometext);
 
 		//Display post edit form
 		$returnside=intval($_POST['returnside']);

@@ -132,7 +132,7 @@ $zariliaTpl->assign('lang_hits',_NW_VIEWS);
 $zariliaTpl->assign('lang_title',_NW_TITLE);
 $zariliaTpl->assign('news_rating',news_getmoduleoption('ratenews'));
 $zariliaTpl->assign('lang_rating',_NW_RATING);
-$zariliaTpl->assign('author_name_with_link',sprintf("<a href='%s'>%s</a>",ZAR_URL.'/userinfo.php?uid='.$uid,$authname));
+$zariliaTpl->assign('author_name_with_link',sprintf("<a href='%s'>%s</a>",ZAR_URL.'/index.php?page_type=userinfo&uid='.$uid,$authname));
 
 $oldtopic=-1;
 $oldtopictitle='';

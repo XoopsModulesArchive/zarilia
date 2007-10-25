@@ -218,12 +218,20 @@ if (zarilia_trim($bodytext) != '') {
     	}
 
         if ($storypage == 0) {
-            $story['text'] = $story['text'].'<br />'.news_getmoduleoption('advertisement').'<br />'.$articletext[$storypage];
+			if ($adds = news_getmoduleoption('advertisement')) {
+				$story['text'] = $story['text'].'<br />'.$adds.'<br />'.$articletext[$storypage];
+			} else {
+	            $story['text'] = $story['text'].$articletext[$storypage];
+			}
         } else {
             $story['text'] = $articletext[$storypage];
         }
     } else {
-        $story['text'] = $story['text'].'<br />'.news_getmoduleoption('advertisement').'<br />'.$bodytext;
+		if ($adds = news_getmoduleoption('advertisement')) {
+			$story['text'] = $story['text'].'<br />'.$adds.'<br />'.$bodytext;
+		} else {
+			$story['text'] = $story['text'].$bodytext;
+		}        
     }
 }
 // Publicité
@@ -252,7 +260,7 @@ if($highlight && isset($_GET['keywords']))
 $story['poster'] = $article->uname();
 if ( $story['poster'] ) {
     $story['posterid'] = $article->uid();
-    $story['poster'] = '<a href="'.ZAR_URL.'/userinfo.php?uid='.$story['posterid'].'">'.$story['poster'].'</a>';
+    $story['poster'] = '<a href="'.ZAR_URL.'/index.php?page_type=userinfo&uid='.$story['posterid'].'">'.$story['poster'].'</a>';
     $tmp_user = new ZariliaUser($article->uid());
     $story['poster_avatar'] = ZAR_UPLOAD_URL.'/'.$tmp_user->getVar('user_avatar');
     $story['poster_signature'] = $tmp_user->getVar('user_sig');
@@ -488,4 +496,4 @@ $zariliaTpl->assign('story', $story);
 
 include_once ZAR_ROOT_PATH.'/include/comment_view.php';
 include_once ZAR_ROOT_PATH.'/footer.php';
-?>                  
+?>

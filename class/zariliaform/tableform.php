@@ -47,7 +47,7 @@ class ZariliaTableForm extends ZariliaForm
 	 */
 	function render()
 	{
-		$ret = $this->getTitle()."\n<form name='".$this->getName()."' id='".$this->getName()."' op='".$this->getAction()."' method='".$this->getMethod()."'".$this->getExtra().">\n<table border='0' width='100%'>\n";
+		$ret = $this->getTitle()."\n<form name='".$this->getName()."' id='".$this->getName()."' action='".$this->getAction()."' method='".$this->getMethod()."'".$this->getExtra().">\n<table border='0' width='100%'>\n";
 		foreach ( $this->getElements() as $ele ) {
 			if ( !$ele->isHidden() ) {
 				$ret .= "<tr valign='top' align='left'><td width='40%'>".$ele->getCaption();

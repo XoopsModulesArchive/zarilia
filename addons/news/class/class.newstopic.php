@@ -182,7 +182,7 @@ $this->db=&$zariliaDB;
 	    }
 
 		$sql = "SELECT count(topic_id) as cpt FROM ".$this->table.$perms;
-		$array = $this->db->fetchArray($this->db->Execute($sql));
+		$array = $this->db->GetRow($sql);
 		return($array['cpt']);
 	}
 
@@ -301,7 +301,7 @@ $db=&$zariliaDB;
 			ErrorHandler::show('0022');
 		} else {
 			if($insert) {
-				$this->topic_id = $this->db->getInsertId();
+				$this->topic_id = $this->db->Insert_ID();
 			}
 		}
 
@@ -500,7 +500,7 @@ $db=&$zariliaDB;
 		$result = $this->db->Execute($sql);
 		$ret = array();
 		$myts = &MyTextSanitizer::getInstance();
-		while ($myrow = $this->db->fetchArray($result)) {
+		while ($myrow = $result->FetchRow()) {
 			$ret[$myrow['topic_id']] = array('title' => $myts->displayTarea($myrow['topic_title']), 'pid' => $myrow['topic_pid'], 'color'=> $myrow['topic_color']);
 		}
 		return $ret;
@@ -521,4 +521,4 @@ $db=&$zariliaDB;
 		$this->topic_frontpage=intval($value);
 	}
 }
-?>                           
+?>

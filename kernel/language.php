@@ -144,6 +144,26 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
         return $lang;
     }
 
+    /**
+     * ZariliaLanguageHandler::get()
+     *
+     * @param  $id
+     * @param boolean $isBase
+     * @return
+     */
+    function &getFirst() {
+        $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_base' ) . ' LIMIT 0,1';
+		$result = $this->db->Execute( $sql );
+        $array = $result->FetchRow();
+        if ( !is_array( $array ) || count( $array ) == 0 ) {
+            $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'ERROR: Selected item was not found in the database' );
+            return false;
+        }
+        $lang = &$this->create( false, $isBase );
+        $lang->assignVars( $array );
+        return $lang;
+    }
+
     function &getByName( $name ) {
         if ( empty( $name ) || preg_match( "/[^a-zA-Z0-9\_\-]/", $name ) ) {
             return false;

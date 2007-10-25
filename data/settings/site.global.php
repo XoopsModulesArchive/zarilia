@@ -33,28 +33,20 @@ return array (
     'messages' => 0,
     'messages_buddy' => 0,
     'messages_sent' => 0,
-	'ranks' => 0,
-	'zarilianotifications' => 0,
-	'configcategory' => 0,
-	'smiles' => 0,
-	'streaming' => 0,
-	'security' => 0,
-	'avatar' => 0,
-	'mediacategory' => 0
   ),
   'db' => 
   array (
     'type' => 'mysql',
     'prefix' => 'perchatenpo',
     'host' => 'localhost',
-    'user' => 'root',
-    'pass' => '',
-    'name' => 'zarilia',
+    'user' => 'skycom',
+    'pass' => 'TwApuDsdees65',
+    'name' => 'skycom',
     'pconnect' => '0',
   ),
   'path' => 
   array (
-    'root' => 'C:/PHPLearnWAMP/Apache2/htdocs/zarilia',
+    'root' => '/home/skycom/web/beta',
     'check' => 1,
   ),
   'groups' => 

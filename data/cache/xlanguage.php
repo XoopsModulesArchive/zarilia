@@ -1,13 +1,13 @@
 <?php
 	$cached_config['xlanguage_base'] = array(
-		"english"=>array(
-			"lang_name"=>"english",
-			"lang_desc"=>"English",
+		"lithuanian"=>array(
+			"lang_name"=>"lithuanian",
+			"lang_desc"=>"Lietuvių",
 			"lang_charset"=>"UTF-8",
-			"lang_code"=>"en",
-			"lang_image"=>"english.gif",
-			"lang_id"=>1,
-			"weight"=>0
+			"lang_code"=>"lt",
+			"lang_image"=>"lithuania.gif",
+			"lang_id"=>2,
+			"weight"=>1
 		),
 	);
 ?>

@@ -453,7 +453,7 @@ switch ( strtolower( $op ) ) {
 			    </div>',
 
                 _AM_USER_SEARCHCUSTOM => '
-					<form name="form1" op="' . $addonversion['adminpath'] . '" method="get">
+					<form name="form1" action="' . $addonversion['adminpath'] . '" method="get">
 						<input type="hidden" name="fct" value="users" />
 						<input type="hidden" name="op" value="list" />
 							<table class="outer" border="0" width="100%">
