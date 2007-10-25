@@ -41,12 +41,12 @@
 			</table>
 			<br />
 			<{if $user_ownpage == true}>
-				<form name="usernav" op="index.php?page_type=user" method="post">
+				<form name="usernav" action="index.php?page_type=user" method="post">
 				<table width="100%" align="center" border="0">
 				  <tr align="center">
 				    <td>
 						<{if $user_ownpage == true}>
-						   <form name="usernav" op="index.php?page_type=user" method="post">
+						   <form name="usernav" action="index.php?page_type=user" method="post">
 							<input type="button" class="formbutton" value="<{$smarty.const._US_EDITPROFILE}>" onclick="location='index.php?page_type=edituser'" />
 						    <input type="button" class="formbutton" value="<{$smarty.const._US_AVATAR}>" onclick="location='index.php?page_type=avatar'" />
 						    <input type="button" class="formbutton" value="<{$smarty.const._US_NOTIFICATIONS}>" onclick="location='index.php?page_type=notifications'" />

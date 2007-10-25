@@ -1,5 +1,5 @@
 <{if $zarilia_notification.show}>
-<form name="notification_select" op="<{$zarilia_notification.target_page}>" method="post">
+<form name="notification_select" action="<{$zarilia_notification.target_page}>" method="post">
 <h4 style="text-align:center;"><{$lang_activenotifications}></h4>
 <input type="hidden" name="not_redirect" value="<{$zarilia_notification.redirect_script}>" />
 <table class="outer">

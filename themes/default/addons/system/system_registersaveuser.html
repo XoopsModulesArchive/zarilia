@@ -2,7 +2,7 @@
 <script type="text/javascript" src="<{$zarilia_url}>/class/zariliaform/scripts/generate.js"></script>
 <script type="text/javascript" src="<{$zarilia_url}>/class/zariliaform/scripts/multilanguage.js"></script>
 
-<form style="margin: 0px; padding: 0px;" name="register" id="register" op="index.php" method="post" onSubmit="return <{$validate_form}>();">
+<form style="margin: 0px; padding: 0px;" name="register" id="register" action="index.php" method="post" onSubmit="return <{$validate_form}>();">
  <input type="hidden" name="page_type" value="register" />
 	<{if $hidden}>
 		<{foreach from=$hidden key="key" item="value"}>

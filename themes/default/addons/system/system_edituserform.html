@@ -12,7 +12,7 @@
 		<th><{$header}></th>
 	</tr>
 <{/if}>
-<form name="<{$zariliaform.name}>" op="<{$zariliaform.op}>" method="<{$zariliaform.method}>" <{$zariliaform.extra}>>
+<form name="<{$zariliaform.name}>" action="<{$zariliaform.op}>" method="<{$zariliaform.method}>" <{$zariliaform.extra}>>
 <input type="hidden" name="page_type" value="<{$page_type}>" />
 <{foreach item=element from=$zariliaform.elements}> <{if $element.hidden != true}> <{if $element.split }> <{$element.split}> <{else}>
 	<tr>
