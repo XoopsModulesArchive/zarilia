@@ -602,4 +602,4 @@ function news_make_infotips($text)
 		return $myts->htmlSpecialChars(zarilia_substr(strip_tags($text),0,$infotips));
 	}
 }
-?>                                    
+?>

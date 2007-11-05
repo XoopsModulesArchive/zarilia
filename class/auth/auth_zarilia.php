@@ -92,20 +92,27 @@ class ZariliaAuthZarilia extends ZariliaAuth {
      */
     function doLogin() {
         global $zariliaConfig;
-        if ( $_SERVER["REQUEST_METHOD"] <> "POST" ) {
-            die( "You can only reach this page by posting from the html form" );
+        if ( $_SERVER['REQUEST_METHOD'] <> 'POST' ) {
+            die( 'You can only reach this page by posting from the html form' );
         }
+		
+		if ((strlen(trim($this->_login))<1)  && (strlen(trim($this->_pass))<1)) {
+            $security_handler = &zarilia_gethandler( 'tokens' );
+            $security_handler->addLog( $title = 'Failed Login Attempts', $this->_login, $pass = '' );
+            return '';
+		}
+
         $criteria = new CriteriaCompo();
         if ( $this->_doType ) {
             $criteria->add( new Criteria( 'email', $this->_login ) );
         } else {
             $criteria->add( new Criteria( 'login', $this->_login ) );
         }
-        if ( $this->_md5pass == true ) {
-            $criteria->add( new Criteria( 'pass', md5( $this->_pass ) ) );
-        } else {
-            $criteria->add( new Criteria( 'pass', $this->_pass ) );
-        }
+//        if ( $this->_md5pass == true ) {
+            $criteria->add( new Criteria( 'pass', $GLOBALS['zariliaSecurity']->execEncryptionFunc('encrypt', $this->_pass ) ) );
+//        } else {
+//            $criteria->add( new Criteria( 'pass', $this->_pass ) );
+//        }
         $criteria->add ( new Criteria( 'level', 0, '!=' ), 'AND' );
         $criteria->add ( new Criteria( 'level', 6, '!=' ), 'AND' );
         $user_handler = &zarilia_gethandler( 'user' );
@@ -184,7 +191,9 @@ class ZariliaAuthZarilia extends ZariliaAuth {
         } elseif ( isset( $_COOKIE['zariliaUserLogin'] ) && $_COOKIE['zariliaUserLogin'] ) {
             $zariliaUser = $this->_checkRemembered();
         } else {
-            $zariliaUser = '';
+			//$user_handler = &zarilia_gethandler( 'user' );
+            //$zariliaUser = new ZariliaUser();
+			$zariliaUser = null;
         }
         return $zariliaUser;
     }

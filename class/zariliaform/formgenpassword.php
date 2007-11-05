@@ -77,7 +77,7 @@ class ZariliaFormGenPassword extends ZariliaFormElement {
                 $zariliaTpl->addScript( ZAR_URL . '/class/zariliaform/scripts/generate.js' );
                 $zariliaOption['pass.gen_loaded'] = true;
             }
-        }
+        } 
         $this->setCaption( $caption );
         $this->setName( $name );
         $this->setValue( $value );
@@ -152,7 +152,7 @@ class ZariliaFormGenPassword extends ZariliaFormElement {
         $rez .= "</select><br />
 		 <input type='hidden' name='autoupdate' value='" . ( ( $this->_autoupdate ) ? 'true' : 'false' ) . "'>
 		 <input type='text' name='password' size='20' readonly='readonly'><br />
-		 <input type='button' name='Generate Password'  id='Generate Password' value='Generate Password' onClick='generate(this.form, true);' />";
+		 <input type='button' name='Generate Password'  id='Generate Password' value='"._US_CREATEPASSWORD."' onClick='generate(this.form, true);' />";
         return $rez;
     }
 }

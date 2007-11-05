@@ -33,6 +33,8 @@ return array (
     'messages' => 0,
     'messages_buddy' => 0,
     'messages_sent' => 0,
+	'avatar_user_link' => 0,
+	'mimetypes' => 1
   ),
   'db' => 
   array (
@@ -40,7 +42,7 @@ return array (
     'prefix' => 'perchatenpo',
     'host' => 'localhost',
     'user' => 'skycom',
-    'pass' => 'TwApuDsdees65',
+    'pass' => 'TwApuD',
     'name' => 'skycom',
     'pconnect' => '0',
   ),
@@ -58,6 +60,11 @@ return array (
     5 => 'SUBMITTERS',
     6 => 'SUBSCRIPTION',
     7 => 'BANNED',
+  ),
+  'security' => array
+  (
+	'passkey' => 'stupid passkey',
+	'encryption' => 'Internal XorBase64'
   ),
   'sites' => 
   array (

@@ -687,4 +687,4 @@ function b_news_top_onthefly($options)
 	$tpl->display('db:news_block_top.html');
 }
 
-?>              
+?>

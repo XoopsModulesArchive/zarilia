@@ -11,11 +11,14 @@
 // URL: http:www.zarilia.com 												//
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
+
+
 if ( isset( $_REQUEST['page_type'] ) && strval( $_REQUEST['page_type'] ) )
 {
     $zariliaOption['pagetype'] = strval( strip_tags( $_REQUEST['page_type'] ) );
 }
 include 'mainfile.php';
+global $zariliaConfig;
 /*
 * WE ARE CHANGING THIS TO ALLOW FOR NEW TYPE CONTENT MANAGEMENT
 */
@@ -24,10 +27,12 @@ $cont['id'] = zarilia_cleanRequestVars( $_REQUEST, 'id', 0, XOBJ_DTYPE_INT );
 $cont['cid'] = zarilia_cleanRequestVars( $_REQUEST, 'cid', 0, XOBJ_DTYPE_INT );
 $cont['uid'] = zarilia_cleanRequestVars( $_REQUEST, 'uid', 0, XOBJ_DTYPE_INT );
 $cont['page_type'] = zarilia_cleanRequestVars( $_REQUEST, 'page_type', null, XOBJ_DTYPE_TXTBOX );
+$cont['content_type'] = zarilia_cleanRequestVars( $_REQUEST, 'content_type', 'static', XOBJ_DTYPE_TXTBOX );
 $cont['act'] = zarilia_cleanRequestVars( $_REQUEST, 'act', '', XOBJ_DTYPE_TXTBOX );
 $cont['direct'] = zarilia_cleanRequestVars( $_REQUEST, 'direct', false, XOBJ_DTYPE_TXTBOX );
 
 $zariliaOption['show_cblock'] = ( $cont['page_type'] != null ) ? 0 : 1;
+
 
 // check if start page is defined
 if (( isset( $zariliaConfig['startpage'] ) && !empty( $zariliaConfig['startpage'] ) ) && (!$cont['page_type'])) {
@@ -53,6 +58,8 @@ else
                 {
                     $cont['act'] = 'isdefault';
                 }
+				include 'header.php';
+				$zariliaOption['header.included'] = true;
                 $ret = call_user_func( array( $zariliaUserAuth, $cont['act'] ) );
             }
             break;
@@ -84,7 +91,7 @@ if ( $no_return )
 {
     if ( $GLOBALS['zariliaLogger']->getSysErrorCount() )
     {
-        include 'header.php';
+        if (!isset($zariliaOption['header.included'])) include 'header.php';
         $GLOBALS['zariliaLogger']->sysRender();
         include 'footer.php';
         exit();
@@ -92,15 +99,11 @@ if ( $no_return )
     if ( is_array( $ret ) )
     {
         $zariliaOption['template_main'] = &$ret['template_main'];
-        include 'header.php';
-        if ( isset( $ret['content']['form'] ) )
-        {
-            $form = &$ret['content']['form'];
-        }
+        if (!isset($zariliaOption['header.included'])) include 'header.php';        
         $zariliaTpl->assign( $ret );
-        if ( isset( $ret['content']['form'] ) )
+        if ( isset( $ret['content']['form'] ) && (method_exists($ret['content']['form'], 'assign' )))
         {
-            $form->assign( $zariliaTpl );
+            $ret['content']['form']->assign( $zariliaTpl );
         }
         include 'footer.php';
     }

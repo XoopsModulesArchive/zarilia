@@ -1089,7 +1089,7 @@ function Stats()
 	echo "<div style='text-align: center;'><b>" . _AM_NEWS_STATS0 . "</b><br />\n";
 	echo "<table border='0' width='100%'><tr class='bg3'><td align='center'>"._AM_TOPIC."</td><td align='center'>" . _NW_ARTICLES . "</td><td>" . _NW_VIEWS . "</td><td>" . _AM_UPLOAD_ATTACHFILE . "</td><td>" . _AM_EXPARTS ."</td><td>" ._AM_NEWS_STATS1 ."</td></tr>";
 	foreach ( $storiespertopic as $topicid => $data ) {
-		$url=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $topicid;
+		$url=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname') . '/index.php?storytopic=' . $topicid;
 		$views=0;
 		if(array_key_exists($topicid,$readspertopic)) {
 			$views=$readspertopic[$topicid];
@@ -1125,8 +1125,8 @@ function Stats()
 	echo "<div style='text-align: center;'><b>" . _AM_NEWS_STATS3 . '</b><br /><br />' . _AM_NEWS_STATS4 . "<br />\n";
 	echo "<table border='0' width='100%'><tr class='bg3'><td align='center'>"._AM_TOPIC."</td><td align='center'>" . _AM_TITLE . "</td><td>" . _AM_POSTER . "</td><td>" . _NW_VIEWS . "</td></tr>\n";
 	foreach ( $mostreadednews as $storyid => $data ) {
-		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
-		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
+		$url1=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname') . '/index.php?storytopic=' . $data['topicid'];
+		$url2=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname')  . '/article.php?storyid=' . $storyid;
 		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),$data['counter']);
@@ -1138,8 +1138,8 @@ function Stats()
 	echo '<br /><br />'._AM_NEWS_STATS5;
 	echo "<table border='0' width='100%'><tr class='bg3'><td align='center'>"._AM_TOPIC."</td><td align='center'>" . _AM_TITLE . "</td><td>" . _AM_POSTER . "</td><td>" . _NW_VIEWS . "</td></tr>\n";
 	foreach ( $lessreadednews as $storyid => $data ) {
-		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
-		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
+		$url1=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname')  . '/index.php?storytopic=' . $data['topicid'];
+		$url2=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname') . '/article.php?storyid=' . $storyid;
 		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%u</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),$data['counter']);
@@ -1151,8 +1151,8 @@ function Stats()
 	echo '<br /><br />'._AM_NEWS_STATS6;
 	echo "<table border='0' width='100%'><tr class='bg3'><td align='center'>"._AM_TOPIC."</td><td align='center'>" . _AM_TITLE . "</td><td>" . _AM_POSTER . "</td><td>" . _NW_RATING . "</td></tr>\n";
 	foreach ( $besratednews as $storyid => $data ) {
-		$url1=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/index.php?storytopic=' . $data['topicid'];
-		$url2=ZAR_URL . '/addons/' . $zariliaAddon -> dirname() . '/article.php?storyid=' . $storyid;
+		$url1=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname')  . '/index.php?storytopic=' . $data['topicid'];
+		$url2=ZAR_URL . '/addons/' . $zariliaAddon->getVar('dirname')  . '/article.php?storyid=' . $storyid;
 		$url3=ZAR_URL . '/index.php?page_type=userinfo&uid=' . $data['uid'];
 		$class = ($class == 'even') ? 'odd' : 'even';
 		printf("<tr class='".$class."'><td align='left'><a href='%s' target ='_blank'>%s</a></td><td align='left'><a href='%s' target='_blank'>%s</a></td><td><a href='%s' target='_blank'>%s</a></td><td align='right'>%s</td></tr>\n",$url1,$myts->displayTarea($data['topic_title']),$url2,$myts->displayTarea($data['title']),$url3,$myts->htmlSpecialChars($news->uname($data['uid'])),number_format($data['rating'], 2));
@@ -1543,4 +1543,4 @@ switch ($op) {
 }
 
 zarilia_cp_footer();
-?>                                
+?>

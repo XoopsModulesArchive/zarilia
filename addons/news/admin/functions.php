@@ -231,4 +231,3 @@ function news_collapsableBar($tablename = '', $iconname = '')
 }
 
 ?>
-           

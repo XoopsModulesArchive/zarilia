@@ -467,7 +467,7 @@ class ZariliaForm {
             $i++;
         }
         $js = $this->renderValidationJS( false );
-        $tpl->assign( $this->getName(), array( 'title' => $this->getTitle(), 'name' => $this->getName(), 'action' => $this->getAction(), 'method' => $this->getMethod(), 'extra' => 'onsubmit="return zariliaFormValidate_' . $this->getName() . '();"' . $this->getExtra(), 'javascript' => $js, 'elements' => $elements ) );
+        $tpl->assign( $this->getName(), array( 'title' => $this->getTitle(), 'name' => $this->getName(), 'op' => $this->getAction(), 'method' => $this->getMethod(), 'extra' => 'onsubmit="return zariliaFormValidate_' . $this->getName() . '();"' . $this->getExtra(), 'javascript' => $js, 'elements' => $elements ) );
     }
 }
 

@@ -86,7 +86,7 @@ class ZariliaMailer {
     // private
     var $templatedir;
     // protected
-    var $charSet = 'iso-8859-1';
+    var $charSet = 'UTF-8';
     // protected
     var $encoding = '8bit';
 
@@ -238,7 +238,7 @@ class ZariliaMailer {
             $text = str_replace( "{X_UID}", $user->getVar( "uid" ), $this->body );
             $text = str_replace( "{X_UEMAIL}", $user->getVar( "email" ), $text );
             $text = str_replace( "{X_UNAME}", $user->getVar( "uname" ), $text );
-            $text = str_replace( "{X_UACTLINK}", ZAR_URL . "/index.php?page_type=user&amp;act=actv&id=" . $user->getVar( "uid" ) . "&actkey=" . $user->getVar( 'actkey' ), $text );
+            $text = str_replace( "{X_UACTLINK}", ZAR_URL . "/index.php?page_type=user&act=actv&id=" . $user->getVar( "uid" ) . "&actkey=" . $user->getVar( 'actkey' ), $text );
             // send mail
             if ( $this->isMail ) {
                 if ( !$this->sendMail( $user->getVar( "email" ), $subject, $text, $headers ) ) {

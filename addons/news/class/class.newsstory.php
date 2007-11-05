@@ -622,7 +622,7 @@ $db=&$zariliaDB;
 			}
 		}
 	    $story['posttimestamp'] = $this->published();
-	    $story['posttime'] = formatTimestamp($story['posttimestamp'],news_getmoduleoption('dateformat'));
+	    $story['posttime'] = formatTimestamp($story['posttimestamp']);
 		$story['topic_description'] = $myts->displayTarea($this->topic_description);
 
 		$auto_summary = '';

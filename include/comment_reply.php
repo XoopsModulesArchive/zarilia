@@ -37,7 +37,7 @@ if (!isset($_GET['com_order'])) {
 $comment_handler =& zarilia_gethandler('comment');
 $comment =& $comment_handler->get($com_id);
 $r_name = ZariliaUser::getUnameFromId($comment->getVar('com_uid'));
-$r_text = _CM_POSTER.': <b>'.$r_name.'</b>&nbsp;&nbsp;'._CM_POSTED.': <b>'.formatTimestamp($comment->getVar('com_created')).'</b><br /><br />'.$comment->getVar('com_text');$com_title = $comment->getVar('com_title', 'E');
+$r_text = _CM_POSTER.': <b>'.$r_name.'</b>&nbsp;&nbsp;'._CM_POSTED.': <b>'.$comment->getVar('com_created').'</b><br /><br />'.$comment->getVar('com_text');$com_title = $comment->getVar('com_title', 'E');
 if (!preg_match("/^(Re|"._CM_RE."):/i", $com_title)) {
 	$com_title = _CM_RE.": ".zarilia_substr($com_title, 0, 56);
 }

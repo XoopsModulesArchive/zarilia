@@ -59,8 +59,9 @@ function b_system_login_show()
 {
     global $zariliaUser, $zariliaConfig, $config_handler;
     $block = array();
-    if ( !$zariliaUser )
+    if ( !is_object($zariliaUser) )
     {
+		require_once  ZAR_ROOT_PATH. "/language/" . $zariliaConfig['language'].'/user.php';
         $zariliaConfigUser = &$config_handler->getConfigsByCat( ZAR_CONF_USER );
         if ( $zariliaConfigUser['showimagever'] )
         {
@@ -108,7 +109,7 @@ function b_system_login_show()
         $block['lang_lostpass'] = _MB_SYSTEM_LPASS;
 
         $block['lang_registernow'] = '';
-        $block['allow_register'] = $zariliaConfigUser['allow_register'];
+        $block['allow_register'] = (($zariliaConfigUser['allow_register'])==1)?1:0;
         if ( $zariliaConfigUser['allow_register'] == 1 )
         {
             $block['lang_registernow'] = _MB_SYSTEM_RNOW;

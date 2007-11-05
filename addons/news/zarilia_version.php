@@ -663,4 +663,4 @@ $addonversion['notification']['event'][5]['caption'] = _MI_NEWS_CATEGORY_STORYPO
 $addonversion['notification']['event'][5]['description'] = _MI_NEWS_CATEGORY_STORYPOSTED_NOTIFYDSC;
 $addonversion['notification']['event'][5]['mail_template'] = 'category_newstory_notify';
 $addonversion['notification']['event'][5]['mail_subject'] = _MI_NEWS_CATEGORY_STORYPOSTED_NOTIFYSBJ;
-?>      
+?>

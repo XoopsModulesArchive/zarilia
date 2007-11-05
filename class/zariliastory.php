@@ -228,7 +228,7 @@ class ZariliaStory
 	function delete()
 	{
 		$sql = sprintf("DELETE FROM %s WHERE storyid = %u", $this->table, $this->storyid);
-		if( !$result = $this->db->query($sql) ) {
+		if( !$result = $this->db->Execute($sql) ) {
 			return false;
 		}
 		return true;
@@ -237,7 +237,7 @@ class ZariliaStory
 	function updateCounter()
 	{
 		$sql = sprintf("UPDATE %s SET counter = counter+1 WHERE storyid = %u", $this->table, $this->storyid);
-		if ( !$result = $this->db->queryF($sql) ) {
+		if ( !$result = $this->db->Execute($sql) ) {
 			return false;
 		}
 		return true;

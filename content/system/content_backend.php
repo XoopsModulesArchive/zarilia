@@ -27,6 +27,7 @@ $zariliaTpl->zarilia_setCaching( 2 );
 $zariliaTpl->zarilia_setCacheTime( 3600 );
 // if ( !$zariliaTpl->is_cached( 'db:system_rss.html' ) ) {
 $zariliaOption['template_main'] = 'system_rss.html';
+
 $_obj = $this->getContentObj( $_values );
 
 if ( $_obj['count'] ) {

@@ -94,11 +94,12 @@ class ZariliaUserAvatar extends ZariliaAuth {
                         $sql = sprintf( "UPDATE %s SET user_avatar = %s WHERE uid = %u", $zariliaDB->prefix( 'users' ), $zariliaDB->qstr( $uploader->getSavedFileName() ), $zariliaUser->getVar( 'uid' ) );
                         $zariliaDB->Execute( $sql );
                         $avt_handler->addUser( $avatar->getVar( 'avatar_id' ), $zariliaUser->getVar( 'uid' ) );
-                        redirect_header( 'userinfo.php?t=' . time() . '&amp;uid=' . $zariliaUser->getVar( 'uid' ), 0, _US_PROFUPDATED );
+                        redirect_header( 'index.php?page_type=avatar&t=' . time() . '&amp;uid=' . $zariliaUser->getVar( 'uid' ), 0, _US_PROFUPDATED );
                     }
                 }
             }
             echo $uploader->getErrors();
+			return;
         } else {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, _AM_US_NOTDELIDNOTFOUND );
         }

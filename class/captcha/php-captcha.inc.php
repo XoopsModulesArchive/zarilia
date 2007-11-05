@@ -50,6 +50,9 @@
 // code. Comment out if you are calling already from your application
 //session_start();
 // class defaults - change to effect globally
+
+if (defined('CAPTCHA_SESSION_ID')) return;
+
 define( 'CAPTCHA_SESSION_ID', 'php_captcha' );
 define( 'CAPTCHA_WIDTH', 200 ); // max 500
 define( 'CAPTCHA_HEIGHT', 50 ); // max 200
@@ -442,14 +445,15 @@ class AudioPhpCaptcha {
         @unlink( "$this->sAudioPath$sFile.wav" );
     }
 }
+
 // example sub class
-class PhpCaptchaColour extends PhpCaptcha {
+/*class PhpCaptchaColour extends PhpCaptcha {
     function PhpCaptchaColour( $aFonts, $iWidth = CAPTCHA_WIDTH, $iHeight = CAPTCHA_HEIGHT ) {
         // call parent constructor
         parent::PhpCaptcha( $aFonts, $iWidth, $iHeight );
         // set options
         $this->UseColour( true );
     }
-}
+}*/
 
 ?>

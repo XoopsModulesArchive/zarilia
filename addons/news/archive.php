@@ -202,4 +202,4 @@ $zariliaTpl->assign('lang_newsarchives', _NW_NEWSARCHIVES);
 news_CreateMetaDatas();
 
 include_once ZAR_ROOT_PATH.'/footer.php';
-?>         
+?>

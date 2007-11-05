@@ -237,4 +237,4 @@ class ZariliaPageNav
 		return $ret;
 	}
 }
-?>    
+?>

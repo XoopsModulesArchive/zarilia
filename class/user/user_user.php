@@ -75,7 +75,7 @@ class ZariliaUserUser extends ZariliaAuth {
     {
         global $zariliaUser;
 
-        if ( is_object( $zariliaUser ) ) {
+        if ( is_object( $zariliaUser ) && ($zariliaUser->getVar('uid') !== null) ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_ERROR_ALREADYLOGIN );
             return false;
         }
@@ -151,7 +151,7 @@ class ZariliaUserUser extends ZariliaAuth {
                             return false;
                         }
                     } else {
-                        redirect_header( 'index.php?page_type=user', 1, _US_ACTLOGIN );
+                        redirect_header( 'index.php', 1, _US_ACTLOGIN );
                     }
                 } else {
                     $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_ACTKEYFAILED );
@@ -208,17 +208,20 @@ class ZariliaUserUser extends ZariliaAuth {
 
         $email = zarilia_cleanRequestVars( $_REQUEST, 'email', '', XOBJ_DTYPE_TXTBOX );
 
-        if ( empty( $email ) ) {
+		if ( $email=='' ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_SORRYNOTFOUND );
             return false;
         }
 
+
         $member_handler = &zarilia_gethandler( 'member' );
-        $getuser = &$member_handler->getUsers( new Criteria( 'email', addSlashes( $email ) ) );
-        if ( !is_object( $getuser ) ) {
+        $getuser = &$member_handler->getUsers( new Criteria( 'email', addslashes($email)  ) );
+
+        if ( !is_array( $getuser ) ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_SORRYNOTFOUND );
             return false;
         }
+
 
         $areyou = substr( $getuser[0]->getVar( "pass" ), 0, 5 );
         $zariliaMailer = &getMailer();
@@ -228,7 +231,7 @@ class ZariliaUserUser extends ZariliaAuth {
         $zariliaMailer->assign( "ADMINMAIL", $zariliaConfig['adminmail'] );
         $zariliaMailer->assign( "SITEURL", ZAR_URL );
         $zariliaMailer->assign( "IP", $_SERVER['REMOTE_ADDR'] );
-        $zariliaMailer->assign( "NEWPWD_LINK", ZAR_URL . "/lostpass.php?email=" . $email . "&code=" . $areyou );
+        $zariliaMailer->assign( "NEWPWD_LINK", ZAR_URL . "/index.php?page_type=user&act=lostupdate&email=" . $email . "&code=" . $areyou );
         $zariliaMailer->setToUsers( $getuser[0] );
         $zariliaMailer->setFromEmail( $zariliaConfig['adminmail'] );
         $zariliaMailer->setFromName( $zariliaConfig['sitename'] );
@@ -237,13 +240,13 @@ class ZariliaUserUser extends ZariliaAuth {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_MAILERROR );
             return false;
         } else {
-            redirect_header( 'index.php?page_type=user', 1, sprintf( _US_CONFMAIL, $getuser[0]->getVar( "uname" ) ) );
+            redirect_header( 'index.php', 1, sprintf( _US_CONFMAIL, $getuser[0]->getVar( "uname" ) ) );
         }
     }
 
     function lostupdate()
     {
-        global $zariliaConfig;
+        global $zariliaConfig, $zariliaDB;
 
         $email = zarilia_cleanRequestVars( $_REQUEST, 'email', '', XOBJ_DTYPE_TXTBOX );
         $code = zarilia_cleanRequestVars( $_REQUEST, 'code', '', XOBJ_DTYPE_TXTBOX );
@@ -254,11 +257,11 @@ class ZariliaUserUser extends ZariliaAuth {
         }
 
         $member_handler = &zarilia_gethandler( 'member' );
-        $getuser = &$member_handler->getUsers( new Criteria( 'email', addSlashes( $email ) ) );
-        if ( !is_object( $getuser ) ) {
+        $getuser = &$member_handler->getUsers( new Criteria( 'email', addslashes( $email ) ) );				
+        if ( !is_array( $getuser ) ) {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_SORRYNOTFOUND );
             return false;
-        }
+        }		
 
         $areyou = substr( $getuser[0]->getVar( "pass" ), 0, 5 );
         if ( $code != '' && $areyou == $code ) {
@@ -280,12 +283,12 @@ class ZariliaUserUser extends ZariliaAuth {
                 return false;
             }
             // Next step: add the new password to the database
-            $sql = sprintf( "UPDATE %s SET pass = '%s' WHERE uid = %u", $zariliaDB->prefix( "users" ), md5( $newpass ), $getuser[0]->getVar( 'uid' ) );
+            $sql = sprintf( "UPDATE %s SET pass = '%s' WHERE uid = %u", $zariliaDB->prefix( 'users' ), $GLOBALS['zariliaSecurity']->execEncryptionFunc('encrypt', $newpass ), $getuser[0]->getVar( 'uid' ) );
             if ( !$zariliaDB->Execute( $sql ) ) {
                 $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, _US_MAILPWDNG );
                 return false;
             } else {
-                redirect_header( "user.php", 1, sprintf( _US_PWDMAILED, $getuser[0]->getVar( "uname" ) ), false );
+                redirect_header( "index.php", 1, sprintf( _US_PWDMAILED, $getuser[0]->getVar( "uname" ) ), false );
             }
         } else {
             return $this->lostconfirm();

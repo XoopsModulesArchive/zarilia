@@ -136,7 +136,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'ERROR: Selected item was not found in the database' );
             return false;
         }
-        $lang = &$this->create( false, $isBase );
+        $lang = &$this->create( false, @$isBase );
         $lang->assignVars( $array );
         if ( $isBase ) {
             $lang->setBase();
@@ -159,7 +159,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
             $GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'ERROR: Selected item was not found in the database' );
             return false;
         }
-        $lang = &$this->create( false, $isBase );
+        $lang = &$this->create( false, @$isBase );
         $lang->assignVars( $array );
         return $lang;
     }
@@ -187,7 +187,7 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
             $false = false;
             return $false;
         }
-        $lang = &$this->create( false, $isBase );
+        $lang = &$this->create( false, @$isBase );
         $lang->assignVars( $array );
         if ( !isset( $array['lang_base'] ) ) {
             $lang->setBase();

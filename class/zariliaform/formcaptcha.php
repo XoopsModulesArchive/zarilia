@@ -117,7 +117,7 @@ class ZariliaFormCaptcha extends ZariliaFormElement {
         $oVisualCaptcha->SetFileType( 'gif' );
         $oVisualCaptcha->UseColour( false );
         $oVisualCaptcha->Create( ZAR_CACHE_PATH . '/captchaimage.php' );
-		return "<input type='text' name='" . $this->getName() . "' id='" . $this->getName() . "' size='" . $this->getSize() . "' maxlength='" . $this->getMaxlength() . "' value='" . $this->getValue() . "'" . $this->getExtra() . " /> <img src='" . ZAR_CACHE_URL  . "/captchaimage.php' alt='Visual CAPTCHA' />";
+		return "<img src=\"" . ZAR_CACHE_URL  . "/captchaimage.php\" alt=\"Visual CAPTCHA\" /> <br /> <input type=\"text\" name=\"" . $this->getName() . "\" id=\"" . $this->getName() . "\" size=\"" . $this->getSize() . "\" maxlength=\"" . $this->getMaxlength() . "\" value=\"" . $this->getValue() . "\"" . $this->getExtra() . " />";
     }
 }
 

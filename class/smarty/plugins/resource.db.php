@@ -54,11 +54,12 @@ function smarty_resource_db_source($tpl_name, &$tpl_source, &$smarty)
         				return true;
 					}
 				}
-			}
+			} 
 		}
         $tpl_source = $tplobj[0]->getVar('tpl_source');
         return true;
     } else {
+		trigger_error('Can\'t fetch template from db:'.$tpl_name, E_USER_ERROR);
 		return false;
 	}
 }

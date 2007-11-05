@@ -139,8 +139,8 @@ class ZariliaUserEdituser extends ZariliaAuth
                 $edituser->setVar( 'user_coppa_agree', isset( $_REQUEST['user_coppa_agree'] ) ? 1 : 0 );
             }
             if ( !empty( $pass ) && !empty( $pass2 ) )
-            {
-                $edituser->setVar( "pass", md5( $pass ) );
+            {				
+                $edituser->setVar( "pass", $GLOBALS['zariliaSecurity']->execEncryptionFunc('encrypt', $pass ) );
             }
             if ( !$member_handler->insertUser( $edituser ) )
             {
@@ -158,7 +158,7 @@ class ZariliaUserEdituser extends ZariliaAuth
             {
                 setcookie( $zariliaConfig['usercookie'] );
             }
-            redirect_header( 'index.php?page_type=user&amp;act=logout', 1, _US_PROFUPDATED );
+            redirect_header( 'index.php?page_type=edituser&uid='.$uid, 1, _US_PROFUPDATED );
         }
         else
         {
@@ -195,7 +195,7 @@ class ZariliaUserEdituser extends ZariliaAuth
 
         $tabbar->addTabArray( $this_array );
         $menubar = $tabbar->renderStart( 1, 1 );
-        $form = new ZariliaThemeForm( '', 'zariliaform', 'edituser.php' );
+        $form = new ZariliaThemeForm( '', 'zariliaform', $url );
         $form->setExtra( 'enctype="multipart/form-data"' );
         $opt = ( $opt > 2 ) ? 2 : $opt;
         switch ( $opt )

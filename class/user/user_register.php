@@ -23,6 +23,8 @@ defined( 'ZAR_ROOT_PATH' ) or die( 'You do not have permission to access this fi
  * @version $Id: user_register.php,v 1.4 2007/04/22 07:21:37 catzwolf Exp $
  * @access public
  */
+global $zariliaConfig;
+
 class ZariliaUserRegister extends ZariliaAuth {
     var $_point = 'intro';
     var $_stages = array();
@@ -124,6 +126,8 @@ class ZariliaUserRegister extends ZariliaAuth {
     function getbuttons() {
         $this->_key = array_search( $this->_pointer, $this->_stages );
         /* Back Button */
+		//echo $this->_pointer;
+		
         if ( $this->_pointer != 'intro' ) {
             $new_point = $this->_key-1;
             $this->addOptions( 'b_back', "<input type='button' class=\"mainbutton\" id=\"b_back\" value='" . _US_REG_BACK . "' onclick=\"location='index.php?page_type=register&amp;point=" . htmlspecialchars( $this->_stages[$new_point] ) . "'\" />  " );
@@ -144,6 +148,7 @@ class ZariliaUserRegister extends ZariliaAuth {
     }
 
     function getForm() {
+		global $zariliaConfig;
         $myts = &MyTextSanitizer::getInstance();
         require ZAR_ROOT_PATH . '/class/zariliaformloader.php';
         /**
@@ -152,9 +157,11 @@ class ZariliaUserRegister extends ZariliaAuth {
     }
 
     function isdefault() {
+		global $zariliaConfig;
         /**
          */
         $this->initialize();
+//		die('1');
         $this->unRequest();
         $this->getForm();
         $this->getbuttons();

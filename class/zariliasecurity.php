@@ -274,6 +274,39 @@ class ZariliaSecurity
             return $ret;
         }
     }
+
+	function &getEncryptionInstace() {
+		static $instance = null;
+		if (!$instance) {
+			global $cpConfig;
+			$class = str_replace(' ','_',$cpConfig['security']['encryption']);
+			require ZAR_FRAMEWORK_PATH.'/encryption/'.strtolower($class).'.class.php';
+			$class = 'ZariliaEncryption_'.$class;
+			$instance = new $class();
+		}
+		return $instance;
+	}
+
+	function execEncryptionFunc($name) {
+		global $cpConfig;
+		$obj = &$this->getEncryptionInstace();
+		switch ($name) {
+			case 'encrypt':
+				return $obj->$name(func_get_arg(1), $cpConfig['security']['passkey']);
+			break;
+			case 'decrypt':
+				return $obj->$name(func_get_arg(1), $cpConfig['security']['passkey']);
+			break;
+			default:
+				$args = func_get_args();
+				unset($args[0]);
+				$args = array_values($args);
+				return eval("return $obj-\>$name(".var_export($args, true).');');
+			break;
+		}
+		return null;
+	}
+
 }
 
 ?>

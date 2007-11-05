@@ -37,7 +37,15 @@ class ZariliaCallback extends ZariliaObjectHandler {
     function setCallback()
     {
         $this->_callback = func_get_arg( 0 );
-        $this->_id = zarilia_cleanRequestVars( $_REQUEST, @$this->_callback->keyName, 0 );
+		if (isset($this->_callback->keyName)) {
+			if (isset($_REQUEST[$this->_callback->keyName])) {
+				$this->_id = zarilia_cleanRequestVars( $_REQUEST, @$this->_callback->keyName, 0 , XOBJ_DTYPE_INT);
+			} else {
+				$this->_id = zarilia_cleanRequestVars( $_REQUEST, strtoupper(@$this->_callback->keyName), 0 , XOBJ_DTYPE_INT);
+			}
+		} else {
+			$this->_id = 0;
+		}		
     }
 
     function setmenu()
@@ -128,7 +136,7 @@ class ZariliaCallback extends ZariliaObjectHandler {
 
     function delete()
     {
-        $_obj = &call_user_func( array( $this->_callback, 'get' ), $this->_id );
+        $_obj = &call_user_func( array( $this->_callback, 'get' ), $this->_id );		
         if ( is_object( $_obj ) ) {
             $ok = zarilia_cleanRequestVars( $_REQUEST, 'ok', 0 );
             switch ( $ok ) {

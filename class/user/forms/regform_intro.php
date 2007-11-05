@@ -14,7 +14,7 @@ $myts = &MyTextSanitizer::getInstance();
 /*form start*/
 require ZAR_ROOT_PATH . '/class/zariliaformloader.php';
 $register_form = new ZariliaThemeForm( _US_REG_PRIVACY_HEADING, 'registerform', 'index.php', 'post' );
-$register_form->addElement( new ZariliaFormlabel( _US_DISCLAIMER, $myts->displayTarea( $this->_zariliaConfigUser['reg_disclaimer'], 0, 0, 0, 0, 1, false ), 1 ), false );
+$register_form->addElement( new ZariliaFormlabel( _US_DISCLAIMER, $myts->displayTarea( $this->_zariliaConfigUser['reg_disclaimer'], 1, 0, 0, 0, 1, false ), 1 ), false );
 
 $agree_chk = new ZariliaFormCheckBox( '', 'agree_disc', 0, 1 );
 $agree_chk->addOption( 1, _US_IAGREE );

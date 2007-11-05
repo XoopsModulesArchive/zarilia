@@ -617,10 +617,10 @@ function &zarilia_convert_encoding( &$text, $to = 'utf-8', $from = '' )
 
 function zarilia_getLinkedUnameFromId( $userid = 0, $usereal = 0, $is_linked = 1 )
 {
-    Global $zariliaUser;
+    global $zariliaUser;
     $member_handler = &zarilia_gethandler( 'member' );
     $name = '';
-    $userid = intval( $userid ) > 0 ? intval( $userid ) : $zariliaUser->getVar( 'uid' );
+    $userid = intval( $userid ) > 0 ? intval( $userid ) : (is_object($zariliaUser)?$zariliaUser->getVar( 'uid' ):0);
     $user = &$member_handler->getUser( $userid );
     if ( is_object( $user ) )
     {

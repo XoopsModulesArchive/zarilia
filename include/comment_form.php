@@ -12,9 +12,11 @@
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
 
-if (!defined('ZAR_ROOT_PATH') || !is_object($zariliaAddon)) {
-	exit();
+if (!defined('ZAR_ROOT_PATH') || !is_object($zariliaAddon) || !is_object($zariliaUser)) {
+    //ZariliaErrorHandler_HtmlError( $title = 'Error', $heading = 'Access denied', $description = 'Maybe you don`t have permisions.', $image = '', $show_button = false );	
+	exit('Access denied');
 }
+
 $com_modid = $zariliaAddon->getVar('mid');
 include_once ZAR_ROOT_PATH."/class/zarilialists.php";
 include_once ZAR_ROOT_PATH."/class/zariliaformloader.php";
@@ -69,9 +71,10 @@ if (is_object($zariliaUser)) {
             $cform->addElement($status_select);
             $button_tray->addElement(new ZariliaFormButton('', 'com_dodelete', _DELETE, 'submit'));
         }
-        $html_checkbox = new ZariliaFormCheckBox('', 'dohtml', $dohtml);
+        /*$html_checkbox = new ZariliaFormCheckBox('', 'dohtml', $dohtml);
         $html_checkbox->addOption(1, _CM_DOHTML);
-        $option_tray->addElement($html_checkbox);
+        $option_tray->addElement($html_checkbox);*/
+		$option_tray->addElement(new ZariliaFormHidden('dohtml',0));
     }
 }
 $smiley_checkbox = new ZariliaFormCheckBox('', 'dosmiley', $dosmiley);

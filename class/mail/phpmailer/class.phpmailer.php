@@ -30,7 +30,7 @@ class PHPMailer {
      *
      * @var string
      */
-    var $CharSet = "iso-8859-1";
+    var $CharSet = "UTF-8";
 
     /**
      * Sets the Content-type of the message.
@@ -45,7 +45,7 @@ class PHPMailer {
      *
      * @var string
      */
-    var $Encoding = "8bit";
+    var $Encoding = "base64";
 
     /**
      * Holds the most recent mailer error message.

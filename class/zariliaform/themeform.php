@@ -65,7 +65,7 @@ class ZariliaThemeForm extends ZariliaForm {
 			  <tr>
 			    <td colspan='2' class='foot'>&nbsp;</td>
 			  </tr>
-			</table><br /><br />
+			</table><br />
 			 <table width='100%' class='outer' cellspacing='1'>
 			  <tr>
 			   <th colspan='2'>$extra</th>
@@ -77,7 +77,7 @@ class ZariliaThemeForm extends ZariliaForm {
 			   <td class='foot' colspan='2'>&nbsp;</td>
 			  </tr>
 			 </table>
-			 <br /><br />
+			 <br />
 			 <table width='100%' class='outer' cellspacing='1'>
 			  <tr>
 			   <th colspan='2'>&nbsp;</th>
@@ -147,7 +147,7 @@ class ZariliaThemeForm extends ZariliaForm {
     function render()
     {
         global $zariliaTpl, $zariliaOption;
-        if ( !isset( $zariliaOption['multilanguage_loaded'] ) ) {
+/*        if ( !isset( $zariliaOption['multilanguage_loaded'] ) ) {
             $zariliaTpl->addScript( ZAR_URL . '/class/zariliaform/scripts/multilanguage.js' );
             $zariliaOption['multilanguage_loaded'] = true;
         }
@@ -155,7 +155,7 @@ class ZariliaThemeForm extends ZariliaForm {
             $zariliaOption['multilanguage_forms_count'] = 1;
         } else {
             $zariliaOption['multilanguage_forms_count']++;
-        }
+        }*/
         $validation = $this->renderValidationJS( !false );
         $zariliaTpl->addScript( $validation, false );
         $forms = array( 'default' );

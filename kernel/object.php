@@ -343,11 +343,16 @@ class ZariliaObject {
 						global $zariliaUser;
                         if ( $zariliaUser )   {
                             $ret = str_replace( '{X_UID}', $zariliaUser->getVar( 'uid' ), $ret );
-							$ret = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $ret );
+							$ret = str_replace( '{X_USERNAME}', $zariliaUser->getVar( 'uname' ), $ret );							
                         } else {
                             $ret = str_replace( '{X_UID}', -time(), $ret );
 							$ret = str_replace( '{X_USERNAME}', soundex(md5(time())), $ret );
-						}
+						}						                        
+                        $smiley = ( !isset( $this->vars['dosmiley']['value'] ) || $this->vars['doxcode']['value'] == 1 ) ? 1 : 0;
+                        $image = ( !isset( $this->vars['doimage']['value'] ) || $this->vars['doxcode']['value'] == 1 ) ? 1 : 0;
+                        $br = ( !isset( $this->vars['dobr']['value'] ) || $this->vars['dobr']['value'] == 1 ) ? 1 : 0;
+						$ts = &MyTextSanitizer::getInstance();
+						$ret = $ts->displayTarea( $ret, 1, $smiley, 0, $image, $br );
                         return $ret;
 					break 1;
 
@@ -980,7 +985,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
 
             if ( isset( $criteria ) && is_subclass_of( $criteria, 'criteriaelement' ) ) {
                 if ( $this->doPermissions ) {
-                    $sql .= ' AND ' . $criteria->render();
+					$something = $criteria->render();
+					if ($something) $sql .= ' AND ' . $something;
                 } else {
                     $sql .= ' ' . $criteria->renderWhere();
                 }
@@ -990,7 +996,8 @@ class ZariliaPersistableObjectHandler extends ZariliaObjectHandler {
                 $limit = $criteria->getLimit();
                 $start = $criteria->getStart();
             }
-        }
+        }			
+		
         if ( !$result = $this->db->SelectLimit( $sql, $limit, $start ) ) {
 			$GLOBALS['zariliaLogger']->setSysError( E_USER_WARNING, 'Database error: '. $sql, __FILE__, __LINE__ );
             return false;

@@ -93,11 +93,11 @@ foreach ( array_keys( $block_arr ) as $i ) {
     /*
  	 * rendering block
  	 */
-    if ( $block_arr[$i]->getVar( 'liveupdate' ) ) {
-        $bcontent = $block_arr[$i]->getAsLiveUpdateObj();
-    } else {
+  //  if ( $block_arr[$i]->getVar( 'liveupdate' ) ) {
+//        $bcontent = $block_arr[$i]->getAsLiveUpdateObj();
+//    } else {
         $bcontent = $block_arr[$i]->getRenderedBlockContent();
-    }
+//    }
 
     if ( ( $bcontent == '' ) || ( $bcontent == null ) || ( $bcontent == false ) ) continue;
 
@@ -201,7 +201,7 @@ if ( zarilia_getenv( 'REQUEST_METHOD' ) != 'POST' && !empty( $zariliaAddon ) && 
         $zariliaCachedTemplate = 'db:' . $zariliaOption['template_main'];
     }
     // generate safe cache Id
-    $zariliaCachedTemplateId = 'mod_' . $zariliaAddon->getVar( 'dirname' ) . '|' . md5( str_replace( ZAR_URL, '', $_SERVER['REQUEST_URI'] ) );
+    $zariliaCachedTemplateId = 'mod_' . $zariliaAddon->getVar( 'dirname' ) . '|' . md5( isset($_SERVER['REQUEST_URI'])?str_replace( ZAR_URL, '', $_SERVER['REQUEST_URI'] ):'');
     if ( $zariliaTpl->is_cached( $zariliaCachedTemplate, $zariliaCachedTemplateId ) ) {
         $zariliaLogger->addExtra( $zariliaCachedTemplate, $zariliaConfig['addon_cache'][$zariliaAddon->getVar( 'mid' )] );
         $zariliaTpl->assign( 'zarilia_contents', $zariliaTpl->fetch( $zariliaCachedTemplate, $zariliaCachedTemplateId ) );
@@ -209,7 +209,7 @@ if ( zarilia_getenv( 'REQUEST_METHOD' ) != 'POST' && !empty( $zariliaAddon ) && 
         if ( !headers_sent() ) {
             header ( 'Content-Type:text/html; charset=' . _CHARSET );
         }
-        $zariliaTpl->display( ZAR_ROOT_PATH . '/' . $zariliaConfig['theme_set'] . '/theme.html' );
+        $zariliaTpl->display( ZAR_THEME_PATH . '/' . $zariliaConfig['theme_set'] . '/theme.html' );
         $zariliaLogger->render();
         exit();
     }

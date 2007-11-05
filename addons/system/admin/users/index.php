@@ -285,7 +285,7 @@ switch ( strtolower( $op ) ) {
                 if ( $pass != $pass2 ) {
                     $GLOBALS['zariliaLogger']->setSysError( E_USER_ERROR, _AM_STNPDNM );
                 } else {
-                    $edituser->setVar( "pass", md5( $pass ) );
+                    $edituser->setVar( "pass", $GLOBALS['zariliaSecurity']->execEncryptionFunc('encrypt', $pass ) );
                 }
             } else {
                 if ( ( !empty( $pass ) && empty( $pass2 ) ) || ( empty( $pass ) && !empty( $pass2 ) ) ) {
@@ -413,17 +413,18 @@ switch ( strtolower( $op ) ) {
         $list_types = zarilia_cleanRequestVars( $_REQUEST, 'list_types', -1 );
         $list_groups = zarilia_cleanRequestVars( $_REQUEST, 'list_groups', 0 );
         $list_letters = zarilia_cleanRequestVars( $_REQUEST, 'list_letters', 0 );
-        $user_uname = zarilia_cleanRequestVars( $_REQUEST, 'user_uname', 99 );
+        $user_uname = zarilia_cleanRequestVars( $_REQUEST, 'user_uname', null );
         $user_uname_match = zarilia_cleanRequestVars( $_REQUEST, 'user_uname_match', '' );
 
-        if ( $user_uname == 99 ) {
+        if ( $user_uname == null ) {
             $foundusers = $member_handler->getUsersByGroupList( $list_groups, $list_types, $list_letters, $nav['limit'], $nav['start'], $nav['sort'], $nav['order'] );
             $foundusers_count = $member_handler->getUsersByGroupListCount( $list_groups, $list_types, $list_letters );
         } else {
             $users_array = $member_handler->getUserBySearch( $user_uname, $user_uname_match, $nav, $id_as_key = false );
             $foundusers = $users_array['list'];
             $foundusers_count = $users_array['count'];
-        }
+        }			
+		
         $types_array = array( -1 => _AM_MENUALLUSERS, 1 => _AM_MENUACTIVEUSERS, 2 => _AM_MENUSUSUSERS, 0 => _AM_MENUNEWUSERS );
         $group_array = $member_handler->getGroupsArray();
 
@@ -491,7 +492,7 @@ switch ( strtolower( $op ) ) {
 
         $button = array( 'edit', 'delete', 'contact', 'suspend', 'deactivate', 'activate' );
         $i = 0;
-        foreach ( $foundusers as $obj ) {
+        foreach ( $foundusers as $obj ) {		
             $status = $obj->getVar( "level" );
             $uid = $obj->getVar( "uid" );
             switch ( $status ) {
@@ -536,7 +537,7 @@ switch ( strtolower( $op ) ) {
             $i++;
         }
         $tlist->render();
-        zarilia_pagnav( $foundusers_count, $nav['limit'], $nav['start'], 'start', 1, 'fct=' . $fct . '&amp;list_groups=' . $list_groups . '&amp;list_letters=' . $list_letters . '&amp;list_types=' . $list_types . '&amp;limit=' . $nav['limit'] );
+        zarilia_pagnav( $foundusers_count, $nav['limit'], $nav['start'], 'start', 1, '?fct=' . $fct . '&amp;list_groups=' . $list_groups . '&amp;list_letters=' . $list_letters . '&amp;list_types=' . $list_types . '&amp;op=list&amp;limit=' . $nav['limit'] );
         zarilia_cp_legend( $button );
         break;
 

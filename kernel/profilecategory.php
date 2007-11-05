@@ -95,31 +95,31 @@ class ZariliaProfileCategoryHandler extends ZariliaPersistableObjectHandler {
      * @param string $value
      * @return
      */
-#    function &getList( $groups = 0, $perm = 'profilecat_read', $value = 'profilecat_name' ) {
-#        global $zariliaUser;
-#
-#		$criteria = new CriteriaCompo();
-#/*
-#        if ( $groups > 0 ) {
-#            $criteriaTray = new CriteriaCompo();
-#            $_groups = ( is_object( $zariliaUser ) ) ? $zariliaUser->getGroups() : ZAR_GROUP_ANONYMOUS;
-#            foreach ( $_groups as $gid ) {
-#                $criteriaTray->add( new Criteria( 'profilecat_read', $gid ), 'OR' );
-#            }
-#            $criteria->add( $criteriaTray );
-#            if ( $perm == 'imgcat_read' ) {
-#                $criteria->add( new Criteria( 'gperm_name', $perm ) );
-#                $criteria->add( new Criteria( 'gperm_modid', 1 ) );
-#            }
-#        }
-#*/
-#        $categories = &$this->getObjects( $criteria, true );
-#        $ret = array();
-#        foreach ( array_keys( $categories ) as $i ) {
-#            $ret[$i] = $categories[$i]->getVar( $value );
-#        }
-#        return $ret;
-#    }
+/*    function &getList( $groups = 0, $perm = 'profilecat_read', $value = 'profilecat_name' ) {
+        global $zariliaUser;
+
+		$criteria = new CriteriaCompo();
+
+        if ( $groups > 0 ) {
+            $criteriaTray = new CriteriaCompo();
+            $_groups = ( is_object( $zariliaUser ) ) ? $zariliaUser->getGroups() : ZAR_GROUP_ANONYMOUS;
+            foreach ( $_groups as $gid ) {
+                $criteriaTray->add( new Criteria( 'profilecat_read', $gid ), 'OR' );
+            }
+            $criteria->add( $criteriaTray );
+            if ( $perm == 'imgcat_read' ) {
+                $criteria->add( new Criteria( 'gperm_name', $perm ) );
+                $criteria->add( new Criteria( 'gperm_modid', 1 ) );
+            }
+        }
+
+        $categories = &$this->getObjects( $criteria, true );
+        $ret = array();
+        foreach ( array_keys( $categories ) as $i ) {
+            $ret[$i] = $categories[$i]->getVar( $value );
+        }
+        return $ret;
+    }*/
 }
 
 ?>

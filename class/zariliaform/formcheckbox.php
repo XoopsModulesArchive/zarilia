@@ -169,7 +169,7 @@ class ZariliaFormCheckBox extends ZariliaFormElement {
             if ( count( $this->getValue() ) > 0 && in_array( $value, $this->getValue() ) ) {
                 $ret .= " checked='checked'";
             }
-            $ret .= $this->getExtra() . "/>" . $name . "\n";
+            $ret .= $this->getExtra() . " id=\"".$this->getName()."_id\" /> <label for=\"".$this->getName()."_id\">" . $name . "</label>\n";
             $ret .= "</td>";
             if ( $i > 1 && ( $i == $this->getColumn() ) ) {
                 $ret .= '</tr><tr>';

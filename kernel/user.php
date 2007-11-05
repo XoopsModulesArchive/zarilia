@@ -52,7 +52,7 @@ class ZariliaUser extends ZariliaObject {
         $this->initVar( 'umode', XOBJ_DTYPE_OTHER, null, false );
         $this->initVar( 'uorder', XOBJ_DTYPE_INT, 1, false );
         $this->initVar( 'ipaddress', XOBJ_DTYPE_TXTBOX, 0, true, 20 );
-        $this->initVar( 'url', XOBJ_DTYPE_TXTBOX, 0, true, 100 );
+        $this->initVar( 'url', XOBJ_DTYPE_TXTBOX, 0, false, 100 );
         // RMV-NOTIFY
         $this->initVar( 'notify_method', XOBJ_DTYPE_OTHER, 1, false );
         $this->initVar( 'notify_mode', XOBJ_DTYPE_OTHER, 0, false );
@@ -87,9 +87,14 @@ class ZariliaUser extends ZariliaObject {
      * @return string name of the user. name for "anonymous" if not found.
      */
     function getUnameFromId( $userid = 0, $usereal = 0, $is_linked = 1 )
-    {
+    {		
+		if (isset($this)) {
+			$zariliaUser = &$this;
+		} else {
+			global $zariliaUser;
+		}		
         $name = '';
-        $userid = intval( $userid ) > 0 ? intval( $userid ) : $this->getVar( 'uid' );
+        $userid = intval( $userid ) > 0 ? intval( $userid ) : $zariliaUser->getVar( 'uid' );
         $usereal = intval( $usereal );
         if ( $userid > 0 ) {
             $member_handler = &zarilia_gethandler( 'member' );

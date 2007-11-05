@@ -324,4 +324,3 @@ $zariliaTpl->assign('lang_reads', _READS);
 $zariliaTpl->assign('lang_morereleases', _NW_MORERELEASES);
 include_once ZAR_ROOT_PATH.'/footer.php';
 ?>
-                     

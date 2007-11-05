@@ -110,8 +110,7 @@ class ZariliaAddonMenuHandler extends ZariliaAddonHandler {
 
     function render( $currentoption = 1, $return = false ) {
         global $addonversion;
-
-        $_dirname = $this->_obj->getVar( 'dirname' );
+        $_dirname = $this->_obj->vars['dirname']['value'];
         $i = 0;
 
         /*
@@ -126,11 +125,11 @@ class ZariliaAddonMenuHandler extends ZariliaAddonHandler {
         $breadcrumb = $menuItems[$currentoption];
         $menuItems[$currentoption] = 'current';
 
-        $menu = "<h3 class='admin_header'>Addons: " . $this->_obj->getVar( 'name' ) . "</h3>\n";
+        $menu = "<h3 class='admin_header'>Addons: " . $this->_obj->vars['name']['value'] . "</h3>\n";
         $menu .= "<div id='buttontop_mod'>";
         $menu .= "<table style='width: 100%; padding: 0;' cellspacing='0'>\n<tr>";
         $menu .= "<td style='font-size: 10px; text-align: left; color: #2F5376; padding: 0 6px; line-height: 18px;'>";
-        $menu .= "<a class='nobutton_mod' href='" . ZAR_URL . "/addons/system/index.php?fct=preferences&amp;op=showaddon&amp;mod=" . $this->_obj->getVar( 'mid' ) . "'>" . _MD_AM_PREFS . "</a>";
+        $menu .= "<a class='nobutton_mod' href='" . ZAR_URL . "/addons/system/index.php?fct=preferences&amp;op=showaddon&amp;mod=" . $this->_obj->vars['mid']['value'] . "'>" . _MD_AM_PREFS . "</a>";
         foreach ( $this->_menutop as $k => $v ) {
             $menu .= " | <a href=\"$k\">$v</a>";
         }
@@ -148,7 +147,7 @@ class ZariliaAddonMenuHandler extends ZariliaAddonHandler {
         if ( $this->_header ) {
             $menu .= "<h4 class='admin_header'>";
             if ( isset( $addonversion['name'] ) ) {
-                if ( $addonversion['image'] && $this->_obj->getVar( 'mid' ) == 1 ) {
+                if ( $addonversion['image'] && $this->_obj->vars['mid']['value'] == 1 ) {
                     $system_image = ZAR_URL . '/addons/system/images/system/' . $addonversion['image'];
                 } else {
                     $system_image = ZAR_URL . '/addons/' . $_dirname . '/images/' . $addonversion['image'];

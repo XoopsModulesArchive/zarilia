@@ -199,7 +199,7 @@ class ZariliaComments extends ZariliaObject {
         $edit_image = "";
         $reply_image = "";
         $delete_image = "";
-        $post_date = formatTimestamp( $this->getVar( "date" ), "m" );
+        $post_date =  $this->getVar( "date" );		
         if ( $this->getVar( "user_id" ) != 0 ) {
             $member_handler = &zarilia_gethandler( 'member' );
 			$poster = new ZariliaUser( $this->getVar( "user_id" ) );
@@ -235,7 +235,7 @@ class ZariliaComments extends ZariliaObject {
                 $text .= "<p><br />_________________<br />" . $poster->user_sig() . "</p>";
             }
             $reg_date = _CM_JOINED;
-            $reg_date .= formatTimestamp( $poster->getVar( "user_regdate" ), "s" );
+            $reg_date .= $poster->getVar( "user_regdate" );
             $posts = _CM_POSTS;
             $posts .= $poster->getVar( "posts" );
             $user_from = _CM_FROM;
@@ -285,7 +285,7 @@ class ZariliaComments extends ZariliaObject {
             $bg = 'odd';
         }
         $prefix = str_replace( ".", "&nbsp;&nbsp;&nbsp;&nbsp;", $this->getVar( "prefix" ) );
-        $date = formatTimestamp( $this->getVar( "date" ), "m" );
+        $date = $this->getVar( "date" );
         if ( $this->getVar( "icon" ) != "" ) {
             $icon = "subject/" . $this->getVar( "icon", "E" );
         } else {

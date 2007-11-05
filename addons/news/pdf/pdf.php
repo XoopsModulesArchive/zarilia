@@ -278,4 +278,4 @@ $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->writeHTML($content, true, 0);
 $pdf->Output();
-?>              
+?>

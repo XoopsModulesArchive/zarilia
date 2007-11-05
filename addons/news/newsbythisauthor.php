@@ -193,4 +193,4 @@ if(isset($xoTheme) && is_object($xoTheme)) {
 
 include_once ZAR_ROOT_PATH.'/include/comment_view.php';
 include_once ZAR_ROOT_PATH.'/footer.php';
-?>          
+?>

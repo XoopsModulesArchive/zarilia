@@ -55,8 +55,8 @@ class ZariliaBlock extends ZariliaObject {
     function load( $id )
     {
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'newblocks' ) . ' WHERE bid = ' . $id;
-        $arr = $this->db->GetArray( $sql);
-        $this->assignVars( $arr );
+		$result = $this->db->Execute($sql);
+        $this->assignVars( $result->FetchRow() );
     }
 
     function store()
@@ -173,7 +173,7 @@ class ZariliaBlock extends ZariliaObject {
                 $options = explode( "|", $this->getVar( "options" ) );
                 if ( function_exists( $show_func ) ) {
                     // execute the function
-                    $block = $show_func( $options );
+                    $block = &$show_func( $options );
                     if ( !$block ) {
                         $ret = false;
                         return $ret;

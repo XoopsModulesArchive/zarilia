@@ -205,4 +205,3 @@ if(!empty($_POST['submit'])) {			// The form was submited
 }
 include_once ZAR_ROOT_PATH.'/footer.php';
 ?>
-                   
