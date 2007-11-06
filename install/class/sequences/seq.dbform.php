@@ -35,10 +35,12 @@ $installer->setArgs( 'subtitle', _INSTALL_L90a );
 $installer->setArgs( 'javascript', $javacript );
 $installer->setArgs( 'onclick', $onclick );
 
-include '../siteinfo.php';
-if ( isset( $cpConfig ) && count( $cpConfig ) ) {
-    include '../mainfile.php';
-}
+//include '../siteinfo.php';
+
+chdir('..');
+include 'mainfile.php';
+chdir('install');
+
 $setting_manager = new setting_manager();
 $setting_manager->readConstant();
 $content = $setting_manager->editform();

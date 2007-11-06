@@ -82,7 +82,7 @@ $content .= "
 		  </tr>
 		 </table>";
 
-$writeok = array( "cache/", "siteinfo.php" );
+$writeok = getWithSubDirsDirList( '../data/' );
 $error = false;
 $permissions = "";
 foreach ( $writeok as $wok ) {

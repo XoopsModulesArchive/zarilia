@@ -56,7 +56,11 @@ if ( !defined( "ZAR_MAINFILE_INCLUDED" ) )
         }
     }
 
-    define( 'ZAR_CHECK_PATH', @$cpConfig['path']['check'] );
+	if (!defined('ZAR_INSTALL')) {
+		define( 'ZAR_CHECK_PATH', @$cpConfig['path']['check'] ) ;
+	} else {
+		define( 'ZAR_CHECK_PATH', false ) ;
+	}
     // Protect against external scripts execution if safe mode is not enabled
     if ( ZAR_CHECK_PATH && !@ini_get( 'safe_mode' ) )
     {

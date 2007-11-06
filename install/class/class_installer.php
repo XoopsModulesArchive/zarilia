@@ -22,8 +22,8 @@ class ZariliaInstall {
 
     function ZariliaInstall() {
         // dummy
-        if ( !file_exists( '../siteinfo.php' ) ) {
-            @file_put_contents( '../siteinfo.php', '<?php $cpConfig=array()?>' );
+        if ( !file_exists( '../data/settings/site.global.php' ) ) {
+            @file_put_contents( '../data/settings/site.global.php', '<?php $cpConfig=array()?>' );
         }
     }
 

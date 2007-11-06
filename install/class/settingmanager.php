@@ -284,7 +284,7 @@ class setting_manager
 
     function getDBList()
     {
-        return array( 'mysql' );
+        return getDirList('../class/adodb_lite/adodbSQL_drivers/');//array( 'mysql' );
         // $dirname = '../class/database/';
         // $dirlist = array();
         // if (is_dir($dirname) && $handle = opendir($dirname)) {

@@ -13,12 +13,26 @@
 /*
  * gets list of name of directories inside a directory
  */
-function getDirList( $dirname ) {
+
+function getWithSubDirsDirList( $dirname ) {
+	$rez = array($bname = basename($dirname));
+	$items = getDirList($dirname, true);
+	foreach($items as $dir) {
+		$rez[] = $bname.'/'.$dir;
+		$items = getFileList( $dirname.'/'.$dir);
+		foreach ($items as $dfile) {
+			$rez[] = $bname.'/'.$dir.'/'.$dfile;
+		}
+	}
+	return $rez;
+}
+
+function getDirList( $dirname, $whithSubdirs = false ) {
     $dirlist = array();
     if ( is_dir( $dirname ) && $handle = opendir( $dirname ) ) {
         while ( false !== ( $file = readdir( $handle ) ) ) {
             if ( !preg_match( "/^[.]{1,2}$/", $file ) ) {
-                if ( strtolower( $file ) != 'cvs' && is_dir( $dirname . $file ) ) {
+                if ( substr( $file,0,1 ) != '.' && is_dir( $dirname . $file ) ) {
                     $dirlist[$file] = $file;
                 }
             }
@@ -27,6 +41,16 @@ function getDirList( $dirname ) {
         asort( $dirlist );
         reset( $dirlist );
     }
+	if ($whithSubdirs) {
+		$rez = array();
+		foreach($dirlist as $dir) {
+			$items = getDirList( $dirname.'/'.$dir, true);
+			foreach ($items as $ddir) {
+				$rez[] = $dir.'/'.$ddir;
+			}
+		}
+		$dirlist = array_merge($dirlist, $rez);
+	}
     return $dirlist;
 }
 

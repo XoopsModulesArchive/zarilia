@@ -37,7 +37,8 @@ $zariliaOption['nocommon'] = true;
 define( 'ZAR_INSTALL', 1 );
 // **//
 session_start();
-include_once './class/class_installer.php';
+
+require_once './class/class_installer.php';
 $installer = new ZariliaInstall();
 $installer->restart();
 
