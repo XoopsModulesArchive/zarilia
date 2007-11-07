@@ -10,10 +10,8 @@
 // URL: http:www.zarilia.com 												//
 // Project: Zarilia Project                                               //
 // -------------------------------------------------------------------------//
-include_once ZAR_ROOT_PATH . '/class/logger.php';
-include_once ZAR_ROOT_PATH . '/class/database/databasefactory.php';
-include_once ZAR_ROOT_PATH . '/class/database/' . ZAR_DB_TYPE . 'database.php';
-include_once ZAR_ROOT_PATH . '/class/database/sqlutility.php';
+require_once ZAR_ROOT_PATH . '/class/logger.php';
+require_once ZAR_ROOT_PATH . '/class/database/sqlutility.php';
 
 /**
  * database manager for ZARILIA installer
@@ -28,21 +26,43 @@ class db_manager {
     var $db;
 
     function db_manager() {
-        $this->db = &ZariliaDatabaseFactory::getDatabaseConnection( false );
+		require_once ZAR_ROOT_PATH . '/class/adodb_lite/adodb-errorhandler.inc.php';
+		require_once ZAR_ROOT_PATH . '/class/adodb_lite/adodb.inc.php';
+		$this->db = ADONewConnection(ZAR_DB_TYPE);
     }
 
     function isConnectable() {
-        return ( @$this->db->connect( false, false ) != false ) ? true : false;
+		$rez =( @$this->db->Connect(ZAR_DB_HOST, ZAR_DB_USER, ZAR_DB_PASS, ZAR_DB_NAME) != false ) ? true : false;
+		if (!$rez) {
+			switch ($this->db->ErrorNo()) {
+				case 1049:
+					return true;
+				break;
+			}
+		}
+		return $rez;
     }
 
     function dbExists() {
-        return ( @$this->db->connect() != false ) ? true : false;
+		$rez =( @$this->db->Connect(ZAR_DB_HOST, ZAR_DB_USER, ZAR_DB_PASS, ZAR_DB_NAME) != false ) ? true : false;
+		if (!$rez) {
+			switch ($this->db->ErrorNo()) {
+				case 1049:
+					return false;
+				break;
+				default:
+					return true;
+			}
+		}
+		return $rez;
     }
 
     function createDB() {
-        $this->db->connect( false );
-        $result = $this->db->Execute( "CREATE DATABASE " . ZAR_DB_NAME );
-        return ( $result != false ) ? true : $this->db->errno();
+		$this->db->createdatabase = true;
+		return $this->dbExists();
+//		$this->db->Connect(ZAR_DB_HOST, ZAR_DB_USER, ZAR_DB_PASS, ZAR_DB_NAME);
+//        $result = $this->db->Execute( "CREATE DATABASE " . ZAR_DB_NAME );
+  //      return ( $result != false ) ? true : $this->db->errno();
     }
 
     function queryFromFile( $sql_file_path ) {

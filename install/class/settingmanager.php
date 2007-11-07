@@ -28,6 +28,8 @@ class setting_manager
     var $db_pconnect;
     var $root_path;
     var $zarilia_url;
+    var $default_zarilia_url;
+    var $default_root_path;
 
     function setting_manager( $post = false )
     {
@@ -42,7 +44,7 @@ class setting_manager
             $this->db_pconnect = 0;
 
             $this->root_path = str_replace( "\\", "/", getcwd() ); // "
-            $this->root_path = str_replace( "/install", "", $this->root_path );
+            $this->default_root_path = $this->root_path = str_replace( "/install", "", $this->root_path );			
             $filepath = ( ! empty( $_SERVER['REQUEST_URI'] ) ) ? dirname( $_SERVER['REQUEST_URI'] ) : dirname( $_SERVER['SCRIPT_NAME'] );
             $filepath = str_replace( "\\", "/", $filepath ); // "
             $filepath = str_replace( "/install", "", $filepath );
@@ -55,7 +57,7 @@ class setting_manager
                 $filepath = substr( $filepath, 0, -1 );
             }
             $protocol = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? 'https://' : 'http://';
-            $this->zarilia_url = ( !empty( $filepath ) ) ? $protocol . $_SERVER['HTTP_HOST'] . "/" . $filepath : $protocol . $_SERVER['HTTP_HOST'];
+            $this->default_zarilia_url = $this->zarilia_url = ( !empty( $filepath ) ) ? $protocol . $_SERVER['HTTP_HOST'] . "/" . $filepath : $protocol . $_SERVER['HTTP_HOST'];
             $this->prefix = $this->generatePrefix();
         }
     }
@@ -209,13 +211,13 @@ class setting_manager
                     </td>
                 </tr>
                 ";
-        $ret .= $this->editform_sub( _INSTALL_L55, _INSTALL_L59, 'root_path', htmlSpecialChars( $this->root_path ) );
-        $ret .= $this->editform_sub( _INSTALL_L56, _INSTALL_L58, 'zarilia_url', htmlSpecialChars( $this->zarilia_url ) );
+        $ret .= $this->editform_sub( _INSTALL_L55, _INSTALL_L59, 'root_path', htmlSpecialChars( $this->root_path ),  $this->default_root_path );
+        $ret .= $this->editform_sub( _INSTALL_L56, _INSTALL_L58, 'zarilia_url', htmlSpecialChars( $this->zarilia_url ),  $this->default_zarilia_url );
         $ret .= "</table>";
         return $ret;
     }
 
-    function editform_sub( $title, $desc, $name, $value )
+    function editform_sub( $title, $desc, $name, $value, $dvalue = null )
     {
         return "<tr valign='top' align='left'>
                     <td class='head'>
@@ -224,6 +226,7 @@ class setting_manager
                     </td>
                     <td class='even'>
                         <input type='text' name='" . $name . "' id='" . $name . "' size='30' maxlength='100' value='" . htmlspecialchars( $value ) . "' />
+						".(($dvalue)?"<input type='button' onclick='document.getElementById(\"$name\").value=\"$dvalue\";' value='<--' />":"")."
                     </td>
                 </tr>";
     }

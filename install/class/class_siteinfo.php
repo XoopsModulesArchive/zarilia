@@ -23,8 +23,8 @@
 class siteinfo_manager
 {
     var $cpConfig = array();
-    var $file_main = '../siteinfo.php';
-    var $file_dist = '../siteinfo.dist.php';
+    var $file_main = '../data/settings/site.global.php';
+//    var $file_dist = '../siteinfo.dist.php';
 
     var $report = array();
     var $errors = array();
@@ -42,11 +42,11 @@ class siteinfo_manager
     function loadSiteinfo()
     {
         global $cpConfig;
-        if ( file_exists( $this->file_main ) )
-        {
-            include $this->file_main;
-            $this->cpConfig = @$cpConfig;
-        }
+
+		require_once '../class/cache/settings.class.php';
+		$zariliaSettings = &ZariliaSettings::getInstance();
+		global $zariliaSettings;
+		$this->cpConfig = $cpConfig = &$zariliaSettings->readAll('site.global');
     }
 
     function loadArray( &$siteInfo )
@@ -54,7 +54,7 @@ class siteinfo_manager
         $this->cpConfig = &$siteInfo;
     }
 
-    function loadSiteinfobackup()
+    /*function loadSiteinfobackup()
     {
         global $cpConfig;
         if ( file_exists( $this->file_main ) )
@@ -62,7 +62,7 @@ class siteinfo_manager
             include $this->file_main;
             $this->cpConfig = @$cpConfig;
         }
-    }
+    }*/
 
     /**
      * Populate var scope with $_post or array given through $value
@@ -73,39 +73,77 @@ class siteinfo_manager
     function createNew( &$values )
     {
         $getArgs = func_get_args();
-        $this->cpConfig['db'] = array( 'type' => $values['database'],
-            'prefix' => $values['prefix'],
-            'host' => $values['dbhost'],
-            'user' => $values['dbuname'],
-            'pass' => $values['dbpass'],
-            'name' => $values['dbname'],
-            'pconnect' => $values['db_pconnect']
-            );
+		require_once '../class/cache/settings.class.php';
+		$zariliaSettings = &ZariliaSettings::getInstance();
 
-        $this->cpConfig['sites'] = array();
-        $this->cpConfig['sites']['default://'] = array();
-        $this->cpConfig['sites']['default://']['languages'] = array( 0 => 'en' ); //FIX ME!!//
-        $this->cpConfig['sites']['default://']['prefix'] = substr( md5( 'default://' ), 0, 5 );
-        $this->cpConfig['sites']['default://']['url'] = $values['zarilia_url'];
+		foreach (
+			array (
+			    'users' => 0,
+			    'configoption' => 1,
+			    'config' => 1,
+			    'events' => 1,
+			    'group_permission' => 1,
+			    'groups' => 1,
+			    'groups_users_link' => 1,
+			    'language_base' => 0,
+			    'language_ext' => 0,
+			    'addons' => 1,
+			    'newblocks' => 1,
+			    'online' => 1,
+			    'tplfile' => 1,
+			    'tplset' => 1,
+			    'tplsource' => 1,
+			    'session' => 0,
+			    'block_addon_link' => 1,
+			    'ranks' => 0,
+			    'zarilianotifications' => 0,
+			    'configcategory' => 0,
+			    'smiles' => 0,
+			    'streaming' => 0,
+			    'security' => 0,
+			    'avatar' => 0,
+			    'mediacategory' => 0,
+			    'zariliacomments' => 0,
+			    'errors' => 0,
+			    'profile' => 1,
+			    'messages' => 0,
+			    'messages_buddy' => 0,
+			    'messages_sent' => 0,
+				'avatar_user_link' => 0,
+				'mimetypes' => 1
+		  ) as $table => $type) {
+			$zariliaSettings->write('site.global', 'tables', $table, $type);
+		}
 
-        $this->cpConfig['tables'] = array();
-        $this->cpConfig['tables']['ml'] = array();
-        $this->cpConfig['tables']['ms'] = array( 'configoption', 'config', 'events', 'group_permission', 'groups', 'groups_users_link', 'language_base', 'language_ext', 'addons', 'newblocks', 'online', 'tplfile', 'tplset', 'tplsource' );
-
-        $this->cpConfig['groups'] = array();
-        $data['groups'] = array( 'admin', 'users', 'anonymous', 'moderators', 'submitters', 'subscription', 'banned' );
-        foreach( $data['groups'] as $groupID => $group )
-        {
-            $this->cpConfig['groups'][( $groupID + 1 ) . ''] = strtoupper( $group );
+		$zariliaSettings->write('site.global', 'db', 'type', $values['database']);
+		$zariliaSettings->write('site.global', 'db', 'prefix', $values['prefix']);
+		$zariliaSettings->write('site.global', 'db', 'host', $values['dbhost']);
+		$zariliaSettings->write('site.global', 'db', 'user', $values['dbuname']);
+		$zariliaSettings->write('site.global', 'db', 'pass', $values['dbpass']);
+		$zariliaSettings->write('site.global', 'db', 'name', $values['dbname']);
+		$zariliaSettings->write('site.global', 'db', 'pconnect', $values['db_pconnect']);
+		
+        foreach( array( 'admin', 'users', 'anonymous', 'moderators', 'submitters', 'subscription', 'banned' ) as $groupID => $group )  {
+			$zariliaSettings->write('site.global', 'groups', $groupID + 1, strtoupper( $group ));
         }
-        $this->cpConfig['root_path'] = $values['root_path'];
+		$zariliaSettings->write('site.global', 'path', 'root', $values['root_path']);
+        
 
         $zariliaPathTrans = isset( $_SERVER['PATH_TRANSLATED'] ) ? $_SERVER['PATH_TRANSLATED'] : $_SERVER['SCRIPT_FILENAME'];
         if ( DIRECTORY_SEPARATOR != '/' ) {
             // IIS6 doubles the \ chars
             $zariliaPathTrans = str_replace( strpos( $zariliaPathTrans, '\\\\', 2 ) ? '\\\\' : DIRECTORY_SEPARATOR, '/', $zariliaPathTrans );
         }
-        $this->cpConfig['check_path'] = strcasecmp( substr( $zariliaPathTrans, 0, strlen( stripslashes( $_POST['root_path'] ) ) ), $values['root_path'] ) ? 0 : 1 ;;
+		$zariliaSettings->write('site.global', 'path', 'check', strcasecmp( substr( $zariliaPathTrans, 0, strlen( stripslashes( $_POST['root_path'] ) ) ), $values['root_path'] ) ? 0 : 1);
+
+		$zariliaSettings->write('site.global', 'sites', '::krx', 'dpx');
+		$zariliaSettings->remove('site.global', 'sites', '::krx');
+
+		$this->cpConfig = $cpConfig = &$zariliaSettings->readAll('site.global');
+
+		$zariliaSettings->write('siteinfo.default', 'config', 'url', $values['zarilia_url']);
+		$zariliaSettings->write('siteinfo.default', 'config', 'prefix', $values['prefix']);
+
     }
 
     /**
@@ -115,7 +153,7 @@ class siteinfo_manager
      * @return
      */
     function saveSiteinfo( $siteInfo = '' )  {
-        clearstatcache();
+        /*clearstatcache();
         if ( is_array( $siteInfo ) && !empty( $siteInfo ) )
         {
             $this->cpConfig = &$siteInfo;
@@ -138,7 +176,8 @@ class siteinfo_manager
         else
         {
             return false;
-        }
+        }*/
+		return true;
     }
 
     /**
@@ -172,7 +211,7 @@ class siteinfo_manager
      *
      * @return
      */
-    function copyDistFile()
+    /*function copyDistFile()
     {
         if ( !copy( $this->file_dist, $this->file_main ) )
         {
@@ -182,7 +221,7 @@ class siteinfo_manager
         }
         $this->report[] = _OKIMG . sprintf( _INSTALL_L125, '<b>' . $this->file_main . '</b>', '<b>' . $this->file_dist . '</b>' );
         return true;
-    }
+    }*/
 
     function getCopyright()
     {

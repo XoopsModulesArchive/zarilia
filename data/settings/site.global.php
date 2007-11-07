@@ -33,23 +33,18 @@ return array (
     'messages' => 0,
     'messages_buddy' => 0,
     'messages_sent' => 0,
-	'avatar_user_link' => 0,
-	'mimetypes' => 1
+    'avatar_user_link' => 0,
+    'mimetypes' => 1,
   ),
   'db' => 
   array (
     'type' => 'mysql',
-    'prefix' => 'perchatenpo',
+    'prefix' => 'penwaywayspe',
     'host' => 'localhost',
-    'user' => 'skycom',
-    'pass' => 'TwApuD',
-    'name' => 'skycom',
+    'user' => 'admin',
+    'pass' => '',
+    'name' => 'zarilia',
     'pconnect' => '0',
-  ),
-  'path' => 
-  array (
-    'root' => '/home/skycom/web/beta',
-    'check' => 1,
   ),
   'groups' => 
   array (
@@ -61,10 +56,10 @@ return array (
     6 => 'SUBSCRIPTION',
     7 => 'BANNED',
   ),
-  'security' => array
-  (
-	'passkey' => 'stupid passkey',
-	'encryption' => 'Internal XorBase64'
+  'path' => 
+  array (
+    'root' => 'C:/PHPLearnWAMP/Apache2/htdocs/zarilia',
+    'check' => 1,
   ),
   'sites' => 
   array (

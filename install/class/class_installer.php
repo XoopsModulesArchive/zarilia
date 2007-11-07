@@ -22,9 +22,9 @@ class ZariliaInstall {
 
     function ZariliaInstall() {
         // dummy
-        if ( !file_exists( '../data/settings/site.global.php' ) ) {
+        /*if ( !file_exists( '../data/settings/site.global.php' ) ) {
             @file_put_contents( '../data/settings/site.global.php', '<?php $cpConfig=array()?>' );
-        }
+        }*/
     }
 
     function setArgs() {
