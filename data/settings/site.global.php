@@ -43,7 +43,7 @@ return array (
     'host' => 'localhost',
     'user' => 'admin',
     'pass' => '',
-    'name' => 'zarilia',
+    'name' => 'zarilia2',
     'pconnect' => '0',
   ),
   'groups' => 

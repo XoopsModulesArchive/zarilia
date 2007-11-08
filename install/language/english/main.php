@@ -89,6 +89,7 @@ define( '_INSTALL_L110', ' - Database %s exists and connectable.' );
 define( '_INSTALL_L111', 'Database connection is OK.<br />Press the button below to create database tables.' );
 define( '_INSTALL_L118', 'Failed creating table %s.' );
 define( '_INSTALL_L119', '%d entries inserted to table %s.' );
+define( '_INSTALL_L120', '%d entries not inserted to table %s.' );
 define( '_INSTALL_L128', 'Please choose the language you wish to use for the Zarilia installation process. <br /><br />If your lanaguage is not available, please visit <a href=\'http://www.zarilia.com\'>Zarilia</a> to see if your langauage is available for download.' );
 define( '_INSTALL_L131', 'We have detected that the tables for Zarilia already exist. The Installation process will now stop.' );
 define( '_INSTALL_L165', 'The site is currently closed for maintainance. Please come back later.' );

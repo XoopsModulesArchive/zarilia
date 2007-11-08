@@ -73,7 +73,7 @@ class ZariliaLogger {
         static $instance;
         if ( !isset( $instance ) ) {
             $instance = new ZariliaLogger();
-            set_error_handler( 'ZariliaErrorHandler_HandleError' );
+        //   set_error_handler( 'ZariliaErrorHandler_HandleError' );
         }
         return $instance;
     }

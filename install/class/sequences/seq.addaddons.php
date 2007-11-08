@@ -1,8 +1,13 @@
 <?php
 include '../mainfile.php';
-include_once ZAR_ROOT_PATH . '/kernel/object.php';
-include_once ZAR_ROOT_PATH . '/kernel/addon.php';
-include_once ZAR_ROOT_PATH . '/addons/system/constants.php';
+require_once ZAR_ROOT_PATH . '/kernel/object.php';
+require_once ZAR_ROOT_PATH . '/kernel/addon.php';
+require_once ZAR_ROOT_PATH . '/addons/system/constants.php';
+require_once ZAR_ROOT_PATH . '/include/functions.php';
+
+include_once './class/dbmanager.php';
+$database_manager = new db_manager();
+$zariliaDB = &$database_manager->db;
 
 /*set title and subtitle*/
 $installer->setArgs( 'title', _INSTALL_L180 );

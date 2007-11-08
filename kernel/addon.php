@@ -346,6 +346,9 @@ class ZariliaAddonHandler extends ZariliaObjectHandler {
         if ( !empty( $_cachedAddon_dirname[$dirname] ) ) {
             return $_cachedAddon_dirname[$dirname];
         } else {
+	        if ( is_null( $this->db ) ) {
+		        $this->db = &$zariliaDB;
+	        }
             $sql = "SELECT * FROM " . $this->db->prefix( 'addons' ) . " WHERE dirname = '" . trim( $dirname ) . "'";
             if ( !$result = $this->db->Execute( $sql ) ) {
                 return $ret;

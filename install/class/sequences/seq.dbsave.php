@@ -8,7 +8,7 @@ $installer->addVars( 'databasecheck', _OKIMG . ' ' . _INSTALL_L90d );
 // do database stuff here*/
 include_once '../mainfile.php';
 include_once './class/dbmanager.php';
-$database_manager = new db_manager;
+$database_manager = new db_manager();
 if ( ! $database_manager->isConnectable() )
 {
     $installer->addVars( 'databasecheck', _NGIMG . _INSTALL_L106 );
