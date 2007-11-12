@@ -166,7 +166,8 @@ class ZariliaLanguageHandler extends ZariliaObjectHandler {
 
     function &getByName( $name ) {
         if ( empty( $name ) || preg_match( "/[^a-zA-Z0-9\_\-]/", $name ) ) {
-            return false;
+			$false = false;
+            return $false;
         }
         $isBase = false;
         $sql = 'SELECT * FROM ' . $this->db->prefix( 'language_base' ) . ' WHERE lang_name=\'' . $name . '\'';

@@ -3,6 +3,6 @@ return array (
   'config' => 
   array (
     'url' => 'http://localhost/zarilia',
-    'prefix' => 'penwaywayspe',
+    'prefix' => 'prx',
   ),
 );

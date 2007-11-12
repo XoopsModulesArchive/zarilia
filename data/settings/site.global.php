@@ -35,15 +35,16 @@ return array (
     'messages_sent' => 0,
     'avatar_user_link' => 0,
     'mimetypes' => 1,
+	'imgset_tplset_link' => 1
   ),
   'db' => 
   array (
     'type' => 'mysql',
-    'prefix' => 'penwaywayspe',
+    'prefix' => 'cztsd',
     'host' => 'localhost',
-    'user' => 'admin',
+    'user' => 'root',
     'pass' => '',
-    'name' => 'zarilia2',
+    'name' => 'zarilia',
     'pconnect' => '0',
   ),
   'groups' => 
@@ -56,9 +57,14 @@ return array (
     6 => 'SUBSCRIPTION',
     7 => 'BANNED',
   ),
+  'security' => array
+  (
+	'passkey' => 'Please change ME!.. ;-)',
+	'encryption' => 'Internal XorBase64'
+  ),
   'path' => 
   array (
-    'root' => 'C:/PHPLearnWAMP/Apache2/htdocs/zarilia',
+    'root' => substr(dirname(__FILE__),0,-strlen('data/settings')+1), 
     'check' => 1,
   ),
   'sites' => 

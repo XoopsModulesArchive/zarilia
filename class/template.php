@@ -76,6 +76,9 @@ class ZariliaTpl extends Smarty {
         if ( $display ) {
 			if (!defined('_LANGCODE')) define('_LANGCODE', 'en');
 			if (!defined('_CHARSET')) define('_CHARSET', 'utf-8');
+			if (!file_exists( ZAR_THEME_URL .'/'.$zariliaConfig['theme_set'])) {
+				$zariliaConfig['theme_set'] = 'default';
+			}
             $this->assign(
                 array( 'zarilia_url' => ZAR_URL,
                     'zarilia_rootpath' => ZAR_ROOT_PATH,

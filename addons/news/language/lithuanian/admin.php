@@ -9,7 +9,7 @@ define("_AM_TITLE","Pavadinimas");
 define("_AM_TOPIC","Temas");
 define("_AM_POSTER","Rašytojas");
 define("_AM_PROGRAMMED","Programuota Data/Laikas");
-define("_AM_ACTION","Veiksmas");
+if (!defined('_AM_ACTION')) define("_AM_ACTION","Veiksmas");
 define("_AM_EDIT","Redaguoti");
 define("_AM_DELETE","Trinti");
 define("_AM_LAST10ARTS","Paskutinius %d straipsnių");
